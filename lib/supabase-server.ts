@@ -1,1 +1,27 @@
-aW1wb3J0IHsgY3JlYXRlU2VydmVyQ2xpZW50IH0gZnJvbSAnQHN1cGFiYXNlL3NzcicKaW1wb3J0IHsgY29va2llcyB9IGZyb20gJ25leHQvaGVhZGVycycKCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBjcmVhdGVDbGllbnQoKSB7CiAgY29uc3QgY29va2llU3RvcmUgPSBhd2FpdCBjb29raWVzKCkKCiAgcmV0dXJuIGNyZWF0ZVNlcnZlckNsaWVudCgKICAgIHByb2Nlc3MuZW52Lk5FWFRfUFVCTElDX1NVUEFCQVNFX1VSTCEsCiAgICBwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19TVVBBQkFTRV9BTk9OX0tFWSEsCiAgICB7CiAgICAgIGNvb2tpZXM6IHsKICAgICAgICBnZXRBbGwoKSB7CiAgICAgICAgICByZXR1cm4gY29va2llU3RvcmUuZ2V0QWxsKCkKICAgICAgICB9LAogICAgICAgIHNldEFsbChjb29raWVzVG9TZXQpIHsKICAgICAgICAgIHRyeSB7CiAgICAgICAgICAgIGNvb2tpZXNUb1NldC5mb3JFYWNoKCh7IG5hbWUsIHZhbHVlLCBvcHRpb25zIH0pID0+CiAgICAgICAgICAgICAgY29va2llU3RvcmUuc2V0KG5hbWUsIHZhbHVlLCBvcHRpb25zKQogICAgICAgICAgICApCiAgICAgICAgICB9IGNhdGNoIHsKICAgICAgICAgICAgLy8gSWdub3JhciBlcnJvcmVzIGVuIHNlcnZlciBjb21wb25lbnRzCiAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgfSwKICAgIH0KICApCn0=
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+
+export async function createClient() {
+  const cookieStore = await cookies()
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch {
+            // Ignorar errores en server components
+          }
+        },
+      },
+    }
+  )
+}
