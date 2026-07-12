@@ -1,1 +1,36 @@
-aW1wb3J0IHR5cGUgeyBNZXRhZGF0YSB9IGZyb20gJ25leHQnCmltcG9ydCAnLi9nbG9iYWxzLmNzcycKaW1wb3J0IHsgVG9hc3RlciB9IGZyb20gJ3Nvbm5lcicKaW1wb3J0IE5hdmJhciBmcm9tICdAL2NvbXBvbmVudHMvTmF2YmFyJwoKZXhwb3J0IGNvbnN0IG1ldGFkYXRhOiBNZXRhZGF0YSA9IHsKICB0aXRsZTogJ0lubWVyc2l2YXBwIOKAlCBFeHBlcmllbmNpYXMgcXVlIHRyYW5zZm9ybWFuJywKICBkZXNjcmlwdGlvbjoKICAgICdDb25lY3TDoSBjb24gZXhwZXJpZW5jaWFzIGF1dMOpbnRpY2FzIHkgbXVsdGlzZW5zb3JpYWxlcyBjZXJjYSB0dXlvLicsCn0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFJvb3RMYXlvdXQoewogIGNoaWxkcmVuLAp9OiB7CiAgY2hpbGRyZW46IFJlYWN0LlJlYWN0Tm9kZQp9KSB7CiAgcmV0dXJuICgKICAgIDxodG1sIGxhbmc9ImVzIj4KICAgICAgPGhlYWQ+CiAgICAgICAgPGxpbmsgcmVsPSJwcmVjb25uZWN0IiBocmVmPSJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tIiAvPgogICAgICAgIDxsaW5rIHJlbD0icHJlY29ubmVjdCIgaHJlZj0iaHR0cHM6Ly9mb250cy5nc3RhdGljLmNvbSIgY3Jvc3NPcmlnaW49ImFub255bW91cyIgLz4KICAgICAgICA8bGluawogICAgICAgICAgaHJlZj0iaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1Nb250c2VycmF0OndnaHRANTAwOzYwMDs3MDA7ODAwJmZhbWlseT1PcGVuK1NhbnM6d2dodEA0MDA7NTAwOzYwMCZkaXNwbGF5PXN3YXAiCiAgICAgICAgICByZWw9InN0eWxlc2hlZXQiCiAgICAgICAgLz4KICAgICAgPC9oZWFkPgogICAgICA8Ym9keSBjbGFzc05hbWU9Im1pbi1oLXNjcmVlbiBhbnRpYWxpYXNlZCI+CiAgICAgICAgPE5hdmJhciAvPgogICAgICAgIDxtYWluIGNsYXNzTmFtZT0ibXgtYXV0byBtYXgtdy03eGwgcHgtNCBweS02IHNtOnB4LTYgbGc6cHgtOCI+CiAgICAgICAgICB7Y2hpbGRyZW59CiAgICAgICAgPC9tYWluPgogICAgICAgIDxUb2FzdGVyIHBvc2l0aW9uPSJ0b3AtcmlnaHQiIHJpY2hDb2xvcnMgLz4KICAgICAgPC9ib2R5PgogICAgPC9odG1sPgogICkKfQ==
+import type { Metadata } from 'next'
+import './globals.css'
+import { Toaster } from 'sonner'
+import Navbar from '@/components/Navbar'
+
+export const metadata: Metadata = {
+  title: 'Inmersivapp — Experiencias que transforman',
+  description:
+    'Conectá con experiencias auténticas y multisensoriales cerca tuyo.',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="es">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen antialiased">
+        <Navbar />
+        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          {children}
+        </main>
+        <Toaster position="top-right" richColors />
+      </body>
+    </html>
+  )
+}
