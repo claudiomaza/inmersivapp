@@ -1,1 +1,57 @@
-aW1wb3J0IHsgTmV4dFJlc3BvbnNlIH0gZnJvbSAnbmV4dC9zZXJ2ZXInCmltcG9ydCB7IGNyZWF0ZUNsaWVudCB9IGZyb20gJ0AvbGliL3N1cGFiYXNlLXNlcnZlcicKaW1wb3J0IHsgb2J0ZW5lclBhZ28gfSBmcm9tICdAL2xpYi9tZXJjYWRvcGFnbycKCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBQT1NUKHJlcTogUmVxdWVzdCkgewogIHRyeSB7CiAgICBjb25zdCBib2R5ID0gYXdhaXQgcmVxLmpzb24oKQogICAgY29uc3Qgc3VwYWJhc2UgPSBhd2FpdCBjcmVhdGVDbGllbnQoKQoKICAgIC8vIE1lcmNhZG9QYWdvIGVudsOtYSBlbCBwYXltZW50X2lkIGVuIGVsIHdlYmhvb2sKICAgIGNvbnN0IG1wUGF5bWVudElkID0gYm9keS5kYXRhPy5pZAogICAgaWYgKCFtcFBheW1lbnRJZCkgewogICAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyByZWNlaXZlZDogdHJ1ZSB9KQogICAgfQoKICAgIC8vIENvbnN1bHRhciBlc3RhZG8gZGVsIHBhZ28gZW4gTVAKICAgIGNvbnN0IHBhZ28gPSBhd2FpdCBvYnRlbmVyUGFnbyhOdW1iZXIobXBQYXltZW50SWQpKQoKICAgIGNvbnN0IGVzdGFkb01QID0gcGFnby5zdGF0dXMKICAgIGNvbnN0IG1ldGFkYXRhID0gcGFnby5tZXRhZGF0YSB8fCB7fQogICAgY29uc3QgcmVzZXJ2YUlkID0gbWV0YWRhdGEucmVzZXJ2YV9pZAoKICAgIGlmICghcmVzZXJ2YUlkKSB7CiAgICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IHJlY2VpdmVkOiB0cnVlIH0pCiAgICB9CgogICAgLy8gTWFwZWFyIGVzdGFkbyBkZSBNUCBhIG51ZXN0cm8gZW51bQogICAgY29uc3QgZXN0YWRvUGFnbyA9IGVzdGFkb01QID09PSAnYXBwcm92ZWQnID8gJ2Fwcm9iYWRvJwogICAgICA6IGVzdGFkb01QID09PSAncmVqZWN0ZWQnID8gJ3JlY2hhemFkbycKICAgICAgOiBlc3RhZG9NUCA9PT0gJ3JlZnVuZGVkJyA/ICdyZWVtYm9sc2FkbycKICAgICAgOiAncGVuZGllbnRlJwoKICAgIGNvbnN0IGVzdGFkb1Jlc2VydmEgPSBlc3RhZG9NUCA9PT0gJ2FwcHJvdmVkJyA/ICdjb25maXJtYWRhJwogICAgICA6IGVzdGFkb01QID09PSAncmVqZWN0ZWQnID8gJ2NhbmNlbGFkYScKICAgICAgOiAncGVuZGllbnRlJwoKICAgIC8vIEFjdHVhbGl6YXIgcGFnbwogICAgYXdhaXQgc3VwYWJhc2UKICAgICAgLmZyb20oJ3BhZ29zJykKICAgICAgLnVwZGF0ZSh7CiAgICAgICAgZXN0YWRvOiBlc3RhZG9QYWdvLAogICAgICAgIG1wX3BheW1lbnRfaWQ6IFN0cmluZyhtcFBheW1lbnRJZCksCiAgICAgIH0pCiAgICAgIC5lcSgncmVzZXJ2YV9pZCcsIHJlc2VydmFJZCkKCiAgICAvLyBBY3R1YWxpemFyIGVzdGFkbyBkZSBsYSByZXNlcnZhCiAgICBhd2FpdCBzdXBhYmFzZQogICAgICAuZnJvbSgncmVzZXJ2YXMnKQogICAgICAudXBkYXRlKHsgZXN0YWRvOiBlc3RhZG9SZXNlcnZhIH0pCiAgICAgIC5lcSgnaWQnLCByZXNlcnZhSWQpCgogICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgcmVjZWl2ZWQ6IHRydWUgfSkKICB9IGNhdGNoIChlcnJvcikgewogICAgY29uc29sZS5lcnJvcignRXJyb3IgZW4gd2ViaG9vayBNUDonLCBlcnJvcikKICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IHJlY2VpdmVkOiB0cnVlIH0pCiAgfQp9
+import { NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase-server'
+import { obtenerPago } from '@/lib/mercadopago'
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json()
+    const supabase = await createClient()
+
+    // MercadoPago envía el payment_id en el webhook
+    const mpPaymentId = body.data?.id
+    if (!mpPaymentId) {
+      return NextResponse.json({ received: true })
+    }
+
+    // Consultar estado del pago en MP
+    const pago = await obtenerPago(Number(mpPaymentId))
+
+    const estadoMP = pago.status
+    const metadata = pago.metadata || {}
+    const reservaId = metadata.reserva_id
+
+    if (!reservaId) {
+      return NextResponse.json({ received: true })
+    }
+
+    // Mapear estado de MP a nuestro enum
+    const estadoPago = estadoMP === 'approved' ? 'aprobado'
+      : estadoMP === 'rejected' ? 'rechazado'
+      : estadoMP === 'refunded' ? 'reembolsado'
+      : 'pendiente'
+
+    const estadoReserva = estadoMP === 'approved' ? 'confirmada'
+      : estadoMP === 'rejected' ? 'cancelada'
+      : 'pendiente'
+
+    // Actualizar pago
+    await supabase
+      .from('pagos')
+      .update({
+        estado: estadoPago,
+        mp_payment_id: String(mpPaymentId),
+      })
+      .eq('reserva_id', reservaId)
+
+    // Actualizar estado de la reserva
+    await supabase
+      .from('reservas')
+      .update({ estado: estadoReserva })
+      .eq('id', reservaId)
+
+    return NextResponse.json({ received: true })
+  } catch (error) {
+    console.error('Error en webhook MP:', error)
+    return NextResponse.json({ received: true })
+  }
+}
