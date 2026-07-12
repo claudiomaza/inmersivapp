@@ -1,1 +1,38 @@
-aW1wb3J0IHsgY3JlYXRlQ2xpZW50IH0gZnJvbSAnQC9saWIvc3VwYWJhc2Utc2VydmVyJwppbXBvcnQgTGluayBmcm9tICduZXh0L2xpbmsnCmltcG9ydCBDYXJkQWN0aXZpZGFkIGZyb20gJ0AvY29tcG9uZW50cy9DYXJkQWN0aXZpZGFkJwoKZXhwb3J0IGNvbnN0IGR5bmFtaWMgPSAnZm9yY2UtZHluYW1pYycKCmV4cG9ydCBkZWZhdWx0IGFzeW5jIGZ1bmN0aW9uIEFjdGl2aWRhZGVzUGFnZSgpIHsKICBjb25zdCBzdXBhYmFzZSA9IGF3YWl0IGNyZWF0ZUNsaWVudCgpCgogIGNvbnN0IHsgZGF0YTogYWN0aXZpZGFkZXMgfSA9IGF3YWl0IHN1cGFiYXNlCiAgICAuZnJvbSgnYWN0aXZpZGFkZXMnKQogICAgLnNlbGVjdCgnKicpCiAgICAuZXEoJ2FjdGl2YScsIHRydWUpCiAgICAub3JkZXIoJ2NyZWF0ZWRfYXQnLCB7IGFzY2VuZGluZzogZmFsc2UgfSkKCiAgcmV0dXJuICgKICAgIDxkaXY+CiAgICAgIDxoMSBjbGFzc05hbWU9ImZvbnQtdGl0dWxvcyB0ZXh0LTN4bCBmb250LWJvbGQgdGV4dC1wcmltYXJpbyI+CiAgICAgICAgRXhwbG9yYXIgYWN0aXZpZGFkZXMKICAgICAgPC9oMT4KICAgICAgPHAgY2xhc3NOYW1lPSJtdC0xIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+CiAgICAgICAgRW5jb250csOhIGV4cGVyaWVuY2lhcyDDum5pY2FzIGNlcmNhIHR1eW8KICAgICAgPC9wPgoKICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTggZ3JpZCBnYXAtNiBzbTpncmlkLWNvbHMtMiBsZzpncmlkLWNvbHMtMyI+CiAgICAgICAgeyFhY3RpdmlkYWRlcyB8fCBhY3RpdmlkYWRlcy5sZW5ndGggPT09IDAgPyAoCiAgICAgICAgICA8cCBjbGFzc05hbWU9ImNvbC1zcGFuLWZ1bGwgdGV4dC1jZW50ZXIgdGV4dC10ZXh0by1zZWN1bmRhcmlvIj4KICAgICAgICAgICAgTm8gaGF5IGFjdGl2aWRhZGVzIGRpc3BvbmlibGVzIHRvZGF2w61hLgogICAgICAgICAgPC9wPgogICAgICAgICkgOiAoCiAgICAgICAgICBhY3RpdmlkYWRlcy5tYXAoKGFjdDogYW55KSA9PiAoCiAgICAgICAgICAgIDxDYXJkQWN0aXZpZGFkIGtleT17YWN0LmlkfSBhY3RpdmlkYWQ9e2FjdH0gLz4KICAgICAgICAgICkpCiAgICAgICAgKX0KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICApCn0=
+import { createClient } from '@/lib/supabase-server'
+import Link from 'next/link'
+import CardActividad from '@/components/CardActividad'
+
+export const dynamic = 'force-dynamic'
+
+export default async function ActividadesPage() {
+  const supabase = await createClient()
+
+  const { data: actividades } = await supabase
+    .from('actividades')
+    .select('*')
+    .eq('activa', true)
+    .order('created_at', { ascending: false })
+
+  return (
+    <div>
+      <h1 className="font-titulos text-3xl font-bold text-primario">
+        Explorar actividades
+      </h1>
+      <p className="mt-1 text-texto-secundario">
+        Encontrá experiencias únicas cerca tuyo
+      </p>
+
+      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {!actividades || actividades.length === 0 ? (
+          <p className="col-span-full text-center text-texto-secundario">
+            No hay actividades disponibles todavía.
+          </p>
+        ) : (
+          actividades.map((act: any) => (
+            <CardActividad key={act.id} actividad={act} />
+          ))
+        )}
+      </div>
+    </div>
+  )
+}
