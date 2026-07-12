@@ -1,1 +1,178 @@
-J3VzZSBjbGllbnQnCgppbXBvcnQgeyB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JwppbXBvcnQgeyB1c2VSb3V0ZXIgfSBmcm9tICduZXh0L25hdmlnYXRpb24nCmltcG9ydCB7IHN1cGFiYXNlIH0gZnJvbSAnQC9saWIvc3VwYWJhc2UnCgpjb25zdCBDQVRFR09SSUFTID0gWwogICdBcnRlJywgJ1RlY25vbG9nw61hJywgJ0RlcG9ydGVzJywgJ0NvY2luYScsCiAgJ05hdHVyYWxlemEnLCAnTcO6c2ljYScsICdGb3RvZ3JhZsOtYScsCl0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFJlZ2lzdHJvUGFnZSgpIHsKICBjb25zdCByb3V0ZXIgPSB1c2VSb3V0ZXIoKQogIGNvbnN0IFtzdGVwLCBzZXRTdGVwXSA9IHVzZVN0YXRlKDEpCiAgY29uc3QgW2Zvcm0sIHNldEZvcm1dID0gdXNlU3RhdGUoewogICAgbm9tYnJlOiAnJywgYXBlbGxpZG86ICcnLCBlbWFpbDogJycsIHBhc3N3b3JkOiAnJywKICAgIHRlbGVmb25vOiAnJywgdXNlcm5hbWU6ICcnLCBpbnRlcmVzZXM6IFtdIGFzIHN0cmluZ1tdLAogIH0pCiAgY29uc3QgW2Vycm9yLCBzZXRFcnJvcl0gPSB1c2VTdGF0ZSgnJykKICBjb25zdCBbY2FyZ2FuZG8sIHNldENhcmdhbmRvXSA9IHVzZVN0YXRlKGZhbHNlKQoKICBjb25zdCB0b2dnbGVJbnRlcmVzID0gKGNhdDogc3RyaW5nKSA9PiB7CiAgICBzZXRGb3JtKChmKSA9PiAoewogICAgICAuLi5mLAogICAgICBpbnRlcmVzZXM6IGYuaW50ZXJlc2VzLmluY2x1ZGVzKGNhdCkKICAgICAgICA/IGYuaW50ZXJlc2VzLmZpbHRlcigoaSkgPT4gaSAhPT0gY2F0KQogICAgICAgIDogWy4uLmYuaW50ZXJlc2VzLCBjYXRdLAogICAgfSkpCiAgfQoKICBjb25zdCByZWdpc3RyYXIgPSBhc3luYyAoZTogUmVhY3QuRm9ybUV2ZW50KSA9PiB7CiAgICBlLnByZXZlbnREZWZhdWx0KCkKICAgIGlmIChmb3JtLmludGVyZXNlcy5sZW5ndGggPT09IDApIHsKICAgICAgc2V0RXJyb3IoJ1NlbGVjY2lvbsOhIGFsIG1lbm9zIHVuIGludGVyw6lzJykKICAgICAgcmV0dXJuCiAgICB9CiAgICBzZXRDYXJnYW5kbyh0cnVlKQogICAgc2V0RXJyb3IoJycpCgogICAgY29uc3QgeyBkYXRhLCBlcnJvcjogZXJyIH0gPSBhd2FpdCBzdXBhYmFzZS5hdXRoLnNpZ25VcCh7CiAgICAgIGVtYWlsOiBmb3JtLmVtYWlsLAogICAgICBwYXNzd29yZDogZm9ybS5wYXNzd29yZCwKICAgICAgb3B0aW9uczogewogICAgICAgIGRhdGE6IHsKICAgICAgICAgIG5vbWJyZTogZm9ybS5ub21icmUsCiAgICAgICAgICBhcGVsbGlkbzogZm9ybS5hcGVsbGlkbywKICAgICAgICAgIHVzZXJuYW1lOiBmb3JtLnVzZXJuYW1lLAogICAgICAgICAgdGVsZWZvbm86IGZvcm0udGVsZWZvbm8sCiAgICAgICAgICBpbnRlcmVzZXM6IGZvcm0uaW50ZXJlc2VzLAogICAgICAgICAgcm9sZXM6IFsncGFydGljaXBhbnRlJ10sCiAgICAgICAgfSwKICAgICAgfSwKICAgIH0pCgogICAgaWYgKGVycikgewogICAgICBzZXRFcnJvcihlcnIubWVzc2FnZSkKICAgICAgc2V0Q2FyZ2FuZG8oZmFsc2UpCiAgICAgIHJldHVybgogICAgfQoKICAgIGlmIChkYXRhLnVzZXIpIHsKICAgICAgLy8gQ3JlYXIgcGVyZmlsIGVuIGxhIHRhYmxhIHVzdWFyaW9zCiAgICAgIGF3YWl0IHN1cGFiYXNlLmZyb20oJ3VzdWFyaW9zJykuaW5zZXJ0KHsKICAgICAgICBpZDogZGF0YS51c2VyLmlkLAogICAgICAgIHVzZXJuYW1lOiBmb3JtLnVzZXJuYW1lLAogICAgICAgIG5vbWJyZTogZm9ybS5ub21icmUsCiAgICAgICAgYXBlbGxpZG86IGZvcm0uYXBlbGxpZG8sCiAgICAgICAgZW1haWw6IGZvcm0uZW1haWwsCiAgICAgICAgdGVsZWZvbm86IGZvcm0udGVsZWZvbm8sCiAgICAgICAgaW50ZXJlc2VzOiBmb3JtLmludGVyZXNlcywKICAgICAgICByb2xlczogWydwYXJ0aWNpcGFudGUnXSwKICAgICAgfSkKICAgIH0KCiAgICByb3V0ZXIucHVzaCgnL2xvZ2luP3JlZ2lzdHJvPWV4aXRvc28nKQogIH0KCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJteC1hdXRvIG10LTEyIG1heC13LWxnIj4KICAgICAgPGgxIGNsYXNzTmFtZT0iZm9udC10aXR1bG9zIHRleHQtM3hsIGZvbnQtYm9sZCB0ZXh0LXByaW1hcmlvIj4KICAgICAgICBDcmVhciBjdWVudGEKICAgICAgPC9oMT4KICAgICAgPHAgY2xhc3NOYW1lPSJtdC0yIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+CiAgICAgICAgUGFzbyB7c3RlcH0gZGUgMiDigJQgVW5pdGUgYSBJbm1lcnNpdmFwcAogICAgICA8L3A+CgogICAgICA8Zm9ybSBvblN1Ym1pdD17cmVnaXN0cmFyfSBjbGFzc05hbWU9Im10LTggZmxleCBmbGV4LWNvbCBnYXAtNCI+CiAgICAgICAge3N0ZXAgPT09IDEgJiYgKAogICAgICAgICAgPD4KICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImdyaWQgZ3JpZC1jb2xzLTIgZ2FwLTQiPgogICAgICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPSJtYi0xIGJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0iPk5vbWJyZTwvbGFiZWw+CiAgICAgICAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgcmVxdWlyZWQgdmFsdWU9e2Zvcm0ubm9tYnJlfQogICAgICAgICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldEZvcm0oeyAuLi5mb3JtLCBub21icmU6IGUudGFyZ2V0LnZhbHVlIH0pfQogICAgICAgICAgICAgICAgICBjbGFzc05hbWU9InctZnVsbCByb3VuZGVkLWxnIGJvcmRlciBib3JkZXItZ3JheS0zMDAgcHgtNCBweS0yIGZvY3VzOmJvcmRlci1wcmltYXJpbyBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1wcmltYXJpby8yMCIgLz4KICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICA8ZGl2PgogICAgICAgICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT0ibWItMSBibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIj5BcGVsbGlkbzwvbGFiZWw+CiAgICAgICAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgcmVxdWlyZWQgdmFsdWU9e2Zvcm0uYXBlbGxpZG99CiAgICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gc2V0Rm9ybSh7IC4uLmZvcm0sIGFwZWxsaWRvOiBlLnRhcmdldC52YWx1ZSB9KX0KICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LWZ1bGwgcm91bmRlZC1sZyBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHB4LTQgcHktMiBmb2N1czpib3JkZXItcHJpbWFyaW8gZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctcHJpbWFyaW8vMjAiIC8+CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8ZGl2PgogICAgICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9Im1iLTEgYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSI+RW1haWw8L2xhYmVsPgogICAgICAgICAgICAgIDxpbnB1dCB0eXBlPSJlbWFpbCIgcmVxdWlyZWQgdmFsdWU9e2Zvcm0uZW1haWx9CiAgICAgICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldEZvcm0oeyAuLi5mb3JtLCBlbWFpbDogZS50YXJnZXQudmFsdWUgfSl9CiAgICAgICAgICAgICAgICBjbGFzc05hbWU9InctZnVsbCByb3VuZGVkLWxnIGJvcmRlciBib3JkZXItZ3JheS0zMDAgcHgtNCBweS0yIGZvY3VzOmJvcmRlci1wcmltYXJpbyBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1wcmltYXJpby8yMCIgLz4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT0ibWItMSBibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIj5Db250cmFzZcOxYTwvbGFiZWw+CiAgICAgICAgICAgICAgPGlucHV0IHR5cGU9InBhc3N3b3JkIiByZXF1aXJlZCBtaW5MZW5ndGg9ezZ9IHZhbHVlPXtmb3JtLnBhc3N3b3JkfQogICAgICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRGb3JtKHsgLi4uZm9ybSwgcGFzc3dvcmQ6IGUudGFyZ2V0LnZhbHVlIH0pfQogICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LWZ1bGwgcm91bmRlZC1sZyBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHB4LTQgcHktMiBmb2N1czpib3JkZXItcHJpbWFyaW8gZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctcHJpbWFyaW8vMjAiIC8+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgb25DbGljaz17KCkgPT4gc2V0U3RlcCgyKX0KICAgICAgICAgICAgICBjbGFzc05hbWU9InJvdW5kZWQtbGcgYmctcHJpbWFyaW8gcHgtNCBweS0yLjUgZm9udC1zZW1pYm9sZCB0ZXh0LXdoaXRlIHRyYW5zaXRpb24gaG92ZXI6YmctcHJpbWFyaW8tZGFyayI+CiAgICAgICAgICAgICAgU2lndWllbnRlCiAgICAgICAgICAgIDwvYnV0dG9uPgogICAgICAgICAgPC8+CiAgICAgICAgKX0KCiAgICAgICAge3N0ZXAgPT09IDIgJiYgKAogICAgICAgICAgPD4KICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPSJtYi0xIGJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0iPk5vbWJyZSBkZSB1c3VhcmlvPC9sYWJlbD4KICAgICAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgcmVxdWlyZWQgdmFsdWU9e2Zvcm0udXNlcm5hbWV9CiAgICAgICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldEZvcm0oeyAuLi5mb3JtLCB1c2VybmFtZTogZS50YXJnZXQudmFsdWUgfSl9CiAgICAgICAgICAgICAgICBjbGFzc05hbWU9InctZnVsbCByb3VuZGVkLWxnIGJvcmRlciBib3JkZXItZ3JheS0zMDAgcHgtNCBweS0yIGZvY3VzOmJvcmRlci1wcmltYXJpbyBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1wcmltYXJpby8yMCIgLz4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT0ibWItMSBibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIj5UZWzDqWZvbm88L2xhYmVsPgogICAgICAgICAgICAgIDxpbnB1dCB0eXBlPSJ0ZWwiIHZhbHVlPXtmb3JtLnRlbGVmb25vfQogICAgICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRGb3JtKHsgLi4uZm9ybSwgdGVsZWZvbm86IGUudGFyZ2V0LnZhbHVlIH0pfQogICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LWZ1bGwgcm91bmRlZC1sZyBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHB4LTQgcHktMiBmb2N1czpib3JkZXItcHJpbWFyaW8gZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctcHJpbWFyaW8vMjAiIC8+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8ZGl2PgogICAgICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9Im1iLTIgYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSI+CiAgICAgICAgICAgICAgICBJbnRlcmVzZXMgKHNlbGVjY2lvbsOhIGFsIG1lbm9zIHVubykKICAgICAgICAgICAgICA8L2xhYmVsPgogICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGZsZXgtd3JhcCBnYXAtMiI+CiAgICAgICAgICAgICAgICB7Q0FURUdPUklBUy5tYXAoKGNhdCkgPT4gKAogICAgICAgICAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgICAgICAgICAga2V5PXtjYXR9CiAgICAgICAgICAgICAgICAgICAgdHlwZT0iYnV0dG9uIgogICAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHRvZ2dsZUludGVyZXMoY2F0KX0KICAgICAgICAgICAgICAgICAgICBjbGFzc05hbWU9e2Byb3VuZGVkLWZ1bGwgcHgtNCBweS0xLjUgdGV4dC1zbSBmb250LW1lZGl1bSB0cmFuc2l0aW9uICR7CiAgICAgICAgICAgICAgICAgICAgICBmb3JtLmludGVyZXNlcy5pbmNsdWRlcyhjYXQpCiAgICAgICAgICAgICAgICAgICAgICAgID8gJ2JnLXByaW1hcmlvIHRleHQtd2hpdGUnCiAgICAgICAgICAgICAgICAgICAgICAgIDogJ2JnLWdyYXktMTAwIHRleHQtdGV4dG8gaG92ZXI6YmctZ3JheS0yMDAnCiAgICAgICAgICAgICAgICAgICAgfWB9CiAgICAgICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgICAgICB7Y2F0fQogICAgICAgICAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICAgICAgICAgICkpfQogICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICAgIHtlcnJvciAmJiAoCiAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPSJyb3VuZGVkLWxnIGJnLXJlZC01MCBweC00IHB5LTIgdGV4dC1zbSB0ZXh0LWVycm9yIj57ZXJyb3J9PC9wPgogICAgICAgICAgICApfQoKICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZ2FwLTMiPgogICAgICAgICAgICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBvbkNsaWNrPXsoKSA9PiBzZXRTdGVwKDEpfQogICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJyb3VuZGVkLWxnIGJvcmRlci0yIGJvcmRlci1ncmF5LTMwMCBweC00IHB5LTIuNSBmb250LXNlbWlib2xkIHRleHQtdGV4dG8gdHJhbnNpdGlvbiBob3ZlcjpiZy1ncmF5LTUwIj4KICAgICAgICAgICAgICAgIFZvbHZlcgogICAgICAgICAgICAgIDwvYnV0dG9uPgogICAgICAgICAgICAgIDxidXR0b24gdHlwZT0ic3VibWl0IiBkaXNhYmxlZD17Y2FyZ2FuZG99CiAgICAgICAgICAgICAgICBjbGFzc05hbWU9ImZsZXgtMSByb3VuZGVkLWxnIGJnLXByaW1hcmlvIHB4LTQgcHktMi41IGZvbnQtc2VtaWJvbGQgdGV4dC13aGl0ZSB0cmFuc2l0aW9uIGhvdmVyOmJnLXByaW1hcmlvLWRhcmsgZGlzYWJsZWQ6b3BhY2l0eS01MCI+CiAgICAgICAgICAgICAgICB7Y2FyZ2FuZG8gPyAnQ3JlYW5kbyBjdWVudGHigKYnIDogJ0NyZWFyIGN1ZW50YSd9CiAgICAgICAgICAgICAgPC9idXR0b24+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgPC8+CiAgICAgICAgKX0KICAgICAgPC9mb3JtPgogICAgPC9kaXY+CiAgKQp9
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+
+const CATEGORIAS = [
+  'Arte', 'Tecnología', 'Deportes', 'Cocina',
+  'Naturaleza', 'Música', 'Fotografía',
+]
+
+export default function RegistroPage() {
+  const router = useRouter()
+  const [step, setStep] = useState(1)
+  const [form, setForm] = useState({
+    nombre: '', apellido: '', email: '', password: '',
+    telefono: '', username: '', intereses: [] as string[],
+  })
+  const [error, setError] = useState('')
+  const [cargando, setCargando] = useState(false)
+
+  const toggleInteres = (cat: string) => {
+    setForm((f) => ({
+      ...f,
+      intereses: f.intereses.includes(cat)
+        ? f.intereses.filter((i) => i !== cat)
+        : [...f.intereses, cat],
+    }))
+  }
+
+  const registrar = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (form.intereses.length === 0) {
+      setError('Seleccioná al menos un interés')
+      return
+    }
+    setCargando(true)
+    setError('')
+
+    const { data, error: err } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: {
+          nombre: form.nombre,
+          apellido: form.apellido,
+          username: form.username,
+          telefono: form.telefono,
+          intereses: form.intereses,
+          roles: ['participante'],
+        },
+      },
+    })
+
+    if (err) {
+      setError(err.message)
+      setCargando(false)
+      return
+    }
+
+    if (data.user) {
+      // Crear perfil en la tabla usuarios
+      await supabase.from('usuarios').insert({
+        id: data.user.id,
+        username: form.username,
+        nombre: form.nombre,
+        apellido: form.apellido,
+        email: form.email,
+        telefono: form.telefono,
+        intereses: form.intereses,
+        roles: ['participante'],
+      })
+    }
+
+    router.push('/login?registro=exitoso')
+  }
+
+  return (
+    <div className="mx-auto mt-12 max-w-lg">
+      <h1 className="font-titulos text-3xl font-bold text-primario">
+        Crear cuenta
+      </h1>
+      <p className="mt-2 text-texto-secundario">
+        Paso {step} de 2 — Unite a Inmersivapp
+      </p>
+
+      <form onSubmit={registrar} className="mt-8 flex flex-col gap-4">
+        {step === 1 && (
+          <>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="mb-1 block text-sm font-medium">Nombre</label>
+                <input type="text" required value={form.nombre}
+                  onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20" />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium">Apellido</label>
+                <input type="text" required value={form.apellido}
+                  onChange={(e) => setForm({ ...form, apellido: e.target.value })}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20" />
+              </div>
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">Email</label>
+              <input type="email" required value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20" />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">Contraseña</label>
+              <input type="password" required minLength={6} value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20" />
+            </div>
+            <button type="button" onClick={() => setStep(2)}
+              className="rounded-lg bg-primario px-4 py-2.5 font-semibold text-white transition hover:bg-primario-dark">
+              Siguiente
+            </button>
+          </>
+        )}
+
+        {step === 2 && (
+          <>
+            <div>
+              <label className="mb-1 block text-sm font-medium">Nombre de usuario</label>
+              <input type="text" required value={form.username}
+                onChange={(e) => setForm({ ...form, username: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20" />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">Teléfono</label>
+              <input type="tel" value={form.telefono}
+                onChange={(e) => setForm({ ...form, telefono: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20" />
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium">
+                Intereses (seleccioná al menos uno)
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {CATEGORIAS.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => toggleInteres(cat)}
+                    className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+                      form.intereses.includes(cat)
+                        ? 'bg-primario text-white'
+                        : 'bg-gray-100 text-texto hover:bg-gray-200'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {error && (
+              <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-error">{error}</p>
+            )}
+
+            <div className="flex gap-3">
+              <button type="button" onClick={() => setStep(1)}
+                className="rounded-lg border-2 border-gray-300 px-4 py-2.5 font-semibold text-texto transition hover:bg-gray-50">
+                Volver
+              </button>
+              <button type="submit" disabled={cargando}
+                className="flex-1 rounded-lg bg-primario px-4 py-2.5 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50">
+                {cargando ? 'Creando cuenta…' : 'Crear cuenta'}
+              </button>
+            </div>
+          </>
+        )}
+      </form>
+    </div>
+  )
+}
