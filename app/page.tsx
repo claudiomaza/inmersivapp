@@ -1,1 +1,44 @@
-aW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJwoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gSG9tZSgpIHsKICByZXR1cm4gKAogICAgPGRpdiBjbGFzc05hbWU9ImZsZXggbWluLWgtWzgwdmhdIGZsZXgtY29sIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciB0ZXh0LWNlbnRlciI+CiAgICAgIDxoMSBjbGFzc05hbWU9ImZvbnQtdGl0dWxvcyB0ZXh0LTR4bCBmb250LWV4dHJhYm9sZCB0cmFja2luZy10aWdodCB0ZXh0LXByaW1hcmlvIHNtOnRleHQtNXhsIGxnOnRleHQtNnhsIj4KICAgICAgICBJTk1FUlNJVkFQUAogICAgICA8L2gxPgogICAgICA8cCBjbGFzc05hbWU9Im10LTQgbWF4LXctMnhsIHRleHQtbGcgdGV4dC10ZXh0by1zZWN1bmRhcmlvIHNtOnRleHQteGwiPgogICAgICAgIENvbmVjdMOhIGNvbiBleHBlcmllbmNpYXMgYXV0w6ludGljYXMgY2VyY2EgdHV5by4gVGFsbGVyZXMsIHNhbGlkYXMsIGFydGUsCiAgICAgICAgY29jaW5hLCBuYXR1cmFsZXphIOKAlCB0b2RvIGxvIHF1ZSB0ZSBzYXF1ZSBkZWwgcGlsb3RvIGF1dG9tw6F0aWNvLgogICAgICA8L3A+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJtdC0xMCBmbGV4IGZsZXgtY29sIGdhcC00IHNtOmZsZXgtcm93Ij4KICAgICAgICA8TGluawogICAgICAgICAgaHJlZj0iL2FjdGl2aWRhZGVzIgogICAgICAgICAgY2xhc3NOYW1lPSJyb3VuZGVkLXhsIGJnLXByaW1hcmlvIHB4LTggcHktMyB0ZXh0LWxnIGZvbnQtc2VtaWJvbGQgdGV4dC13aGl0ZSBzaGFkb3ctbGcgdHJhbnNpdGlvbiBob3ZlcjpiZy1wcmltYXJpby1kYXJrIgogICAgICAgID4KICAgICAgICAgIEV4cGxvcmFyIGFjdGl2aWRhZGVzCiAgICAgICAgPC9MaW5rPgogICAgICAgIDxMaW5rCiAgICAgICAgICBocmVmPSIvcmVnaXN0cm8iCiAgICAgICAgICBjbGFzc05hbWU9InJvdW5kZWQteGwgYm9yZGVyLTIgYm9yZGVyLXByaW1hcmlvIHB4LTggcHktMyB0ZXh0LWxnIGZvbnQtc2VtaWJvbGQgdGV4dC1wcmltYXJpbyB0cmFuc2l0aW9uIGhvdmVyOmJnLXByaW1hcmlvIGhvdmVyOnRleHQtd2hpdGUiCiAgICAgICAgPgogICAgICAgICAgQ3JlYXIgY3VlbnRhCiAgICAgICAgPC9MaW5rPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTE2IGdyaWQgZ2FwLTYgc206Z3JpZC1jb2xzLTMiPgogICAgICAgIHtbCiAgICAgICAgICB7IHRpdHVsbzogJ/CfjqgnLCBkZXNjOiAnVGFsbGVyZXMgZGUgYXJ0ZSwgY2Vyw6FtaWNhLCBmb3RvZ3JhZsOtYScgfSwKICAgICAgICAgIHsgdGl0dWxvOiAn8J+lvicsIGRlc2M6ICdTZW5kZXJpc21vLCBuYXR1cmFsZXphLCBhdmVudHVyYScgfSwKICAgICAgICAgIHsgdGl0dWxvOiAn8J+NnScsIGRlc2M6ICdDb2NpbmEsIGdhc3Ryb25vbcOtYSwgc2Fib3JlcyBsb2NhbGVzJyB9LAogICAgICAgIF0ubWFwKChpdGVtKSA9PiAoCiAgICAgICAgICA8ZGl2CiAgICAgICAgICAgIGtleT17aXRlbS50aXR1bG99CiAgICAgICAgICAgIGNsYXNzTmFtZT0icm91bmRlZC14bCBiZy1zdXBlcmZpY2llIHAtNiBzaGFkb3ctc20gdHJhbnNpdGlvbiBob3ZlcjpzaGFkb3ctbWQiCiAgICAgICAgICA+CiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJ0ZXh0LTR4bCI+e2l0ZW0udGl0dWxvfTwvZGl2PgogICAgICAgICAgICA8cCBjbGFzc05hbWU9Im10LTIgdGV4dC1zbSB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPntpdGVtLmRlc2N9PC9wPgogICAgICAgICAgPC9kaXY+CiAgICAgICAgKSl9CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgKQp9
+import Link from 'next/link'
+
+export default function Home() {
+  return (
+    <div className="flex min-h-[80vh] flex-col items-center justify-center text-center">
+      <h1 className="font-titulos text-4xl font-extrabold tracking-tight text-primario sm:text-5xl lg:text-6xl">
+        INMERSIVAPP
+      </h1>
+      <p className="mt-4 max-w-2xl text-lg text-texto-secundario sm:text-xl">
+        Conectá con experiencias auténticas cerca tuyo. Talleres, salidas, arte,
+        cocina, naturaleza — todo lo que te saque del piloto automático.
+      </p>
+      <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+        <Link
+          href="/actividades"
+          className="rounded-xl bg-primario px-8 py-3 text-lg font-semibold text-white shadow-lg transition hover:bg-primario-dark"
+        >
+          Explorar actividades
+        </Link>
+        <Link
+          href="/registro"
+          className="rounded-xl border-2 border-primario px-8 py-3 text-lg font-semibold text-primario transition hover:bg-primario hover:text-white"
+        >
+          Crear cuenta
+        </Link>
+      </div>
+      <div className="mt-16 grid gap-6 sm:grid-cols-3">
+        {[
+          { titulo: '🎨', desc: 'Talleres de arte, cerámica, fotografía' },
+          { titulo: '🥾', desc: 'Senderismo, naturaleza, aventura' },
+          { titulo: '🍝', desc: 'Cocina, gastronomía, sabores locales' },
+        ].map((item) => (
+          <div
+            key={item.titulo}
+            className="rounded-xl bg-superficie p-6 shadow-sm transition hover:shadow-md"
+          >
+            <div className="text-4xl">{item.titulo}</div>
+            <p className="mt-2 text-sm text-texto-secundario">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
