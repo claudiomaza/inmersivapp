@@ -1,1 +1,65 @@
-J3VzZSBjbGllbnQnCgppbXBvcnQgeyB1c2VFZmZlY3QsIHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnCmltcG9ydCB7IHN1cGFiYXNlIH0gZnJvbSAnQC9saWIvc3VwYWJhc2UnCmltcG9ydCB7IHVzZVJvdXRlciB9IGZyb20gJ25leHQvbmF2aWdhdGlvbicKCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFBlcmZpbFBhZ2UoKSB7CiAgY29uc3Qgcm91dGVyID0gdXNlUm91dGVyKCkKICBjb25zdCBbc2VzaW9uLCBzZXRTZXNpb25dID0gdXNlU3RhdGU8YW55PihudWxsKQogIGNvbnN0IFtjYXJnYW5kbywgc2V0Q2FyZ2FuZG9dID0gdXNlU3RhdGUodHJ1ZSkKICBjb25zdCBbcGVyZmlsLCBzZXRQZXJmaWxdID0gdXNlU3RhdGU8YW55PihudWxsKQoKICB1c2VFZmZlY3QoKCkgPT4gewogICAgc3VwYWJhc2UuYXV0aC5nZXRTZXNzaW9uKCkudGhlbihhc3luYyAoeyBkYXRhIH0pID0+IHsKICAgICAgc2V0U2VzaW9uKGRhdGEuc2Vzc2lvbikKICAgICAgaWYgKGRhdGEuc2Vzc2lvbikgewogICAgICAgIGNvbnN0IHsgZGF0YTogcGVyZmlsRGF0YSB9ID0gYXdhaXQgc3VwYWJhc2UKICAgICAgICAgIC5mcm9tKCdwZXJmaWxlcycpCiAgICAgICAgICAuc2VsZWN0KCcqJykKICAgICAgICAgIC5lcSgnaWQnLCBkYXRhLnNlc3Npb24udXNlci5pZCkKICAgICAgICAgIC5zaW5nbGUoKQogICAgICAgIHNldFBlcmZpbChwZXJmaWxEYXRhKQogICAgICB9CiAgICAgIHNldENhcmdhbmRvKGZhbHNlKQogICAgfSkKICB9LCBbXSkKCiAgY29uc3QgY2VycmFyU2VzaW9uID0gYXN5bmMgKCkgPT4gewogICAgYXdhaXQgc3VwYWJhc2UuYXV0aC5zaWduT3V0KCkKICAgIHJvdXRlci5wdXNoKCcvJykKICAgIHJvdXRlci5yZWZyZXNoKCkKICB9CgogIGlmIChjYXJnYW5kbykgcmV0dXJuIDxwIGNsYXNzTmFtZT0ibXQtOCB0ZXh0LWNlbnRlciB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPkNhcmdhbmRv4oCmPC9wPgoKICBpZiAoIXNlc2lvbikgewogICAgcmV0dXJuICgKICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTE2IHRleHQtY2VudGVyIj4KICAgICAgICA8aDEgY2xhc3NOYW1lPSJmb250LXRpdHVsb3MgdGV4dC0yeGwgZm9udC1ib2xkIHRleHQtcHJpbWFyaW8iPlBlcmZpbDwvaDE+CiAgICAgICAgPHAgY2xhc3NOYW1lPSJtdC0yIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+SW5pY2nDoSBzZXNpw7NuIHBhcmEgdmVyIHR1IHBlcmZpbC48L3A+CiAgICAgIDwvZGl2PgogICAgKQogIH0KCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJteC1hdXRvIG10LTggbWF4LXctbGciPgogICAgICA8aDEgY2xhc3NOYW1lPSJmb250LXRpdHVsb3MgdGV4dC0zeGwgZm9udC1ib2xkIHRleHQtcHJpbWFyaW8iPk1pIHBlcmZpbDwvaDE+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJtdC02IHJvdW5kZWQteGwgYmctc3VwZXJmaWNpZSBwLTYgc2hhZG93LXNtIj4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ic3BhY2UteS0zIj4KICAgICAgICAgIDxwPjxzcGFuIGNsYXNzTmFtZT0iZm9udC1tZWRpdW0gdGV4dC10ZXh0by1zZWN1bmRhcmlvIj5Ob21icmU6PC9zcGFuPiB7cGVyZmlsPy5ub21icmV9IHtwZXJmaWw/LmFwZWxsaWRvfTwvcD4KICAgICAgICAgIDxwPjxzcGFuIGNsYXNzTmFtZT0iZm9udC1tZWRpdW0gdGV4dC10ZXh0by1zZWN1bmRhcmlvIj5FbWFpbDo8L3NwYW4+IHtzZXNpb24udXNlci5lbWFpbH08L3A+CiAgICAgICAgICA8cD48c3BhbiBjbGFzc05hbWU9ImZvbnQtbWVkaXVtIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+VGVsw6lmb25vOjwvc3Bhbj4ge3BlcmZpbD8udGVsZWZvbm8gfHwgJ+KAlCd9PC9wPgogICAgICAgICAgPHA+PHNwYW4gY2xhc3NOYW1lPSJmb250LW1lZGl1bSB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPkludGVyZXNlczo8L3NwYW4+IHtwZXJmaWw/LmludGVyZXNlcz8uam9pbignLCAnKSB8fCAn4oCUJ308L3A+CiAgICAgICAgICA8cD48c3BhbiBjbGFzc05hbWU9ImZvbnQtbWVkaXVtIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+Um9sZXM6PC9zcGFuPiB7cGVyZmlsPy5yb2xlcz8uam9pbignLCAnKSB8fCAncGFydGljaXBhbnRlJ308L3A+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgogICAgICA8YnV0dG9uCiAgICAgICAgb25DbGljaz17Y2VycmFyU2VzaW9ufQogICAgICAgIGNsYXNzTmFtZT0ibXQtNiB3LWZ1bGwgcm91bmRlZC1sZyBiZy1lcnJvciBweC00IHB5LTIuNSBmb250LXNlbWlib2xkIHRleHQtd2hpdGUgdHJhbnNpdGlvbiBob3ZlcjpiZy1yZWQtNzAwIgogICAgICA+CiAgICAgICAgQ2VycmFyIHNlc2nDs24KICAgICAgPC9idXR0b24+CiAgICA8L2Rpdj4KICApCn0=
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import { useRouter } from 'next/navigation'
+
+export default function PerfilPage() {
+  const router = useRouter()
+  const [sesion, setSesion] = useState<any>(null)
+  const [cargando, setCargando] = useState(true)
+  const [perfil, setPerfil] = useState<any>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data }) => {
+      setSesion(data.session)
+      if (data.session) {
+        const { data: perfilData } = await supabase
+          .from('perfiles')
+          .select('*')
+          .eq('id', data.session.user.id)
+          .single()
+        setPerfil(perfilData)
+      }
+      setCargando(false)
+    })
+  }, [])
+
+  const cerrarSesion = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+    router.refresh()
+  }
+
+  if (cargando) return <p className="mt-8 text-center text-texto-secundario">Cargando…</p>
+
+  if (!sesion) {
+    return (
+      <div className="mt-16 text-center">
+        <h1 className="font-titulos text-2xl font-bold text-primario">Perfil</h1>
+        <p className="mt-2 text-texto-secundario">Iniciá sesión para ver tu perfil.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="mx-auto mt-8 max-w-lg">
+      <h1 className="font-titulos text-3xl font-bold text-primario">Mi perfil</h1>
+      <div className="mt-6 rounded-xl bg-superficie p-6 shadow-sm">
+        <div className="space-y-3">
+          <p><span className="font-medium text-texto-secundario">Nombre:</span> {perfil?.nombre} {perfil?.apellido}</p>
+          <p><span className="font-medium text-texto-secundario">Email:</span> {sesion.user.email}</p>
+          <p><span className="font-medium text-texto-secundario">Teléfono:</span> {perfil?.telefono || '—'}</p>
+          <p><span className="font-medium text-texto-secundario">Intereses:</span> {perfil?.intereses?.join(', ') || '—'}</p>
+          <p><span className="font-medium text-texto-secundario">Roles:</span> {perfil?.roles?.join(', ') || 'participante'}</p>
+        </div>
+      </div>
+      <button
+        onClick={cerrarSesion}
+        className="mt-6 w-full rounded-lg bg-error px-4 py-2.5 font-semibold text-white transition hover:bg-red-700"
+      >
+        Cerrar sesión
+      </button>
+    </div>
+  )
+}
