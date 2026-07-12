@@ -1,1 +1,168 @@
-J3VzZSBjbGllbnQnCgppbXBvcnQgeyB1c2VFZmZlY3QsIHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnCmltcG9ydCB7IHVzZVBhcmFtcyB9IGZyb20gJ25leHQvbmF2aWdhdGlvbicKaW1wb3J0IHsgc3VwYWJhc2UgfSBmcm9tICdAL2xpYi9zdXBhYmFzZScKaW1wb3J0IHsgZm9ybWF0UHJlY2lvLCBnZW5lcmFyQ29kaWdvQ29uZmlybWFjaW9uIH0gZnJvbSAnQC9saWIvdXRpbHMnCmltcG9ydCB7IHRvYXN0IH0gZnJvbSAnc29ubmVyJwoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRGV0YWxsZUFjdGl2aWRhZFBhZ2UoKSB7CiAgY29uc3QgeyBpZCB9ID0gdXNlUGFyYW1zPHsgaWQ6IHN0cmluZyB9PigpCiAgY29uc3QgW2FjdGl2aWRhZCwgc2V0QWN0aXZpZGFkXSA9IHVzZVN0YXRlPGFueT4obnVsbCkKICBjb25zdCBbY2FyZ2FuZG8sIHNldENhcmdhbmRvXSA9IHVzZVN0YXRlKHRydWUpCiAgY29uc3QgW3Jlc2VydmFuZG8sIHNldFJlc2VydmFuZG9dID0gdXNlU3RhdGUoZmFsc2UpCiAgY29uc3QgW3Nlc2lvbiwgc2V0U2VzaW9uXSA9IHVzZVN0YXRlPGFueT4obnVsbCkKICBjb25zdCBbZmVjaGFTZWwsIHNldEZlY2hhU2VsXSA9IHVzZVN0YXRlKCcnKQoKICB1c2VFZmZlY3QoKCkgPT4gewogICAgc3VwYWJhc2UuYXV0aC5nZXRTZXNzaW9uKCkudGhlbigoeyBkYXRhIH0pID0+IHNldFNlc2lvbihkYXRhLnNlc3Npb24pKQogICAgc3VwYWJhc2UKICAgICAgLmZyb20oJ2FjdGl2aWRhZGVzJykKICAgICAgLnNlbGVjdCgnKicpCiAgICAgIC5lcSgnaWQnLCBpZCkKICAgICAgLnNpbmdsZSgpCiAgICAgIC50aGVuKCh7IGRhdGEgfSkgPT4gewogICAgICAgIHNldEFjdGl2aWRhZChkYXRhKQogICAgICAgIHNldENhcmdhbmRvKGZhbHNlKQogICAgICB9KQogIH0sIFtpZF0pCgogIGNvbnN0IHJlc2VydmFyID0gYXN5bmMgKCkgPT4gewogICAgaWYgKCFzZXNpb24pIHsKICAgICAgdG9hc3QuZXJyb3IoJ0luaWNpw6Egc2VzacOzbiBwYXJhIHJlc2VydmFyJykKICAgICAgcmV0dXJuCiAgICB9CiAgICBpZiAoIWZlY2hhU2VsKSB7CiAgICAgIHRvYXN0LmVycm9yKCdTZWxlY2Npb27DoSB1bmEgZmVjaGEnKQogICAgICByZXR1cm4KICAgIH0KCiAgICBzZXRSZXNlcnZhbmRvKHRydWUpCgogICAgLy8gMS4gQ3JlYXIgcmVzZXJ2YSBlbiBTdXBhYmFzZQogICAgY29uc3QgY29kaWdvID0gZ2VuZXJhckNvZGlnb0NvbmZpcm1hY2lvbigpCiAgICBjb25zdCB7IGRhdGE6IHJlc2VydmEsIGVycm9yIH0gPSBhd2FpdCBzdXBhYmFzZQogICAgICAuZnJvbSgncmVzZXJ2YXMnKQogICAgICAuaW5zZXJ0KHsKICAgICAgICB1c3VhcmlvX2lkOiBzZXNpb24udXNlci5pZCwKICAgICAgICBhY3RpdmlkYWRfaWQ6IGlkLAogICAgICAgIGZlY2hhOiBmZWNoYVNlbCwKICAgICAgICBlc3RhZG86ICdwZW5kaWVudGUnLAogICAgICAgIGNvZGlnb19jb25maXJtYWNpb246IGNvZGlnbywKICAgICAgfSkKICAgICAgLnNlbGVjdCgpCiAgICAgIC5zaW5nbGUoKQoKICAgIGlmIChlcnJvcikgewogICAgICB0b2FzdC5lcnJvcignRXJyb3IgYWwgY3JlYXIgbGEgcmVzZXJ2YScpCiAgICAgIHNldFJlc2VydmFuZG8oZmFsc2UpCiAgICAgIHJldHVybgogICAgfQoKICAgIC8vIDIuIENyZWFyIHByZWZlcmVuY2lhIGRlIHBhZ28gZW4gTVAKICAgIHRvYXN0LmxvYWRpbmcoJ1JlZGlyaWdpZW5kbyBhbCBwYWdv4oCmJykKICAgIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKCcvYXBpL3BhZ29zL2NyZWFyJywgewogICAgICBtZXRob2Q6ICdQT1NUJywKICAgICAgaGVhZGVyczogeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nIH0sCiAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHsKICAgICAgICBhY3RpdmlkYWRfaWQ6IGlkLAogICAgICAgIHJlc2VydmFfaWQ6IHJlc2VydmEuaWQsCiAgICAgICAgdGl0dWxvOiBhY3RpdmlkYWQudGl0dWxvLAogICAgICAgIG1vbnRvOiBhY3RpdmlkYWQucHJlY2lvLAogICAgICAgIHVzdWFyaW9faWQ6IHNlc2lvbi51c2VyLmlkLAogICAgICB9KSwKICAgIH0pCgogICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlcy5qc29uKCkKCiAgICBpZiAoZGF0YS5pbml0X3BvaW50KSB7CiAgICAgIHdpbmRvdy5sb2NhdGlvbi5ocmVmID0gZGF0YS5pbml0X3BvaW50CiAgICB9IGVsc2UgewogICAgICB0b2FzdC5lcnJvcignRXJyb3IgYWwgaW5pY2lhciBlbCBwYWdvJykKICAgIH0KICAgIHNldFJlc2VydmFuZG8oZmFsc2UpCiAgfQoKICBpZiAoY2FyZ2FuZG8pIHJldHVybiA8cCBjbGFzc05hbWU9Im10LTggdGV4dC1jZW50ZXIgdGV4dC10ZXh0by1zZWN1bmRhcmlvIj5DYXJnYW5kbyBhY3RpdmlkYWTigKY8L3A+CiAgaWYgKCFhY3RpdmlkYWQpIHJldHVybiA8cCBjbGFzc05hbWU9Im10LTggdGV4dC1jZW50ZXIgdGV4dC10ZXh0by1zZWN1bmRhcmlvIj5BY3RpdmlkYWQgbm8gZW5jb250cmFkYTwvcD4KCiAgY29uc3QgZm90byA9IGFjdGl2aWRhZC5mb3Rvcz8uWzBdIHx8ICdodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tMTUwMjA4NjIyMzUwMS03ZWE2ZWNkNzkzNjg/YXV0bz1mb3JtYXQmZml0PWNyb3Amdz04MDAmcT04MCcKCiAgcmV0dXJuICgKICAgIDxkaXYgY2xhc3NOYW1lPSJteC1hdXRvIG10LTggbWF4LXctNHhsIj4KICAgICAgPGRpdiBjbGFzc05hbWU9Im92ZXJmbG93LWhpZGRlbiByb3VuZGVkLXhsIj4KICAgICAgICA8aW1nIHNyYz17Zm90b30gYWx0PXthY3RpdmlkYWQudGl0dWxvfSBjbGFzc05hbWU9ImgtNzIgdy1mdWxsIG9iamVjdC1jb3ZlciBzbTpoLTk2IiAvPgogICAgICA8L2Rpdj4KCiAgICAgIDxkaXYgY2xhc3NOYW1lPSJtdC02Ij4KICAgICAgICA8c3BhbiBjbGFzc05hbWU9InJvdW5kZWQtZnVsbCBiZy1zZWN1bmRhcmlvLzIwIHB4LTMgcHktMSB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtc2VjdW5kYXJpby1kYXJrIj4KICAgICAgICAgIHthY3RpdmlkYWQuY2F0ZWdvcmlhfQogICAgICAgIDwvc3Bhbj4KICAgICAgICA8aDEgY2xhc3NOYW1lPSJtdC0zIGZvbnQtdGl0dWxvcyB0ZXh0LTN4bCBmb250LWJvbGQgdGV4dC10ZXh0byI+CiAgICAgICAgICB7YWN0aXZpZGFkLnRpdHVsb30KICAgICAgICA8L2gxPgogICAgICAgIDxwIGNsYXNzTmFtZT0ibXQtMiB3aGl0ZXNwYWNlLXByZS1saW5lIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+CiAgICAgICAgICB7YWN0aXZpZGFkLmRlc2NyaXBjaW9ufQogICAgICAgIDwvcD4KCiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTYgZ3JpZCBnYXAtNCBzbTpncmlkLWNvbHMtMiI+CiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0icm91bmRlZC1sZyBiZy1zdXBlcmZpY2llIHAtNCBzaGFkb3ctc20iPgogICAgICAgICAgICA8cCBjbGFzc05hbWU9InRleHQtc20gdGV4dC10ZXh0by1zZWN1bmRhcmlvIj5VYmljYWNpw7NuPC9wPgogICAgICAgICAgICA8cCBjbGFzc05hbWU9ImZvbnQtbWVkaXVtIj4KICAgICAgICAgICAgICB7YWN0aXZpZGFkLnViaWNhY2lvbj8uZGlyZWNjaW9ufSwge2FjdGl2aWRhZC51YmljYWNpb24/LmRlcGFydGFtZW50b30seycgJ30KICAgICAgICAgICAgICB7YWN0aXZpZGFkLnViaWNhY2lvbj8ucHJvdmluY2lhfQogICAgICAgICAgICA8L3A+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJyb3VuZGVkLWxnIGJnLXN1cGVyZmljaWUgcC00IHNoYWRvdy1zbSI+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPkFuZml0cmnDs248L3A+CiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0iZm9udC1tZWRpdW0iPnthY3RpdmlkYWQuYW5maXRyaW9uX25vbWJyZX08L3A+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KCiAgICAgICAgey8qIFNlY2Npw7NuIGRlIHJlc2VydmEgeSBwYWdvICovfQogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtdC04IHJvdW5kZWQteGwgYmctc3VwZXJmaWNpZSBwLTYgc2hhZG93LXNtIj4KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4iPgogICAgICAgICAgICA8aDIgY2xhc3NOYW1lPSJmb250LXRpdHVsb3MgdGV4dC0yeGwgZm9udC1ib2xkIHRleHQtcHJpbWFyaW8iPgogICAgICAgICAgICAgIHtmb3JtYXRQcmVjaW8oYWN0aXZpZGFkLnByZWNpbyl9CiAgICAgICAgICAgIDwvaDI+CiAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT0idGV4dC1zbSB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPnBvciBwZXJzb25hPC9zcGFuPgogICAgICAgICAgPC9kaXY+CgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTQiPgogICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPSJtYi0xIGJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0gdGV4dC10ZXh0byI+CiAgICAgICAgICAgICAgU2VsZWNjaW9uw6EgdW5hIGZlY2hhIGRpc3BvbmlibGUKICAgICAgICAgICAgPC9sYWJlbD4KICAgICAgICAgICAgPHNlbGVjdAogICAgICAgICAgICAgIHZhbHVlPXtmZWNoYVNlbH0KICAgICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldEZlY2hhU2VsKGUudGFyZ2V0LnZhbHVlKX0KICAgICAgICAgICAgICBjbGFzc05hbWU9InctZnVsbCByb3VuZGVkLWxnIGJvcmRlciBib3JkZXItZ3JheS0zMDAgcHgtNCBweS0yIGZvY3VzOmJvcmRlci1wcmltYXJpbyBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy1wcmltYXJpby8yMCIKICAgICAgICAgICAgPgogICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IiI+RWxlZ8OtIHVuYSBmZWNoYeKApjwvb3B0aW9uPgogICAgICAgICAgICAgIHsoYWN0aXZpZGFkLmZlY2hhcyB8fCBbXSkubWFwKChmOiBzdHJpbmcpID0+ICgKICAgICAgICAgICAgICAgIDxvcHRpb24ga2V5PXtmfSB2YWx1ZT17Zn0+CiAgICAgICAgICAgICAgICAgIHtuZXcgRGF0ZShmKS50b0xvY2FsZURhdGVTdHJpbmcoJ2VzLUFSJywgewogICAgICAgICAgICAgICAgICAgIHdlZWtkYXk6ICdsb25nJywKICAgICAgICAgICAgICAgICAgICB5ZWFyOiAnbnVtZXJpYycsCiAgICAgICAgICAgICAgICAgICAgbW9udGg6ICdsb25nJywKICAgICAgICAgICAgICAgICAgICBkYXk6ICdudW1lcmljJywKICAgICAgICAgICAgICAgICAgfSl9CiAgICAgICAgICAgICAgICA8L29wdGlvbj4KICAgICAgICAgICAgICApKX0KICAgICAgICAgICAgPC9zZWxlY3Q+CiAgICAgICAgICA8L2Rpdj4KCiAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgIG9uQ2xpY2s9e3Jlc2VydmFyfQogICAgICAgICAgICBkaXNhYmxlZD17cmVzZXJ2YW5kbyB8fCAhZmVjaGFTZWx9CiAgICAgICAgICAgIGNsYXNzTmFtZT0ibXQtNiB3LWZ1bGwgcm91bmRlZC14bCBiZy1wcmltYXJpbyBweC02IHB5LTMgZm9udC10aXR1bG9zIHRleHQtbGcgZm9udC1ib2xkIHRleHQtd2hpdGUgc2hhZG93LWxnIHRyYW5zaXRpb24gaG92ZXI6YmctcHJpbWFyaW8tZGFyayBkaXNhYmxlZDpvcGFjaXR5LTUwIgogICAgICAgICAgPgogICAgICAgICAgICB7cmVzZXJ2YW5kbyA/ICdQcm9jZXNhbmRv4oCmJyA6IHNlc2lvbiA/ICdSZXNlcnZhciB5IHBhZ2FyJyA6ICdJbmljacOhIHNlc2nDs24gcGFyYSByZXNlcnZhcid9CiAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0ibXQtMiB0ZXh0LWNlbnRlciB0ZXh0LXhzIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+CiAgICAgICAgICAgIFBhZ8OhIGNvbiBNZXJjYWRvUGFnbyDigJQgZMOpYml0bywgY3LDqWRpdG8gbyBlZmVjdGl2bwogICAgICAgICAgPC9wPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICkKfQ==
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+import { formatPrecio, generarCodigoConfirmacion } from '@/lib/utils'
+import { toast } from 'sonner'
+
+export default function DetalleActividadPage() {
+  const { id } = useParams<{ id: string }>()
+  const [actividad, setActividad] = useState<any>(null)
+  const [cargando, setCargando] = useState(true)
+  const [reservando, setReservando] = useState(false)
+  const [sesion, setSesion] = useState<any>(null)
+  const [fechaSel, setFechaSel] = useState('')
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSesion(data.session))
+    supabase
+      .from('actividades')
+      .select('*')
+      .eq('id', id)
+      .single()
+      .then(({ data }) => {
+        setActividad(data)
+        setCargando(false)
+      })
+  }, [id])
+
+  const reservar = async () => {
+    if (!sesion) {
+      toast.error('Iniciá sesión para reservar')
+      return
+    }
+    if (!fechaSel) {
+      toast.error('Seleccioná una fecha')
+      return
+    }
+
+    setReservando(true)
+
+    // 1. Crear reserva en Supabase
+    const codigo = generarCodigoConfirmacion()
+    const { data: reserva, error } = await supabase
+      .from('reservas')
+      .insert({
+        usuario_id: sesion.user.id,
+        actividad_id: id,
+        fecha: fechaSel,
+        estado: 'pendiente',
+        codigo_confirmacion: codigo,
+      })
+      .select()
+      .single()
+
+    if (error) {
+      toast.error('Error al crear la reserva')
+      setReservando(false)
+      return
+    }
+
+    // 2. Crear preferencia de pago en MP
+    toast.loading('Redirigiendo al pago…')
+    const res = await fetch('/api/pagos/crear', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        actividad_id: id,
+        reserva_id: reserva.id,
+        titulo: actividad.titulo,
+        monto: actividad.precio,
+        usuario_id: sesion.user.id,
+      }),
+    })
+
+    const data = await res.json()
+
+    if (data.init_point) {
+      window.location.href = data.init_point
+    } else {
+      toast.error('Error al iniciar el pago')
+    }
+    setReservando(false)
+  }
+
+  if (cargando) return <p className="mt-8 text-center text-texto-secundario">Cargando actividad…</p>
+  if (!actividad) return <p className="mt-8 text-center text-texto-secundario">Actividad no encontrada</p>
+
+  const foto = actividad.fotos?.[0] || 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80'
+
+  return (
+    <div className="mx-auto mt-8 max-w-4xl">
+      <div className="overflow-hidden rounded-xl">
+        <img src={foto} alt={actividad.titulo} className="h-72 w-full object-cover sm:h-96" />
+      </div>
+
+      <div className="mt-6">
+        <span className="rounded-full bg-secundario/20 px-3 py-1 text-sm font-medium text-secundario-dark">
+          {actividad.categoria}
+        </span>
+        <h1 className="mt-3 font-titulos text-3xl font-bold text-texto">
+          {actividad.titulo}
+        </h1>
+        <p className="mt-2 whitespace-pre-line text-texto-secundario">
+          {actividad.descripcion}
+        </p>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-lg bg-superficie p-4 shadow-sm">
+            <p className="text-sm text-texto-secundario">Ubicación</p>
+            <p className="font-medium">
+              {actividad.ubicacion?.direccion}, {actividad.ubicacion?.departamento},{' '}
+              {actividad.ubicacion?.provincia}
+            </p>
+          </div>
+          <div className="rounded-lg bg-superficie p-4 shadow-sm">
+            <p className="text-sm text-texto-secundario">Anfitrión</p>
+            <p className="font-medium">{actividad.anfitrion_nombre}</p>
+          </div>
+        </div>
+
+        {/* Sección de reserva y pago */}
+        <div className="mt-8 rounded-xl bg-superficie p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <h2 className="font-titulos text-2xl font-bold text-primario">
+              {formatPrecio(actividad.precio)}
+            </h2>
+            <span className="text-sm text-texto-secundario">por persona</span>
+          </div>
+
+          <div className="mt-4">
+            <label className="mb-1 block text-sm font-medium text-texto">
+              Seleccioná una fecha disponible
+            </label>
+            <select
+              value={fechaSel}
+              onChange={(e) => setFechaSel(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+            >
+              <option value="">Elegí una fecha…</option>
+              {(actividad.fechas || []).map((f: string) => (
+                <option key={f} value={f}>
+                  {new Date(f).toLocaleDateString('es-AR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            onClick={reservar}
+            disabled={reservando || !fechaSel}
+            className="mt-6 w-full rounded-xl bg-primario px-6 py-3 font-titulos text-lg font-bold text-white shadow-lg transition hover:bg-primario-dark disabled:opacity-50"
+          >
+            {reservando ? 'Procesando…' : sesion ? 'Reservar y pagar' : 'Iniciá sesión para reservar'}
+          </button>
+          <p className="mt-2 text-center text-xs text-texto-secundario">
+            Pagá con MercadoPago — débito, crédito o efectivo
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
