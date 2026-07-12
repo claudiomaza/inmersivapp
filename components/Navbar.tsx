@@ -1,1 +1,132 @@
-J3VzZSBjbGllbnQnCgppbXBvcnQgTGluayBmcm9tICduZXh0L2xpbmsnCmltcG9ydCB7IHVzZVJvdXRlciB9IGZyb20gJ25leHQvbmF2aWdhdGlvbicKaW1wb3J0IHsgc3VwYWJhc2UgfSBmcm9tICdAL2xpYi9zdXBhYmFzZScKaW1wb3J0IHsgdXNlRWZmZWN0LCB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JwppbXBvcnQgeyBjbiB9IGZyb20gJ0AvbGliL3V0aWxzJwoKY29uc3QgZW5sYWNlcyA9IFsKICB7IGhyZWY6ICcvYWN0aXZpZGFkZXMnLCBsYWJlbDogJ0V4cGxvcmFyJyB9LApdCgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBOYXZiYXIoKSB7CiAgY29uc3Qgcm91dGVyID0gdXNlUm91dGVyKCkKICBjb25zdCBbc2Vzc2lvbiwgc2V0U2Vzc2lvbl0gPSB1c2VTdGF0ZTxhbnk+KG51bGwpCiAgY29uc3QgW21lbnVPcGVuLCBzZXRNZW51T3Blbl0gPSB1c2VTdGF0ZShmYWxzZSkKCiAgdXNlRWZmZWN0KCgpID0+IHsKICAgIHN1cGFiYXNlLmF1dGguZ2V0U2Vzc2lvbigpLnRoZW4oKHsgZGF0YSB9KSA9PiBzZXRTZXNzaW9uKGRhdGEuc2Vzc2lvbikpCiAgICBjb25zdCB7IGRhdGE6IHN1YiB9ID0gc3VwYWJhc2UuYXV0aC5vbkF1dGhTdGF0ZUNoYW5nZSgoX2V2ZW50LCBzZXNzaW9uKSA9PgogICAgICBzZXRTZXNzaW9uKHNlc3Npb24pCiAgICApCiAgICByZXR1cm4gKCkgPT4gc3ViPy5zdWJzY3JpcHRpb24udW5zdWJzY3JpYmUoKQogIH0sIFtdKQoKICBjb25zdCBjZXJyYXJTZXNpb24gPSBhc3luYyAoKSA9PiB7CiAgICBhd2FpdCBzdXBhYmFzZS5hdXRoLnNpZ25PdXQoKQogICAgcm91dGVyLnB1c2goJy8nKQogIH0KCiAgcmV0dXJuICgKICAgIDxuYXYgY2xhc3NOYW1lPSJiZy1wcmltYXJpbyB0ZXh0LXdoaXRlIHNoYWRvdy1sZyI+CiAgICAgIDxkaXYgY2xhc3NOYW1lPSJteC1hdXRvIGZsZXggbWF4LXctN3hsIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4gcHgtNCBweS0zIHNtOnB4LTYgbGc6cHgtOCI+CiAgICAgICAgPExpbmsgaHJlZj0iLyIgY2xhc3NOYW1lPSJmb250LXRpdHVsb3MgdGV4dC14bCBmb250LWJvbGQgdHJhY2tpbmctdGlnaHQiPgogICAgICAgICAgSU5NRVJTSVZBUFAKICAgICAgICA8L0xpbms+CgogICAgICAgIHsvKiBEZXNrdG9wICovfQogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJoaWRkZW4gaXRlbXMtY2VudGVyIGdhcC02IHNtOmZsZXgiPgogICAgICAgICAge2VubGFjZXMubWFwKChlKSA9PiAoCiAgICAgICAgICAgIDxMaW5rCiAgICAgICAgICAgICAga2V5PXtlLmhyZWZ9CiAgICAgICAgICAgICAgaHJlZj17ZS5ocmVmfQogICAgICAgICAgICAgIGNsYXNzTmFtZT0idGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXdoaXRlLzgwIHRyYW5zaXRpb24gaG92ZXI6dGV4dC13aGl0ZSIKICAgICAgICAgICAgPgogICAgICAgICAgICAgIHtlLmxhYmVsfQogICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICApKX0KICAgICAgICAgIHtzZXNzaW9uID8gKAogICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT0iZmxleCBpdGVtcy1jZW50ZXIgZ2FwLTQiPgogICAgICAgICAgICAgIDxMaW5rCiAgICAgICAgICAgICAgICBocmVmPSIvcmVzZXJ2YXMiCiAgICAgICAgICAgICAgICBjbGFzc05hbWU9InRleHQtc20gZm9udC1tZWRpdW0gdGV4dC13aGl0ZS84MCB0cmFuc2l0aW9uIGhvdmVyOnRleHQtd2hpdGUiCiAgICAgICAgICAgICAgPgogICAgICAgICAgICAgICAgTWlzIFJlc2VydmFzCiAgICAgICAgICAgICAgPC9MaW5rPgogICAgICAgICAgICAgIDxMaW5rCiAgICAgICAgICAgICAgICBocmVmPSIvcGVyZmlsIgogICAgICAgICAgICAgICAgY2xhc3NOYW1lPSJ0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtd2hpdGUvODAgdHJhbnNpdGlvbiBob3Zlcjp0ZXh0LXdoaXRlIgogICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgIFBlcmZpbAogICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgICA8YnV0dG9uCiAgICAgICAgICAgICAgICBvbkNsaWNrPXtjZXJyYXJTZXNpb259CiAgICAgICAgICAgICAgICBjbGFzc05hbWU9InJvdW5kZWQtbGcgYmctd2hpdGUvMTAgcHgtMyBweS0xLjUgdGV4dC1zbSBmb250LW1lZGl1bSB0cmFuc2l0aW9uIGhvdmVyOmJnLXdoaXRlLzIwIgogICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgIFNhbGlyCiAgICAgICAgICAgICAgPC9idXR0b24+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgKSA6ICgKICAgICAgICAgICAgPExpbmsKICAgICAgICAgICAgICBocmVmPSIvbG9naW4iCiAgICAgICAgICAgICAgY2xhc3NOYW1lPSJyb3VuZGVkLWxnIGJnLXdoaXRlIHB4LTQgcHktMS41IHRleHQtc20gZm9udC1zZW1pYm9sZCB0ZXh0LXByaW1hcmlvIHRyYW5zaXRpb24gaG92ZXI6Ymctd2hpdGUvOTAiCiAgICAgICAgICAgID4KICAgICAgICAgICAgICBJbmdyZXNhcgogICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICApfQogICAgICAgIDwvZGl2PgoKICAgICAgICB7LyogTW9iaWxlIHRvZ2dsZSAqL30KICAgICAgICA8YnV0dG9uCiAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRNZW51T3BlbighbWVudU9wZW4pfQogICAgICAgICAgY2xhc3NOYW1lPSJ0ZXh0LXdoaXRlIHNtOmhpZGRlbiIKICAgICAgICAgIGFyaWEtbGFiZWw9Ik1lbsO6IgogICAgICAgID4KICAgICAgICAgIDxzdmcgY2xhc3NOYW1lPSJoLTYgdy02IiBmaWxsPSJub25lIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHN0cm9rZT0iY3VycmVudENvbG9yIj4KICAgICAgICAgICAge21lbnVPcGVuID8gKAogICAgICAgICAgICAgIDxwYXRoIHN0cm9rZUxpbmVjYXA9InJvdW5kIiBzdHJva2VMaW5lam9pbj0icm91bmQiIHN0cm9rZVdpZHRoPXsyfSBkPSJNNiAxOEwxOCA2TTYgNmwxMiAxMiIgLz4KICAgICAgICAgICAgKSA6ICgKICAgICAgICAgICAgICA8cGF0aCBzdHJva2VMaW5lY2FwPSJyb3VuZCIgc3Ryb2tlTGluZWpvaW49InJvdW5kIiBzdHJva2VXaWR0aD17Mn0gZD0iTTQgNmgxNk00IDEyaDE2TTQgMThoMTYiIC8+CiAgICAgICAgICAgICl9CiAgICAgICAgICA8L3N2Zz4KICAgICAgICA8L2J1dHRvbj4KICAgICAgPC9kaXY+CgogICAgICB7LyogTW9iaWxlIG1lbnUgKi99CiAgICAgIHttZW51T3BlbiAmJiAoCiAgICAgICAgPGRpdiBjbGFzc05hbWU9ImJvcmRlci10IGJvcmRlci13aGl0ZS8xMCBweC00IHBiLTQgcHQtMiBzbTpoaWRkZW4iPgogICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC1jb2wgZ2FwLTIiPgogICAgICAgICAgICB7ZW5sYWNlcy5tYXAoKGUpID0+ICgKICAgICAgICAgICAgICA8TGluawogICAgICAgICAgICAgICAga2V5PXtlLmhyZWZ9CiAgICAgICAgICAgICAgICBocmVmPXtlLmhyZWZ9CiAgICAgICAgICAgICAgICBjbGFzc05hbWU9InJvdW5kZWQgcHgtMyBweS0yIHRleHQtc20gdGV4dC13aGl0ZS84MCB0cmFuc2l0aW9uIGhvdmVyOmJnLXdoaXRlLzEwIgogICAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4gc2V0TWVudU9wZW4oZmFsc2UpfQogICAgICAgICAgICAgID4KICAgICAgICAgICAgICAgIHtlLmxhYmVsfQogICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgKSl9CiAgICAgICAgICAgIHtzZXNzaW9uID8gKAogICAgICAgICAgICAgIDw+CiAgICAgICAgICAgICAgICA8TGluayBocmVmPSIvcmVzZXJ2YXMiIGNsYXNzTmFtZT0icm91bmRlZCBweC0zIHB5LTIgdGV4dC1zbSB0ZXh0LXdoaXRlLzgwIGhvdmVyOmJnLXdoaXRlLzEwIiBvbkNsaWNrPXsoKSA9PiBzZXRNZW51T3BlbihmYWxzZSl9PgogICAgICAgICAgICAgICAgICBNaXMgUmVzZXJ2YXMKICAgICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgICAgIDxMaW5rIGhyZWY9Ii9wZXJmaWwiIGNsYXNzTmFtZT0icm91bmRlZCBweC0zIHB5LTIgdGV4dC1zbSB0ZXh0LXdoaXRlLzgwIGhvdmVyOmJnLXdoaXRlLzEwIiBvbkNsaWNrPXsoKSA9PiBzZXRNZW51T3BlbihmYWxzZSl9PgogICAgICAgICAgICAgICAgICBQZXJmaWwKICAgICAgICAgICAgICAgIDwvTGluaz4KICAgICAgICAgICAgICAgIDxidXR0b24gb25DbGljaz17Y2VycmFyU2VzaW9ufSBjbGFzc05hbWU9InJvdW5kZWQgcHgtMyBweS0yIHRleHQtbGVmdCB0ZXh0LXNtIHRleHQtd2hpdGUvODAgaG92ZXI6Ymctd2hpdGUvMTAiPgogICAgICAgICAgICAgICAgICBDZXJyYXIgc2VzacOzbgogICAgICAgICAgICAgICAgPC9idXR0b24+CiAgICAgICAgICAgICAgPC8+CiAgICAgICAgICAgICkgOiAoCiAgICAgICAgICAgICAgPExpbmsgaHJlZj0iL2xvZ2luIiBjbGFzc05hbWU9InJvdW5kZWQgYmctd2hpdGUgcHgtMyBweS0yIHRleHQtc20gZm9udC1zZW1pYm9sZCB0ZXh0LXByaW1hcmlvIGhvdmVyOmJnLXdoaXRlLzkwIiBvbkNsaWNrPXsoKSA9PiBzZXRNZW51T3BlbihmYWxzZSl9PgogICAgICAgICAgICAgICAgSW5ncmVzYXIKICAgICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICAgICl9CiAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgKX0KICAgIDwvbmF2PgogICkKfQ==
+'use client'
+
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
+
+const enlaces = [
+  { href: '/actividades', label: 'Explorar' },
+]
+
+export default function Navbar() {
+  const router = useRouter()
+  const [session, setSession] = useState<any>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) =>
+      setSession(session)
+    )
+    return () => sub?.subscription.unsubscribe()
+  }, [])
+
+  const cerrarSesion = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }
+
+  return (
+    <nav className="bg-primario text-white shadow-lg">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <Link href="/" className="font-titulos text-xl font-bold tracking-tight">
+          INMERSIVAPP
+        </Link>
+
+        {/* Desktop */}
+        <div className="hidden items-center gap-6 sm:flex">
+          {enlaces.map((e) => (
+            <Link
+              key={e.href}
+              href={e.href}
+              className="text-sm font-medium text-white/80 transition hover:text-white"
+            >
+              {e.label}
+            </Link>
+          ))}
+          {session ? (
+            <div className="flex items-center gap-4">
+              <Link
+                href="/reservas"
+                className="text-sm font-medium text-white/80 transition hover:text-white"
+              >
+                Mis Reservas
+              </Link>
+              <Link
+                href="/perfil"
+                className="text-sm font-medium text-white/80 transition hover:text-white"
+              >
+                Perfil
+              </Link>
+              <button
+                onClick={cerrarSesion}
+                className="rounded-lg bg-white/10 px-3 py-1.5 text-sm font-medium transition hover:bg-white/20"
+              >
+                Salir
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-lg bg-white px-4 py-1.5 text-sm font-semibold text-primario transition hover:bg-white/90"
+            >
+              Ingresar
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="text-white sm:hidden"
+          aria-label="Menú"
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {menuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="border-t border-white/10 px-4 pb-4 pt-2 sm:hidden">
+          <div className="flex flex-col gap-2">
+            {enlaces.map((e) => (
+              <Link
+                key={e.href}
+                href={e.href}
+                className="rounded px-3 py-2 text-sm text-white/80 transition hover:bg-white/10"
+                onClick={() => setMenuOpen(false)}
+              >
+                {e.label}
+              </Link>
+            ))}
+            {session ? (
+              <>
+                <Link href="/reservas" className="rounded px-3 py-2 text-sm text-white/80 hover:bg-white/10" onClick={() => setMenuOpen(false)}>
+                  Mis Reservas
+                </Link>
+                <Link href="/perfil" className="rounded px-3 py-2 text-sm text-white/80 hover:bg-white/10" onClick={() => setMenuOpen(false)}>
+                  Perfil
+                </Link>
+                <button onClick={cerrarSesion} className="rounded px-3 py-2 text-left text-sm text-white/80 hover:bg-white/10">
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <Link href="/login" className="rounded bg-white px-3 py-2 text-sm font-semibold text-primario hover:bg-white/90" onClick={() => setMenuOpen(false)}>
+                Ingresar
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
+    </nav>
+  )
+}
