@@ -1,1 +1,22 @@
-aW1wb3J0IHsgY2xzeCwgdHlwZSBDbGFzc1ZhbHVlIH0gZnJvbSAnY2xzeCcKaW1wb3J0IHsgdHdNZXJnZSB9IGZyb20gJ3RhaWx3aW5kLW1lcmdlJwoKZXhwb3J0IGZ1bmN0aW9uIGNuKC4uLmlucHV0czogQ2xhc3NWYWx1ZVtdKSB7CiAgcmV0dXJuIHR3TWVyZ2UoY2xzeChpbnB1dHMpKQp9CgpleHBvcnQgZnVuY3Rpb24gZ2VuZXJhckNvZGlnb0NvbmZpcm1hY2lvbigpOiBzdHJpbmcgewogIGNvbnN0IGNoYXJzID0gJ0FCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaMDEyMzQ1Njc4OScKICBsZXQgY29kZSA9ICcnCiAgZm9yIChsZXQgaSA9IDA7IGkgPCA4OyBpKyspIHsKICAgIGNvZGUgKz0gY2hhcnMuY2hhckF0KE1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSAqIGNoYXJzLmxlbmd0aCkpCiAgfQogIHJldHVybiBjb2RlCn0KCmV4cG9ydCBmdW5jdGlvbiBmb3JtYXRQcmVjaW8ocHJlY2lvOiBudW1iZXIpOiBzdHJpbmcgewogIHJldHVybiBuZXcgSW50bC5OdW1iZXJGb3JtYXQoJ2VzLUFSJywgewogICAgc3R5bGU6ICdjdXJyZW5jeScsCiAgICBjdXJyZW5jeTogJ0FSUycsCiAgfSkuZm9ybWF0KHByZWNpbykKfQ==
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+export function generarCodigoConfirmacion(): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let code = ''
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return code
+}
+
+export function formatPrecio(precio: number): string {
+  return new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+  }).format(precio)
+}
