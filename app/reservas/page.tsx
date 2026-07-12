@@ -1,1 +1,121 @@
-J3VzZSBjbGllbnQnCgppbXBvcnQgeyB1c2VFZmZlY3QsIHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnCmltcG9ydCB7IHN1cGFiYXNlIH0gZnJvbSAnQC9saWIvc3VwYWJhc2UnCmltcG9ydCB7IGZvcm1hdFByZWNpbyB9IGZyb20gJ0AvbGliL3V0aWxzJwppbXBvcnQgTGluayBmcm9tICduZXh0L2xpbmsnCgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBNaXNSZXNlcnZhc1BhZ2UoKSB7CiAgY29uc3QgW3Jlc2VydmFzLCBzZXRSZXNlcnZhc10gPSB1c2VTdGF0ZTxhbnlbXT4oW10pCiAgY29uc3QgW2NhcmdhbmRvLCBzZXRDYXJnYW5kb10gPSB1c2VTdGF0ZSh0cnVlKQogIGNvbnN0IFtzZXNpb24sIHNldFNlc2lvbl0gPSB1c2VTdGF0ZTxhbnk+KG51bGwpCgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBzdXBhYmFzZS5hdXRoLmdldFNlc3Npb24oKS50aGVuKCh7IGRhdGEgfSkgPT4gewogICAgICBzZXRTZXNpb24oZGF0YS5zZXNzaW9uKQogICAgICBpZiAoZGF0YS5zZXNzaW9uKSB7CiAgICAgICAgY2FyZ2FyUmVzZXJ2YXMoZGF0YS5zZXNzaW9uLnVzZXIuaWQpCiAgICAgIH0gZWxzZSB7CiAgICAgICAgc2V0Q2FyZ2FuZG8oZmFsc2UpCiAgICAgIH0KICAgIH0pCiAgfSwgW10pCgogIGNvbnN0IGNhcmdhclJlc2VydmFzID0gYXN5bmMgKHVzZXJJZDogc3RyaW5nKSA9PiB7CiAgICBjb25zdCB7IGRhdGEgfSA9IGF3YWl0IHN1cGFiYXNlCiAgICAgIC5mcm9tKCdyZXNlcnZhcycpCiAgICAgIC5zZWxlY3QoJyosIGFjdGl2aWRhZGVzKCopJykKICAgICAgLmVxKCd1c3VhcmlvX2lkJywgdXNlcklkKQogICAgICAub3JkZXIoJ2NyZWF0ZWRfYXQnLCB7IGFzY2VuZGluZzogZmFsc2UgfSkKICAgIHNldFJlc2VydmFzKGRhdGEgfHwgW10pCiAgICBzZXRDYXJnYW5kbyhmYWxzZSkKICB9CgogIGNvbnN0IGNhbmNlbGFyID0gYXN5bmMgKGlkOiBzdHJpbmcpID0+IHsKICAgIGF3YWl0IHN1cGFiYXNlLmZyb20oJ3Jlc2VydmFzJykudXBkYXRlKHsgZXN0YWRvOiAnY2FuY2VsYWRhJyB9KS5lcSgnaWQnLCBpZCkKICAgIGNhcmdhclJlc2VydmFzKHNlc2lvbi51c2VyLmlkKQogIH0KCiAgaWYgKCFzZXNpb24pIHsKICAgIHJldHVybiAoCiAgICAgIDxkaXYgY2xhc3NOYW1lPSJtdC0xNiB0ZXh0LWNlbnRlciI+CiAgICAgICAgPGgxIGNsYXNzTmFtZT0iZm9udC10aXR1bG9zIHRleHQtMnhsIGZvbnQtYm9sZCB0ZXh0LXByaW1hcmlvIj5NaXMgcmVzZXJ2YXM8L2gxPgogICAgICAgIDxwIGNsYXNzTmFtZT0ibXQtMiB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPkluaWNpw6Egc2VzacOzbiBwYXJhIHZlciB0dXMgcmVzZXJ2YXMuPC9wPgogICAgICAgIDxMaW5rIGhyZWY9Ii9sb2dpbiIgY2xhc3NOYW1lPSJtdC00IGlubGluZS1ibG9jayByb3VuZGVkLWxnIGJnLXByaW1hcmlvIHB4LTYgcHktMiB0ZXh0LXdoaXRlIj4KICAgICAgICAgIEluZ3Jlc2FyCiAgICAgICAgPC9MaW5rPgogICAgICA8L2Rpdj4KICAgICkKICB9CgogIGlmIChjYXJnYW5kbykgcmV0dXJuIDxwIGNsYXNzTmFtZT0ibXQtOCB0ZXh0LWNlbnRlciB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPkNhcmdhbmRv4oCmPC9wPgoKICByZXR1cm4gKAogICAgPGRpdj4KICAgICAgPGgxIGNsYXNzTmFtZT0iZm9udC10aXR1bG9zIHRleHQtM3hsIGZvbnQtYm9sZCB0ZXh0LXByaW1hcmlvIj5NaXMgcmVzZXJ2YXM8L2gxPgoKICAgICAge3Jlc2VydmFzLmxlbmd0aCA9PT0gMCA/ICgKICAgICAgICA8cCBjbGFzc05hbWU9Im10LTggdGV4dC1jZW50ZXIgdGV4dC10ZXh0by1zZWN1bmRhcmlvIj4KICAgICAgICAgIE5vIHRlbsOpcyByZXNlcnZhcyB0b2RhdsOtYS57JyAnfQogICAgICAgICAgPExpbmsgaHJlZj0iL2FjdGl2aWRhZGVzIiBjbGFzc05hbWU9InRleHQtcHJpbWFyaW8gaG92ZXI6dW5kZXJsaW5lIj4KICAgICAgICAgICAgRXhwbG9yYXIgYWN0aXZpZGFkZXMKICAgICAgICAgIDwvTGluaz4KICAgICAgICA8L3A+CiAgICAgICkgOiAoCiAgICAgICAgPGRpdiBjbGFzc05hbWU9Im10LTggc3BhY2UteS00Ij4KICAgICAgICAgIHtyZXNlcnZhcy5tYXAoKHIpID0+IHsKICAgICAgICAgICAgY29uc3QgYWN0ID0gci5hY3RpdmlkYWRlcwogICAgICAgICAgICBjb25zdCBjb2xvcmVzOiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmc+ID0gewogICAgICAgICAgICAgIHBlbmRpZW50ZTogJ2JnLXllbGxvdy0xMDAgdGV4dC15ZWxsb3ctODAwJywKICAgICAgICAgICAgICBjb25maXJtYWRhOiAnYmctZ3JlZW4tMTAwIHRleHQtZ3JlZW4tODAwJywKICAgICAgICAgICAgICBjYW5jZWxhZGE6ICdiZy1yZWQtMTAwIHRleHQtcmVkLTgwMCcsCiAgICAgICAgICAgICAgY29tcGxldGFkYTogJ2JnLWJsdWUtMTAwIHRleHQtYmx1ZS04MDAnLAogICAgICAgICAgICB9CiAgICAgICAgICAgIHJldHVybiAoCiAgICAgICAgICAgICAgPGRpdiBrZXk9e3IuaWR9IGNsYXNzTmFtZT0icm91bmRlZC14bCBiZy1zdXBlcmZpY2llIHAtNCBzaGFkb3ctc20iPgogICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9ImZsZXggaXRlbXMtc3RhcnQganVzdGlmeS1iZXR3ZWVuIj4KICAgICAgICAgICAgICAgICAgPGRpdj4KICAgICAgICAgICAgICAgICAgICA8aDIgY2xhc3NOYW1lPSJmb250LXRpdHVsb3MgdGV4dC1sZyBmb250LWJvbGQgdGV4dC10ZXh0byI+CiAgICAgICAgICAgICAgICAgICAgICB7YWN0Py50aXR1bG8gfHwgJ0FjdGl2aWRhZCd9CiAgICAgICAgICAgICAgICAgICAgPC9oMj4KICAgICAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9Im10LTEgdGV4dC1zbSB0ZXh0LXRleHRvLXNlY3VuZGFyaW8iPgogICAgICAgICAgICAgICAgICAgICAge25ldyBEYXRlKHIuZmVjaGEpLnRvTG9jYWxlRGF0ZVN0cmluZygnZXMtQVInLCB7CiAgICAgICAgICAgICAgICAgICAgICAgIHdlZWtkYXk6ICdsb25nJywKICAgICAgICAgICAgICAgICAgICAgICAgeWVhcjogJ251bWVyaWMnLAogICAgICAgICAgICAgICAgICAgICAgICBtb250aDogJ2xvbmcnLAogICAgICAgICAgICAgICAgICAgICAgICBkYXk6ICdudW1lcmljJywKICAgICAgICAgICAgICAgICAgICAgIH0pfQogICAgICAgICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICAgICAgICB7ci5jb2RpZ29fY29uZmlybWFjaW9uICYmICgKICAgICAgICAgICAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0ibXQtMSB0ZXh0LXNtIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+CiAgICAgICAgICAgICAgICAgICAgICAgIEPDs2RpZ286IDxzcGFuIGNsYXNzTmFtZT0iZm9udC1tb25vIGZvbnQtYm9sZCB0ZXh0LXByaW1hcmlvIj57ci5jb2RpZ29fY29uZmlybWFjaW9ufTwvc3Bhbj4KICAgICAgICAgICAgICAgICAgICAgIDwvcD4KICAgICAgICAgICAgICAgICAgICApfQogICAgICAgICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9InRleHQtcmlnaHQiPgogICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT17YGlubGluZS1ibG9jayByb3VuZGVkLWZ1bGwgcHgtMyBweS0xIHRleHQteHMgZm9udC1zZW1pYm9sZCAke2NvbG9yZXNbci5lc3RhZG9dIHx8ICdiZy1ncmF5LTEwMCd9YH0+CiAgICAgICAgICAgICAgICAgICAgICB7ci5lc3RhZG99CiAgICAgICAgICAgICAgICAgICAgPC9zcGFuPgogICAgICAgICAgICAgICAgICAgIHthY3Q/LnByZWNpbyAmJiAoCiAgICAgICAgICAgICAgICAgICAgICA8cCBjbGFzc05hbWU9Im10LTEgZm9udC1ib2xkIHRleHQtcHJpbWFyaW8iPgogICAgICAgICAgICAgICAgICAgICAgICB7Zm9ybWF0UHJlY2lvKGFjdC5wcmVjaW8pfQogICAgICAgICAgICAgICAgICAgICAgPC9wPgogICAgICAgICAgICAgICAgICAgICl9CiAgICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICB7ci5lc3RhZG8gPT09ICdwZW5kaWVudGUnICYmICgKICAgICAgICAgICAgICAgICAgPGJ1dHRvbgogICAgICAgICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IGNhbmNlbGFyKHIuaWQpfQogICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT0ibXQtMyB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtZXJyb3IgaG92ZXI6dW5kZXJsaW5lIgogICAgICAgICAgICAgICAgICA+CiAgICAgICAgICAgICAgICAgICAgQ2FuY2VsYXIgcmVzZXJ2YQogICAgICAgICAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICAgICAgICAgICl9CiAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICkKICAgICAgICAgIH0pfQogICAgICAgIDwvZGl2PgogICAgICApfQogICAgPC9kaXY+CiAgKQp9
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import { formatPrecio } from '@/lib/utils'
+import Link from 'next/link'
+
+export default function MisReservasPage() {
+  const [reservas, setReservas] = useState<any[]>([])
+  const [cargando, setCargando] = useState(true)
+  const [sesion, setSesion] = useState<any>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setSesion(data.session)
+      if (data.session) {
+        cargarReservas(data.session.user.id)
+      } else {
+        setCargando(false)
+      }
+    })
+  }, [])
+
+  const cargarReservas = async (userId: string) => {
+    const { data } = await supabase
+      .from('reservas')
+      .select('*, actividades(*)')
+      .eq('usuario_id', userId)
+      .order('created_at', { ascending: false })
+    setReservas(data || [])
+    setCargando(false)
+  }
+
+  const cancelar = async (id: string) => {
+    await supabase.from('reservas').update({ estado: 'cancelada' }).eq('id', id)
+    cargarReservas(sesion.user.id)
+  }
+
+  if (!sesion) {
+    return (
+      <div className="mt-16 text-center">
+        <h1 className="font-titulos text-2xl font-bold text-primario">Mis reservas</h1>
+        <p className="mt-2 text-texto-secundario">Iniciá sesión para ver tus reservas.</p>
+        <Link href="/login" className="mt-4 inline-block rounded-lg bg-primario px-6 py-2 text-white">
+          Ingresar
+        </Link>
+      </div>
+    )
+  }
+
+  if (cargando) return <p className="mt-8 text-center text-texto-secundario">Cargando…</p>
+
+  return (
+    <div>
+      <h1 className="font-titulos text-3xl font-bold text-primario">Mis reservas</h1>
+
+      {reservas.length === 0 ? (
+        <p className="mt-8 text-center text-texto-secundario">
+          No tenés reservas todavía.{' '}
+          <Link href="/actividades" className="text-primario hover:underline">
+            Explorar actividades
+          </Link>
+        </p>
+      ) : (
+        <div className="mt-8 space-y-4">
+          {reservas.map((r) => {
+            const act = r.actividades
+            const colores: Record<string, string> = {
+              pendiente: 'bg-yellow-100 text-yellow-800',
+              confirmada: 'bg-green-100 text-green-800',
+              cancelada: 'bg-red-100 text-red-800',
+              completada: 'bg-blue-100 text-blue-800',
+            }
+            return (
+              <div key={r.id} className="rounded-xl bg-superficie p-4 shadow-sm">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="font-titulos text-lg font-bold text-texto">
+                      {act?.titulo || 'Actividad'}
+                    </h2>
+                    <p className="mt-1 text-sm text-texto-secundario">
+                      {new Date(r.fecha).toLocaleDateString('es-AR', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </p>
+                    {r.codigo_confirmacion && (
+                      <p className="mt-1 text-sm text-texto-secundario">
+                        Código: <span className="font-mono font-bold text-primario">{r.codigo_confirmacion}</span>
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <span className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${colores[r.estado] || 'bg-gray-100'}`}>
+                      {r.estado}
+                    </span>
+                    {act?.precio && (
+                      <p className="mt-1 font-bold text-primario">
+                        {formatPrecio(act.precio)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                {r.estado === 'pendiente' && (
+                  <button
+                    onClick={() => cancelar(r.id)}
+                    className="mt-3 text-sm font-medium text-error hover:underline"
+                  >
+                    Cancelar reserva
+                  </button>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
