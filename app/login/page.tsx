@@ -1,1 +1,93 @@
-J3VzZSBjbGllbnQnCgppbXBvcnQgeyB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JwppbXBvcnQgeyB1c2VSb3V0ZXIgfSBmcm9tICduZXh0L25hdmlnYXRpb24nCmltcG9ydCB7IHN1cGFiYXNlIH0gZnJvbSAnQC9saWIvc3VwYWJhc2UnCgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBMb2dpblBhZ2UoKSB7CiAgY29uc3Qgcm91dGVyID0gdXNlUm91dGVyKCkKICBjb25zdCBbZW1haWwsIHNldEVtYWlsXSA9IHVzZVN0YXRlKCcnKQogIGNvbnN0IFtwYXNzd29yZCwgc2V0UGFzc3dvcmRdID0gdXNlU3RhdGUoJycpCiAgY29uc3QgW2Vycm9yLCBzZXRFcnJvcl0gPSB1c2VTdGF0ZSgnJykKICBjb25zdCBbY2FyZ2FuZG8sIHNldENhcmdhbmRvXSA9IHVzZVN0YXRlKGZhbHNlKQoKICBjb25zdCBpbmljaWFyU2VzaW9uID0gYXN5bmMgKGU6IFJlYWN0LkZvcm1FdmVudCkgPT4gewogICAgZS5wcmV2ZW50RGVmYXVsdCgpCiAgICBzZXRDYXJnYW5kbyh0cnVlKQogICAgc2V0RXJyb3IoJycpCgogICAgY29uc3QgeyBlcnJvcjogZXJyIH0gPSBhd2FpdCBzdXBhYmFzZS5hdXRoLnNpZ25JbldpdGhQYXNzd29yZCh7CiAgICAgIGVtYWlsLAogICAgICBwYXNzd29yZCwKICAgIH0pCgogICAgaWYgKGVycikgewogICAgICBzZXRFcnJvcihlcnIubWVzc2FnZSkKICAgICAgc2V0Q2FyZ2FuZG8oZmFsc2UpCiAgICAgIHJldHVybgogICAgfQogICAgcm91dGVyLnB1c2goJy9hY3RpdmlkYWRlcycpCiAgICByb3V0ZXIucmVmcmVzaCgpCiAgfQoKICByZXR1cm4gKAogICAgPGRpdiBjbGFzc05hbWU9Im14LWF1dG8gbXQtMTYgbWF4LXctbWQiPgogICAgICA8aDEgY2xhc3NOYW1lPSJmb250LXRpdHVsb3MgdGV4dC0zeGwgZm9udC1ib2xkIHRleHQtcHJpbWFyaW8iPgogICAgICAgIEluaWNpYXIgc2VzacOzbgogICAgICA8L2gxPgogICAgICA8cCBjbGFzc05hbWU9Im10LTIgdGV4dC10ZXh0by1zZWN1bmRhcmlvIj4KICAgICAgICBJbmdyZXPDoSBjb24gdHUgY3VlbnRhIHBhcmEgcmVzZXJ2YXIgYWN0aXZpZGFkZXMuCiAgICAgIDwvcD4KCiAgICAgIDxmb3JtIG9uU3VibWl0PXtpbmljaWFyU2VzaW9ufSBjbGFzc05hbWU9Im10LTggZmxleCBmbGV4LWNvbCBnYXAtNCI+CiAgICAgICAgPGRpdj4KICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9Im1iLTEgYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXRleHRvIj4KICAgICAgICAgICAgRW1haWwKICAgICAgICAgIDwvbGFiZWw+CiAgICAgICAgICA8aW5wdXQKICAgICAgICAgICAgdHlwZT0iZW1haWwiCiAgICAgICAgICAgIHJlcXVpcmVkCiAgICAgICAgICAgIHZhbHVlPXtlbWFpbH0KICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRFbWFpbChlLnRhcmdldC52YWx1ZSl9CiAgICAgICAgICAgIGNsYXNzTmFtZT0idy1mdWxsIHJvdW5kZWQtbGcgYm9yZGVyIGJvcmRlci1ncmF5LTMwMCBweC00IHB5LTIgZm9jdXM6Ym9yZGVyLXByaW1hcmlvIGZvY3VzOnJpbmctMiBmb2N1czpyaW5nLXByaW1hcmlvLzIwIgogICAgICAgICAgICBwbGFjZWhvbGRlcj0idHVAZW1haWwuY29tIgogICAgICAgICAgLz4KICAgICAgICA8L2Rpdj4KICAgICAgICA8ZGl2PgogICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT0ibWItMSBibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtdGV4dG8iPgogICAgICAgICAgICBDb250cmFzZcOxYQogICAgICAgICAgPC9sYWJlbD4KICAgICAgICAgIDxpbnB1dAogICAgICAgICAgICB0eXBlPSJwYXNzd29yZCIKICAgICAgICAgICAgcmVxdWlyZWQKICAgICAgICAgICAgdmFsdWU9e3Bhc3N3b3JkfQogICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldFBhc3N3b3JkKGUudGFyZ2V0LnZhbHVlKX0KICAgICAgICAgICAgY2xhc3NOYW1lPSJ3LWZ1bGwgcm91bmRlZC1sZyBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHB4LTQgcHktMiBmb2N1czpib3JkZXItcHJpbWFyaW8gZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctcHJpbWFyaW8vMjAiCiAgICAgICAgICAgIHBsYWNlaG9sZGVyPSLigKLigKLigKLigKLigKLigKLigKLigKIiCiAgICAgICAgICAvPgogICAgICAgIDwvZGl2PgoKICAgICAgICB7ZXJyb3IgJiYgKAogICAgICAgICAgPHAgY2xhc3NOYW1lPSJyb3VuZGVkLWxnIGJnLXJlZC01MCBweC00IHB5LTIgdGV4dC1zbSB0ZXh0LWVycm9yIj4KICAgICAgICAgICAge2Vycm9yfQogICAgICAgICAgPC9wPgogICAgICAgICl9CgogICAgICAgIDxidXR0b24KICAgICAgICAgIHR5cGU9InN1Ym1pdCIKICAgICAgICAgIGRpc2FibGVkPXtjYXJnYW5kb30KICAgICAgICAgIGNsYXNzTmFtZT0icm91bmRlZC1sZyBiZy1wcmltYXJpbyBweC00IHB5LTIuNSBmb250LXNlbWlib2xkIHRleHQtd2hpdGUgdHJhbnNpdGlvbiBob3ZlcjpiZy1wcmltYXJpby1kYXJrIGRpc2FibGVkOm9wYWNpdHktNTAiCiAgICAgICAgPgogICAgICAgICAge2NhcmdhbmRvID8gJ0luZ3Jlc2FuZG/igKYnIDogJ0luZ3Jlc2FyJ30KICAgICAgICA8L2J1dHRvbj4KCiAgICAgICAgPHAgY2xhc3NOYW1lPSJ0ZXh0LWNlbnRlciB0ZXh0LXNtIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+CiAgICAgICAgICDCv05vIHRlbsOpcyBjdWVudGE/eycgJ30KICAgICAgICAgIDxhIGhyZWY9Ii9yZWdpc3RybyIgY2xhc3NOYW1lPSJmb250LW1lZGl1bSB0ZXh0LXByaW1hcmlvIGhvdmVyOnVuZGVybGluZSI+CiAgICAgICAgICAgIFJlZ2lzdHJhdGUKICAgICAgICAgIDwvYT4KICAgICAgICA8L3A+CiAgICAgIDwvZm9ybT4KICAgIDwvZGl2PgogICkKfQ==
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
+
+export default function LoginPage() {
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [cargando, setCargando] = useState(false)
+
+  const iniciarSesion = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setCargando(true)
+    setError('')
+
+    const { error: err } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (err) {
+      setError(err.message)
+      setCargando(false)
+      return
+    }
+    router.push('/actividades')
+    router.refresh()
+  }
+
+  return (
+    <div className="mx-auto mt-16 max-w-md">
+      <h1 className="font-titulos text-3xl font-bold text-primario">
+        Iniciar sesión
+      </h1>
+      <p className="mt-2 text-texto-secundario">
+        Ingresá con tu cuenta para reservar actividades.
+      </p>
+
+      <form onSubmit={iniciarSesion} className="mt-8 flex flex-col gap-4">
+        <div>
+          <label className="mb-1 block text-sm font-medium text-texto">
+            Email
+          </label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+            placeholder="tu@email.com"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium text-texto">
+            Contraseña
+          </label>
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+            placeholder="••••••••"
+          />
+        </div>
+
+        {error && (
+          <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-error">
+            {error}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={cargando}
+          className="rounded-lg bg-primario px-4 py-2.5 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+        >
+          {cargando ? 'Ingresando…' : 'Ingresar'}
+        </button>
+
+        <p className="text-center text-sm text-texto-secundario">
+          ¿No tenés cuenta?{' '}
+          <a href="/registro" className="font-medium text-primario hover:underline">
+            Registrate
+          </a>
+        </p>
+      </form>
+    </div>
+  )
+}
