@@ -1,1 +1,119 @@
-Ly8g4pSA4pSA4pSAIFRpcG9zIGNvbXBhcnRpZG9zIGRlIElubWVyc2l2YXBwIOKUgOKUgOKUgAoKZXhwb3J0IHR5cGUgUm9sID0gJ3BhcnRpY2lwYW50ZScgfCAnYW5maXRyaW9uJyB8ICdwYXRyb2NpbmFkb3InCgpleHBvcnQgaW50ZXJmYWNlIFBlcmZpbCB7CiAgaWQ6IHN0cmluZwogIHVzZXJuYW1lOiBzdHJpbmcKICBub21icmU6IHN0cmluZwogIGFwZWxsaWRvOiBzdHJpbmcKICBlbWFpbDogc3RyaW5nCiAgdGVsZWZvbm86IHN0cmluZwogIGF2YXRhcl91cmw/OiBzdHJpbmcKICBpbnRlcmVzZXM6IHN0cmluZ1tdCiAgcm9sZXM6IFJvbFtdCiAgY3JlYXRlZF9hdDogc3RyaW5nCn0KCmV4cG9ydCB0eXBlIENhdGVnb3JpYSA9CiAgfCAnQXJ0ZScKICB8ICdUZWNub2xvZ8OtYScKICB8ICdEZXBvcnRlcycKICB8ICdDb2NpbmEnCiAgfCAnTmF0dXJhbGV6YScKICB8ICdNw7pzaWNhJwogIHwgJ0ZvdG9ncmFmw61hJwoKZXhwb3J0IGludGVyZmFjZSBBY3RpdmlkYWQgewogIGlkOiBzdHJpbmcKICB0aXR1bG86IHN0cmluZwogIGRlc2NyaXBjaW9uOiBzdHJpbmcKICBwcmVjaW86IG51bWJlcgogIGNhdGVnb3JpYTogQ2F0ZWdvcmlhCiAgZm90b3M6IHN0cmluZ1tdCiAgdWJpY2FjaW9uOiBVYmljYWNpb24KICBhbmZpdHJpb25faWQ6IHN0cmluZwogIGFuZml0cmlvbl9ub21icmU6IHN0cmluZwogIGhvcmFyaW9zOiBIb3JhcmlvU2VtYW5hbAogIGZlY2hhczogc3RyaW5nW10gLy8gSVNPIGRhdGVzCiAgYWN0aXZhOiBib29sZWFuCiAgY3JlYXRlZF9hdDogc3RyaW5nCn0KCmV4cG9ydCBpbnRlcmZhY2UgVWJpY2FjaW9uIHsKICBwcm92aW5jaWE6IHN0cmluZwogIGRlcGFydGFtZW50bzogc3RyaW5nCiAgZGlyZWNjaW9uOiBzdHJpbmcKfQoKZXhwb3J0IGludGVyZmFjZSBIb3JhcmlvU2VtYW5hbCB7CiAgW2RpYTogc3RyaW5nXTogeyBhY3Rpdm86IGJvb2xlYW47IGluaWNpbzogc3RyaW5nOyBmaW46IHN0cmluZyB9Cn0KCmV4cG9ydCB0eXBlIEVzdGFkb1Jlc2VydmEgPSAncGVuZGllbnRlJyB8ICdjb25maXJtYWRhJyB8ICdjYW5jZWxhZGEnIHwgJ2NvbXBsZXRhZGEnCgpleHBvcnQgaW50ZXJmYWNlIFJlc2VydmEgewogIGlkOiBzdHJpbmcKICB1c3VhcmlvX2lkOiBzdHJpbmcKICBhY3RpdmlkYWRfaWQ6IHN0cmluZwogIGZlY2hhOiBzdHJpbmcgLy8gSVNPCiAgZXN0YWRvOiBFc3RhZG9SZXNlcnZhCiAgY29kaWdvX2NvbmZpcm1hY2lvbj86IHN0cmluZwogIGNyZWF0ZWRfYXQ6IHN0cmluZwp9CgpleHBvcnQgdHlwZSBFc3RhZG9QYWdvID0gJ3BlbmRpZW50ZScgfCAnYXByb2JhZG8nIHwgJ3JlY2hhemFkbycgfCAncmVlbWJvbHNhZG8nCgpleHBvcnQgaW50ZXJmYWNlIFBhZ28gewogIGlkOiBzdHJpbmcKICByZXNlcnZhX2lkOiBzdHJpbmcKICBtb250bzogbnVtYmVyCiAgbW9uZWRhOiBzdHJpbmcKICBtZXRvZG86IHN0cmluZwogIGVzdGFkbzogRXN0YWRvUGFnbwogIG1wX3ByZWZlcmVuY2VfaWQ/OiBzdHJpbmcKICBtcF9wYXltZW50X2lkPzogc3RyaW5nCiAgY3JlYXRlZF9hdDogc3RyaW5nCn0KCmV4cG9ydCBpbnRlcmZhY2UgUmVzZW5hIHsKICBpZDogc3RyaW5nCiAgdXN1YXJpb19pZDogc3RyaW5nCiAgYWN0aXZpZGFkX2lkOiBzdHJpbmcKICBwdW50dWFjaW9uOiBudW1iZXIgLy8gMS01CiAgY29tZW50YXJpbzogc3RyaW5nCiAgY3JlYXRlZF9hdDogc3RyaW5nCn0KCmV4cG9ydCBpbnRlcmZhY2UgQ3Vwb24gewogIGlkOiBzdHJpbmcKICBhbmZpdHJpb25faWQ6IHN0cmluZwogIGNvZGlnbzogc3RyaW5nCiAgZGVzY3VlbnRvX3BvcmNlbnRhamU6IG51bWJlcgogIHVzb3NfbWF4aW1vczogbnVtYmVyCiAgdXNvc19hY3R1YWxlczogbnVtYmVyCiAgYWN0aXZvOiBib29sZWFuCiAgdmVuY2U6IHN0cmluZwp9CgpleHBvcnQgaW50ZXJmYWNlIEFudW5jaW8gewogIGlkOiBzdHJpbmcKICBwYXRyb2NpbmFkb3JfaWQ6IHN0cmluZwogIHRpdHVsbzogc3RyaW5nCiAgaW1hZ2VuX3VybDogc3RyaW5nCiAgdXJsX2Rlc3Rpbm86IHN0cmluZwogIHNlZ21lbnRvPzogQ2F0ZWdvcmlhW10KICBpbXByZXNpb25lczogbnVtYmVyCiAgY2xpY2tzOiBudW1iZXIKICBhY3Rpdm86IGJvb2xlYW4KfQoKZXhwb3J0IGludGVyZmFjZSBNZW5zYWplIHsKICBpZDogc3RyaW5nCiAgZW1pc29yX2lkOiBzdHJpbmcKICByZWNlcHRvcl9pZDogc3RyaW5nCiAgYWN0aXZpZGFkX2lkPzogc3RyaW5nCiAgY29udGVuaWRvOiBzdHJpbmcKICBsZWlkbzogYm9vbGVhbgogIGNyZWF0ZWRfYXQ6IHN0cmluZwp9
+// ─── Tipos compartidos de Inmersivapp ───
+
+export type Rol = 'participante' | 'anfitrion' | 'patrocinador'
+
+export interface Perfil {
+  id: string
+  username: string
+  nombre: string
+  apellido: string
+  email: string
+  telefono: string
+  avatar_url?: string
+  intereses: string[]
+  roles: Rol[]
+  created_at: string
+}
+
+export type Categoria =
+  | 'Arte'
+  | 'Tecnología'
+  | 'Deportes'
+  | 'Cocina'
+  | 'Naturaleza'
+  | 'Música'
+  | 'Fotografía'
+
+export interface Actividad {
+  id: string
+  titulo: string
+  descripcion: string
+  precio: number
+  categoria: Categoria
+  fotos: string[]
+  ubicacion: Ubicacion
+  anfitrion_id: string
+  anfitrion_nombre: string
+  horarios: HorarioSemanal
+  fechas: string[] // ISO dates
+  activa: boolean
+  created_at: string
+}
+
+export interface Ubicacion {
+  provincia: string
+  departamento: string
+  direccion: string
+}
+
+export interface HorarioSemanal {
+  [dia: string]: { activo: boolean; inicio: string; fin: string }
+}
+
+export type EstadoReserva = 'pendiente' | 'confirmada' | 'cancelada' | 'completada'
+
+export interface Reserva {
+  id: string
+  usuario_id: string
+  actividad_id: string
+  fecha: string // ISO
+  estado: EstadoReserva
+  codigo_confirmacion?: string
+  created_at: string
+}
+
+export type EstadoPago = 'pendiente' | 'aprobado' | 'rechazado' | 'reembolsado'
+
+export interface Pago {
+  id: string
+  reserva_id: string
+  monto: number
+  moneda: string
+  metodo: string
+  estado: EstadoPago
+  mp_preference_id?: string
+  mp_payment_id?: string
+  created_at: string
+}
+
+export interface Resena {
+  id: string
+  usuario_id: string
+  actividad_id: string
+  puntuacion: number // 1-5
+  comentario: string
+  created_at: string
+}
+
+export interface Cupon {
+  id: string
+  anfitrion_id: string
+  codigo: string
+  descuento_porcentaje: number
+  usos_maximos: number
+  usos_actuales: number
+  activo: boolean
+  vence: string
+}
+
+export interface Anuncio {
+  id: string
+  patrocinador_id: string
+  titulo: string
+  imagen_url: string
+  url_destino: string
+  segmento?: Categoria[]
+  impresiones: number
+  clicks: number
+  activo: boolean
+}
+
+export interface Mensaje {
+  id: string
+  emisor_id: string
+  receptor_id: string
+  actividad_id?: string
+  contenido: string
+  leido: boolean
+  created_at: string
+}
