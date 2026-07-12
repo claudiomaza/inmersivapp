@@ -1,1 +1,40 @@
-aW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJwppbXBvcnQgeyBmb3JtYXRQcmVjaW8gfSBmcm9tICdAL2xpYi91dGlscycKCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIENhcmRBY3RpdmlkYWQoeyBhY3RpdmlkYWQgfTogeyBhY3RpdmlkYWQ6IGFueSB9KSB7CiAgY29uc3QgZm90byA9IGFjdGl2aWRhZC5mb3Rvcz8uWzBdIHx8ICdodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tMTUwMjA4NjIyMzUwMS03ZWE2ZWNkNzkzNjg/YXV0bz1mb3JtYXQmZml0PWNyb3Amdz04MDAmcT04MCcKCiAgcmV0dXJuICgKICAgIDxMaW5rCiAgICAgIGhyZWY9e2AvYWN0aXZpZGFkZXMvJHthY3RpdmlkYWQuaWR9YH0KICAgICAgY2xhc3NOYW1lPSJncm91cCByb3VuZGVkLXhsIGJnLXN1cGVyZmljaWUgc2hhZG93LXNtIHRyYW5zaXRpb24gaG92ZXI6c2hhZG93LW1kIgogICAgPgogICAgICA8ZGl2IGNsYXNzTmFtZT0iYXNwZWN0LVsxNi85XSBvdmVyZmxvdy1oaWRkZW4gcm91bmRlZC10LXhsIj4KICAgICAgICA8aW1nCiAgICAgICAgICBzcmM9e2ZvdG99CiAgICAgICAgICBhbHQ9e2FjdGl2aWRhZC50aXR1bG99CiAgICAgICAgICBjbGFzc05hbWU9ImgtZnVsbCB3LWZ1bGwgb2JqZWN0LWNvdmVyIHRyYW5zaXRpb24gZHVyYXRpb24tMzAwIGdyb3VwLWhvdmVyOnNjYWxlLTEwNSIKICAgICAgICAvPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzc05hbWU9InAtNCI+CiAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJyb3VuZGVkLWZ1bGwgYmctc2VjdW5kYXJpby8yMCBweC0zIHB5LTEgdGV4dC14cyBmb250LW1lZGl1bSB0ZXh0LXNlY3VuZGFyaW8tZGFyayI+CiAgICAgICAgICB7YWN0aXZpZGFkLmNhdGVnb3JpYX0KICAgICAgICA8L3NwYW4+CiAgICAgICAgPGgyIGNsYXNzTmFtZT0ibXQtMiBmb250LXRpdHVsb3MgdGV4dC1sZyBmb250LWJvbGQgdGV4dC10ZXh0byBncm91cC1ob3Zlcjp0ZXh0LXByaW1hcmlvIj4KICAgICAgICAgIHthY3RpdmlkYWQudGl0dWxvfQogICAgICAgIDwvaDI+CiAgICAgICAgPHAgY2xhc3NOYW1lPSJtdC0xIGxpbmUtY2xhbXAtMiB0ZXh0LXNtIHRleHQtdGV4dG8tc2VjdW5kYXJpbyI+CiAgICAgICAgICB7YWN0aXZpZGFkLmRlc2NyaXBjaW9ufQogICAgICAgIDwvcD4KICAgICAgICA8ZGl2IGNsYXNzTmFtZT0ibXQtMyBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4iPgogICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJmb250LXRpdHVsb3MgdGV4dC14bCBmb250LWJvbGQgdGV4dC1wcmltYXJpbyI+CiAgICAgICAgICAgIHtmb3JtYXRQcmVjaW8oYWN0aXZpZGFkLnByZWNpbyl9CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9InRleHQteHMgdGV4dC10ZXh0by1zZWN1bmRhcmlvIj4KICAgICAgICAgICAge2FjdGl2aWRhZC51YmljYWNpb24/LmRlcGFydGFtZW50byB8fCBhY3RpdmlkYWQudWJpY2FjaW9uPy5wcm92aW5jaWF9CiAgICAgICAgICA8L3NwYW4+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgogICAgPC9MaW5rPgogICkKfQ==
+import Link from 'next/link'
+import { formatPrecio } from '@/lib/utils'
+
+export default function CardActividad({ actividad }: { actividad: any }) {
+  const foto = actividad.fotos?.[0] || 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80'
+
+  return (
+    <Link
+      href={`/actividades/${actividad.id}`}
+      className="group rounded-xl bg-superficie shadow-sm transition hover:shadow-md"
+    >
+      <div className="aspect-[16/9] overflow-hidden rounded-t-xl">
+        <img
+          src={foto}
+          alt={actividad.titulo}
+          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+        />
+      </div>
+      <div className="p-4">
+        <span className="rounded-full bg-secundario/20 px-3 py-1 text-xs font-medium text-secundario-dark">
+          {actividad.categoria}
+        </span>
+        <h2 className="mt-2 font-titulos text-lg font-bold text-texto group-hover:text-primario">
+          {actividad.titulo}
+        </h2>
+        <p className="mt-1 line-clamp-2 text-sm text-texto-secundario">
+          {actividad.descripcion}
+        </p>
+        <div className="mt-3 flex items-center justify-between">
+          <span className="font-titulos text-xl font-bold text-primario">
+            {formatPrecio(actividad.precio)}
+          </span>
+          <span className="text-xs text-texto-secundario">
+            {actividad.ubicacion?.departamento || actividad.ubicacion?.provincia}
+          </span>
+        </div>
+      </div>
+    </Link>
+  )
+}
