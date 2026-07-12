@@ -1,1 +1,50 @@
-aW1wb3J0IHsgTWVyY2Fkb1BhZ29Db25maWcsIFByZWZlcmVuY2UsIFBheW1lbnQgfSBmcm9tICdtZXJjYWRvcGFnbycKCmNvbnN0IG1wQ2xpZW50ID0gbmV3IE1lcmNhZG9QYWdvQ29uZmlnKHsKICBhY2Nlc3NUb2tlbjogcHJvY2Vzcy5lbnYuTVBfQUNDRVNTX1RPS0VOISwKfSkKCmV4cG9ydCBpbnRlcmZhY2UgQ3JlYXJQcmVmZXJlbmNpYVBhcmFtcyB7CiAgdGl0dWxvOiBzdHJpbmcKICBtb250bzogbnVtYmVyCiAgY2FudGlkYWQ6IG51bWJlcgogIHJlc2VydmFJZDogc3RyaW5nCiAgdXN1YXJpb0VtYWlsOiBzdHJpbmcKICB1c3VhcmlvTm9tYnJlOiBzdHJpbmcKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGNyZWFyUHJlZmVyZW5jaWFQYWdvKHBhcmFtczogQ3JlYXJQcmVmZXJlbmNpYVBhcmFtcykgewogIGNvbnN0IHByZWZlcmVuY2UgPSBuZXcgUHJlZmVyZW5jZShtcENsaWVudCkKICBjb25zdCByZXN1bHQgPSBhd2FpdCBwcmVmZXJlbmNlLmNyZWF0ZSh7CiAgICBib2R5OiB7CiAgICAgIGl0ZW1zOiBbCiAgICAgICAgewogICAgICAgICAgdGl0bGU6IHBhcmFtcy50aXR1bG8sCiAgICAgICAgICBxdWFudGl0eTogcGFyYW1zLmNhbnRpZGFkLAogICAgICAgICAgdW5pdF9wcmljZTogcGFyYW1zLm1vbnRvLAogICAgICAgICAgY3VycmVuY3lfaWQ6ICdBUlMnLAogICAgICAgIH0sCiAgICAgIF0sCiAgICAgIHBheWVyOiB7CiAgICAgICAgZW1haWw6IHBhcmFtcy51c3VhcmlvRW1haWwsCiAgICAgICAgbmFtZTogcGFyYW1zLnVzdWFyaW9Ob21icmUsCiAgICAgIH0sCiAgICAgIGJhY2tfdXJsczogewogICAgICAgIHN1Y2Nlc3M6IGAke3Byb2Nlc3MuZW52Lk5FWFRfUFVCTElDX1VSTH0vcmVzZXJ2YXMvZXhpdG9gLAogICAgICAgIGZhaWx1cmU6IGAke3Byb2Nlc3MuZW52Lk5FWFRfUFVCTElDX1VSTH0vcmVzZXJ2YXMvZXJyb3JgLAogICAgICAgIHBlbmRpbmc6IGAke3Byb2Nlc3MuZW52Lk5FWFRfUFVCTElDX1VSTH0vcmVzZXJ2YXMvcGVuZGllbnRlYCwKICAgICAgfSwKICAgICAgYXV0b19yZXR1cm46ICdhcHByb3ZlZCcsCiAgICAgIG5vdGlmaWNhdGlvbl91cmw6IGAke3Byb2Nlc3MuZW52Lk5FWFRfUFVCTElDX1VSTH0vYXBpL3dlYmhvb2svbWVyY2Fkb3BhZ29gLAogICAgICBtZXRhZGF0YTogewogICAgICAgIHJlc2VydmFfaWQ6IHBhcmFtcy5yZXNlcnZhSWQsCiAgICAgIH0sCiAgICB9LAogIH0pCiAgcmV0dXJuIHJlc3VsdAp9CgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gb2J0ZW5lclBhZ28obXBQYXltZW50SWQ6IG51bWJlcikgewogIGNvbnN0IHBheW1lbnQgPSBuZXcgUGF5bWVudChtcENsaWVudCkKICByZXR1cm4gcGF5bWVudC5nZXQoeyBpZDogbXBQYXltZW50SWQgfSkKfQ==
+import { MercadoPagoConfig, Preference, Payment } from 'mercadopago'
+
+const mpClient = new MercadoPagoConfig({
+  accessToken: process.env.MP_ACCESS_TOKEN!,
+})
+
+export interface CrearPreferenciaParams {
+  titulo: string
+  monto: number
+  cantidad: number
+  reservaId: string
+  usuarioEmail: string
+  usuarioNombre: string
+}
+
+export async function crearPreferenciaPago(params: CrearPreferenciaParams) {
+  const preference = new Preference(mpClient)
+  const result = await preference.create({
+    body: {
+      items: [
+        {
+          title: params.titulo,
+          quantity: params.cantidad,
+          unit_price: params.monto,
+          currency_id: 'ARS',
+        },
+      ],
+      payer: {
+        email: params.usuarioEmail,
+        name: params.usuarioNombre,
+      },
+      back_urls: {
+        success: `${process.env.NEXT_PUBLIC_URL}/reservas/exito`,
+        failure: `${process.env.NEXT_PUBLIC_URL}/reservas/error`,
+        pending: `${process.env.NEXT_PUBLIC_URL}/reservas/pendiente`,
+      },
+      auto_return: 'approved',
+      notification_url: `${process.env.NEXT_PUBLIC_URL}/api/webhook/mercadopago`,
+      metadata: {
+        reserva_id: params.reservaId,
+      },
+    },
+  })
+  return result
+}
+
+export async function obtenerPago(mpPaymentId: number) {
+  const payment = new Payment(mpClient)
+  return payment.get({ id: mpPaymentId })
+}
