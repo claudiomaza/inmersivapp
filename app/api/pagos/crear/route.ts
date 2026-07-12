@@ -1,1 +1,48 @@
-aW1wb3J0IHsgTmV4dFJlc3BvbnNlIH0gZnJvbSAnbmV4dC9zZXJ2ZXInCmltcG9ydCB7IGNyZWF0ZUNsaWVudCB9IGZyb20gJ0AvbGliL3N1cGFiYXNlLXNlcnZlcicKaW1wb3J0IHsgY3JlYXJQcmVmZXJlbmNpYVBhZ28gfSBmcm9tICdAL2xpYi9tZXJjYWRvcGFnbycKCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBQT1NUKHJlcTogUmVxdWVzdCkgewogIHRyeSB7CiAgICBjb25zdCBib2R5ID0gYXdhaXQgcmVxLmpzb24oKQogICAgY29uc3QgeyBhY3RpdmlkYWRfaWQsIHJlc2VydmFfaWQsIHRpdHVsbywgbW9udG8sIHVzdWFyaW9faWQgfSA9IGJvZHkKCiAgICAvLyBWZXJpZmljYXIgc2VzacOzbgogICAgY29uc3Qgc3VwYWJhc2UgPSBhd2FpdCBjcmVhdGVDbGllbnQoKQogICAgY29uc3QgeyBkYXRhOiB7IHVzZXIgfSB9ID0gYXdhaXQgc3VwYWJhc2UuYXV0aC5nZXRVc2VyKCkKICAgIGlmICghdXNlciB8fCB1c2VyLmlkICE9PSB1c3VhcmlvX2lkKSB7CiAgICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IGVycm9yOiAnTm8gYXV0b3JpemFkbycgfSwgeyBzdGF0dXM6IDQwMSB9KQogICAgfQoKICAgIC8vIENyZWFyIHByZWZlcmVuY2lhIGVuIE1lcmNhZG9QYWdvCiAgICBjb25zdCBwcmVmID0gYXdhaXQgY3JlYXJQcmVmZXJlbmNpYVBhZ28oewogICAgICB0aXR1bG8sCiAgICAgIG1vbnRvLAogICAgICBjYW50aWRhZDogMSwKICAgICAgcmVzZXJ2YUlkOiByZXNlcnZhX2lkLAogICAgICB1c3VhcmlvRW1haWw6IHVzZXIuZW1haWwhLAogICAgICB1c3VhcmlvTm9tYnJlOiB1c2VyLnVzZXJfbWV0YWRhdGE/Lm5vbWJyZSB8fCAnVXN1YXJpbycsCiAgICB9KQoKICAgIC8vIEd1YXJkYXIgZWwgcmVnaXN0cm8gZGUgcGFnbwogICAgYXdhaXQgc3VwYWJhc2UuZnJvbSgncGFnb3MnKS5pbnNlcnQoewogICAgICByZXNlcnZhX2lkLAogICAgICBtb250bywKICAgICAgbW9uZWRhOiAnQVJTJywKICAgICAgbWV0b2RvOiAnbWVyY2Fkb3BhZ28nLAogICAgICBlc3RhZG86ICdwZW5kaWVudGUnLAogICAgICBtcF9wcmVmZXJlbmNlX2lkOiBwcmVmLmlkLAogICAgfSkKCiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oewogICAgICBpbml0X3BvaW50OiBwcmVmLmluaXRfcG9pbnQsCiAgICAgIHByZWZlcmVuY2VfaWQ6IHByZWYuaWQsCiAgICB9KQogIH0gY2F0Y2ggKGVycm9yKSB7CiAgICBjb25zb2xlLmVycm9yKCdFcnJvciBhbCBjcmVhciBwYWdvOicsIGVycm9yKQogICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKAogICAgICB7IGVycm9yOiAnRXJyb3IgYWwgcHJvY2VzYXIgZWwgcGFnbycgfSwKICAgICAgeyBzdGF0dXM6IDUwMCB9CiAgICApCiAgfQp9
+import { NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase-server'
+import { crearPreferenciaPago } from '@/lib/mercadopago'
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json()
+    const { actividad_id, reserva_id, titulo, monto, usuario_id } = body
+
+    // Verificar sesión
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user || user.id !== usuario_id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    // Crear preferencia en MercadoPago
+    const pref = await crearPreferenciaPago({
+      titulo,
+      monto,
+      cantidad: 1,
+      reservaId: reserva_id,
+      usuarioEmail: user.email!,
+      usuarioNombre: user.user_metadata?.nombre || 'Usuario',
+    })
+
+    // Guardar el registro de pago
+    await supabase.from('pagos').insert({
+      reserva_id,
+      monto,
+      moneda: 'ARS',
+      metodo: 'mercadopago',
+      estado: 'pendiente',
+      mp_preference_id: pref.id,
+    })
+
+    return NextResponse.json({
+      init_point: pref.init_point,
+      preference_id: pref.id,
+    })
+  } catch (error) {
+    console.error('Error al crear pago:', error)
+    return NextResponse.json(
+      { error: 'Error al procesar el pago' },
+      { status: 500 }
+    )
+  }
+}
