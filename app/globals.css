@@ -1,1 +1,32 @@
-QGltcG9ydCAidGFpbHdpbmRjc3MiOwoKQHRoZW1lIHsKICAtLWNvbG9yLXByaW1hcmlvOiAjNmE1YTgyOwogIC0tY29sb3ItcHJpbWFyaW8tbGlnaHQ6ICM4YjdhYTM7CiAgLS1jb2xvci1wcmltYXJpby1kYXJrOiAjNGQzZDY1OwogIC0tY29sb3Itc2VjdW5kYXJpbzogI2EyYTg2OTsKICAtLWNvbG9yLXNlY3VuZGFyaW8tbGlnaHQ6ICNiOGJlODM7CiAgLS1jb2xvci1zZWN1bmRhcmlvLWRhcms6ICM3ZDgzNTA7CiAgLS1jb2xvci1hY2VudG86ICMzNDU2OGI7CiAgLS1jb2xvci1hY2VudG8tbGlnaHQ6ICM0ZDcyYjA7CiAgLS1jb2xvci1mb25kbzogI2ZhZjlmNzsKICAtLWNvbG9yLXN1cGVyZmljaWU6ICNmZmZmZmY7CiAgLS1jb2xvci10ZXh0bzogIzFhMWEyZTsKICAtLWNvbG9yLXRleHRvLXNlY3VuZGFyaW86ICM2YjcyODA7CiAgLS1jb2xvci1lcnJvcjogI2RjMjYyNjsKICAtLWNvbG9yLWV4aXRvOiAjMTZhMzRhOwoKICAtLWZvbnQtdGl0dWxvczogJ01vbnRzZXJyYXQnLCBzYW5zLXNlcmlmOwogIC0tZm9udC1jdWVycG86ICdPcGVuIFNhbnMnLCBzYW5zLXNlcmlmOwp9Cgpib2R5IHsKICBmb250LWZhbWlseTogdmFyKC0tZm9udC1jdWVycG8pOwogIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWNvbG9yLWZvbmRvKTsKICBjb2xvcjogdmFyKC0tY29sb3ItdGV4dG8pOwp9CgpoMSwgaDIsIGgzLCBoNCwgaDUsIGg2IHsKICBmb250LWZhbWlseTogdmFyKC0tZm9udC10aXR1bG9zKTsKICBmb250LXdlaWdodDogNzAwOwp9
+@import "tailwindcss";
+
+@theme {
+  --color-primario: #6a5a82;
+  --color-primario-light: #8b7aa3;
+  --color-primario-dark: #4d3d65;
+  --color-secundario: #a2a869;
+  --color-secundario-light: #b8be83;
+  --color-secundario-dark: #7d8350;
+  --color-acento: #34568b;
+  --color-acento-light: #4d72b0;
+  --color-fondo: #faf9f7;
+  --color-superficie: #ffffff;
+  --color-texto: #1a1a2e;
+  --color-texto-secundario: #6b7280;
+  --color-error: #dc2626;
+  --color-exito: #16a34a;
+
+  --font-titulos: 'Montserrat', sans-serif;
+  --font-cuerpo: 'Open Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-cuerpo);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-titulos);
+  font-weight: 700;
+}
