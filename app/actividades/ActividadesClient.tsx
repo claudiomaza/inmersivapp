@@ -41,7 +41,6 @@ export default function ActividadesClient({ actividades }: Props) {
         departamentos={departamentos}
         abierto={abierto}
         setAbierto={setAbierto}
-        DIAS={DIAS}
       />
 
       <div className="mt-6">
