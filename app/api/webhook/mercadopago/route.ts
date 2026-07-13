@@ -32,6 +32,7 @@ export async function POST(req: Request) {
 
     const estadoReserva = estadoMP === 'approved' ? 'confirmada'
       : estadoMP === 'rejected' ? 'cancelada'
+      : estadoMP === 'refunded' ? 'cancelada'
       : 'pendiente'
 
     // Actualizar pago

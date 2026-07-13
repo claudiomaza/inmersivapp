@@ -1,6 +1,7 @@
 -- ============================================================
 -- INMERSIVAPP — Esquema completo para Supabase
 -- Sello: cm2labs · 2026-07-12
+-- Corregido: cast de intereses en trigger (-> en vez de ->>)
 -- ============================================================
 
 -- 1. ENUMS
@@ -32,7 +33,7 @@ BEGIN
     NEW.raw_user_meta_data->>'nombre',
     NEW.raw_user_meta_data->>'apellido',
     NEW.raw_user_meta_data->>'telefono',
-    COALESCE((NEW.raw_user_meta_data->>'intereses')::text[], '{}')
+    COALESCE((NEW.raw_user_meta_data->'intereses')::text[], '{}')
   );
   RETURN NEW;
 END;
@@ -72,6 +73,7 @@ CREATE TABLE reservas (
   fecha DATE NOT NULL,
   estado estado_reserva DEFAULT 'pendiente',
   codigo_confirmacion TEXT,
+  notas TEXT,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -96,68 +98,57 @@ CREATE UNIQUE INDEX idx_pagos_reserva ON pagos(reserva_id);
 -- 6. RESEÑAS
 CREATE TABLE resenas (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  usuario_id UUID NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
   actividad_id UUID NOT NULL REFERENCES actividades(id) ON DELETE CASCADE,
-  puntuacion INTEGER NOT NULL CHECK (puntuacion >= 1 AND puntuacion <= 5),
+  usuario_id UUID NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
+  puntuacion INT NOT NULL CHECK (puntuacion BETWEEN 1 AND 5),
   comentario TEXT,
   created_at TIMESTAMPTZ DEFAULT now(),
-  UNIQUE(usuario_id, actividad_id)
+  UNIQUE(actividad_id, usuario_id)
 );
 
--- 7. CUPONES (pertenecen al Anfitrión, como se corrigió en el PPT)
-CREATE TABLE cupones (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  anfitrion_id UUID NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
-  codigo TEXT NOT NULL UNIQUE,
-  descuento_porcentaje INTEGER NOT NULL CHECK (descuento_porcentaje > 0 AND descuento_porcentaje <= 100),
-  usos_maximos INTEGER DEFAULT 0,
-  usos_actuales INTEGER DEFAULT 0,
-  activo BOOLEAN DEFAULT true,
-  vence DATE,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
+CREATE INDEX idx_resenas_actividad ON resenas(actividad_id);
 
--- 8. ANUNCIOS (para Patrocinadores)
-CREATE TABLE anuncios (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patrocinador_id UUID NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
-  titulo TEXT NOT NULL,
-  imagen_url TEXT,
-  url_destino TEXT,
-  segmento TEXT[] DEFAULT '{}',
-  impresiones INTEGER DEFAULT 0,
-  clicks INTEGER DEFAULT 0,
-  activo BOOLEAN DEFAULT true,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- 9. MENSAJES (asincrónicos)
+-- 7. MENSAJES (chat entre usuarios)
 CREATE TABLE mensajes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   emisor_id UUID NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
   receptor_id UUID NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
-  actividad_id UUID REFERENCES actividades(id) ON DELETE SET NULL,
   contenido TEXT NOT NULL,
   leido BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
-CREATE INDEX idx_mensajes_receptor ON mensajes(receptor_id, leido);
-CREATE INDEX idx_mensajes_conversacion ON mensajes(emisor_id, receptor_id);
+CREATE INDEX idx_mensajes_participantes ON mensajes(emisor_id, receptor_id);
+CREATE INDEX idx_mensajes_leido ON mensajes(receptor_id, leido) WHERE leido = false;
 
--- 10. ROW LEVEL SECURITY
+-- 8. NOTIFICACIONES
+CREATE TABLE notificaciones (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id UUID NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
+  titulo TEXT NOT NULL,
+  cuerpo TEXT,
+  leido BOOLEAN DEFAULT false,
+  tipo TEXT DEFAULT 'general',
+  referencia_id UUID,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_notificaciones_usuario ON notificaciones(usuario_id, leido);
+
+-- 9. ROW LEVEL SECURITY
 ALTER TABLE perfiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE actividades ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reservas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pagos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE resenas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE mensajes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notificaciones ENABLE ROW LEVEL SECURITY;
 
--- Perfiles: solo lectura pública, escritura propia
+-- Perfiles: lectura pública, escritura del propio usuario
 CREATE POLICY "Perfiles lectura pública" ON perfiles FOR SELECT USING (true);
-CREATE POLICY "Perfiles escritura propia" ON perfiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "Perfiles actualización propia" ON perfiles FOR UPDATE USING (auth.uid() = id);
 
--- Actividades: lectura pública
+-- Actividades: lectura pública, escritura del anfitrión
 CREATE POLICY "Actividades lectura pública" ON actividades FOR SELECT USING (true);
 CREATE POLICY "Actividades escritura anfitrión" ON actividades FOR ALL USING (auth.uid() = anfitrion_id);
 
@@ -183,3 +174,8 @@ CREATE POLICY "Mensajes lectura" ON mensajes FOR SELECT USING (
   auth.uid() = emisor_id OR auth.uid() = receptor_id
 );
 CREATE POLICY "Mensajes inserción" ON mensajes FOR INSERT WITH CHECK (auth.uid() = emisor_id);
+
+-- Notificaciones: solo ve las suyas
+CREATE POLICY "Notificaciones lectura" ON notificaciones FOR SELECT USING (auth.uid() = usuario_id);
+CREATE POLICY "Notificaciones inserción sistema" ON notificaciones FOR INSERT WITH CHECK (true);
+CREATE POLICY "Notificaciones marcado leído" ON notificaciones FOR UPDATE USING (auth.uid() = usuario_id);

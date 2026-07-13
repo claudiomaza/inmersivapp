@@ -19,7 +19,6 @@ export async function crearPreferenciaPago(params: CrearPreferenciaParams) {
     body: {
       items: [
         {
-          id: params.reservaId,
           title: params.titulo,
           quantity: params.cantidad,
           unit_price: params.monto,

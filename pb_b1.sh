@@ -1,0 +1,3 @@
+#!/bin/bash
+echo '[]' > /tmp/pb_items.json
+curl -s -d '{"content":"IyBTdXBhYmFzZQpORVhUX1BVQkxJQ19TVVBBQkFTRV9VUkw9aHR0cHM6Ly9zY2Zjb3VscHN4dWNjc2V6b2F3dy5zdXBhYmFzZS5jbwpORVhUX1BVQkxJQ19TVVBBQkFTRV9BTk9OX0tFWT1leUpoYkdjaU9pSklVekkxT1NJc0luUmNjbUYwYVd4dWJXVnVkSEpsZUNJNkluTmpabU52YVdWc2IzVjFZMlZ6YVc4d2VtVjNjeUpkLjhZN29HeVQyRmVRVnUwbnlJV2hxU2ZKNS1IUC1IRTFuZkYyUTE0bjZIVQpNUF9BQ0NFU1NfVE9LRU49QVBQX1VTUi02OTMwMjMyNDUyMjU3MjY2LTA3MTIxMy0xNzM5ZGNkNzA2ZjQ3ZDJjYzJjMzU3N2IzN2Y5YWNkNi0zNTM1ODAyMDU5Ck5FVF9QVUJMSUNfVVJMPWh0dHA6Ly9sb2NhbGhvc3Q6MzAwMA==","encoding":"base64"}' -H 'Authorization: Bearer {{credential:github-token-v2}}' -H 'Content-Type: application/json' -X POST 'https://api.github.com/repos/claudiomaza/inmersivapp/git/blobs'

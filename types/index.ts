@@ -7,7 +7,6 @@ export interface Perfil {
   username: string
   nombre: string
   apellido: string
-  email: string
   telefono: string
   avatar_url?: string
   intereses: string[]
@@ -106,6 +105,18 @@ export interface Anuncio {
   impresiones: number
   clicks: number
   activo: boolean
+  created_at: string
+}
+
+export interface Notificacion {
+  id: string
+  usuario_id: string
+  titulo: string
+  cuerpo?: string
+  leido: boolean
+  tipo?: string
+  referencia_id?: string
+  created_at: string
 }
 
 export interface Mensaje {
