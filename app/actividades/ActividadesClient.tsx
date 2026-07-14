@@ -23,10 +23,10 @@ export default function ActividadesClient({ actividades }: Props) {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="font-titulos text-3xl font-bold text-primario">
+        <h1 className="font-titulos text-3xl font-bold text-texto sm:text-4xl">
           Explorar actividades
         </h1>
-        <p className="mt-1 text-texto-secundario">
+        <p className="mt-1.5 text-base text-texto-secundario">
           Encontrá experiencias únicas cerca tuyo
         </p>
       </div>
@@ -43,7 +43,7 @@ export default function ActividadesClient({ actividades }: Props) {
         setAbierto={setAbierto}
       />
 
-      <div className="mt-6">
+      <div className="mt-8">
         <p className="mb-4 text-sm text-texto-secundario">
           {filtradas.length} de {actividades.length} actividades
           {activos > 0 && ' filtradas'}
@@ -51,7 +51,7 @@ export default function ActividadesClient({ actividades }: Props) {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtradas.length === 0 ? (
-            <p className="col-span-full py-12 text-center text-texto-secundario">
+            <p className="col-span-full py-16 text-center text-texto-secundario">
               No hay actividades que coincidan con los filtros.
             </p>
           ) : (
