@@ -18,21 +18,51 @@
   --font-cuerpo: "DM Sans", sans-serif;
 }
 
+/* Base resets */
 @layer base {
-  body {
+  *, ::after, ::before {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+  }
+  
+  html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
     font-family: var(--font-cuerpo);
+  }
+
+  body {
+    margin: 0;
+    line-height: inherit;
     background-color: var(--color-fondo);
     color: var(--color-texto);
+    min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-titulos);
     font-weight: 600;
-    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: inherit;
   }
 }
 
-@layer components {
+/* Manual Utility Fallbacks for V4 if injection fails */
+@layer utilities {
+  .bg-fondo { background-color: var(--color-fondo); }
+  .bg-superficie { background-color: var(--color-superficie); }
+  .bg-primario { background-color: var(--color-primario); }
+  .text-primario { color: var(--color-primario); }
+  .text-texto { color: var(--color-texto); }
+  .text-texto-secundario { color: var(--color-texto-secundario); }
+  .font-titulos { font-family: var(--font-titulos); }
+  
   .glass {
     background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(14px);
@@ -46,8 +76,7 @@
   }
 
   .card-lift {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .card-lift:hover {
     transform: translateY(-4px);
