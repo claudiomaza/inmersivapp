@@ -83,7 +83,9 @@ export default function RegistroPage() {
     toast.success('Codigo enviado a tu email')
     setPaso('codigo')
     setCargando(false)
-  }  const verificarYCompletar = async (e: React.FormEvent) => {
+  }
+
+  const verificarYCompletar = async (e: React.FormEvent) => {
     e.preventDefault()
     if (codigo.length < 6) return
     setCargando(true)
