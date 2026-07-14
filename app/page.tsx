@@ -5,6 +5,12 @@ import CarruselAnuncios from '@/components/CarruselAnuncios'
 
 export const dynamic = 'force-dynamic'
 
+const CATEGORIAS_PORTFOLIO = [
+  { emoji: '🎨', titulo: 'Arte', desc: 'Talleres, cerámica, acuarela, fotografía' },
+  { emoji: '🥾', titulo: 'Naturaleza', desc: 'Senderismo, cabalgatas, aventura al aire libre' },
+  { emoji: '🍲', titulo: 'Gastronomía', desc: 'Cocina regional, degustaciones, sabores locales' },
+]
+
 export default async function Home() {
   const supabase = await createClient()
   const [actividadesRes, anunciosRes] = await Promise.all([
@@ -21,8 +27,8 @@ export default async function Home() {
       .limit(5),
   ])
 
-  const actividades = actividadesRes.data
   const anuncios = anunciosRes.data || []
+  const todas = actividadesRes.data || []
 
   const { data: { session } } = await supabase.auth.getSession()
   let perfil = null
@@ -35,86 +41,95 @@ export default async function Home() {
     perfil = data
   }
 
-  const todas = actividades || []
-
-  // Actividades recomendadas para usuarios logueados
   const recomendadas = perfil?.intereses?.length
-    ? todas
-        .filter((a) => perfil.intereses.includes(a.categoria))
-        .slice(0, 6)
+    ? todas.filter((a) => perfil.intereses.includes(a.categoria)).slice(0, 6)
     : todas.slice(0, 6)
 
   return (
     <div>
       {/* Hero */}
-      <div className="flex min-h-[70vh] flex-col items-center justify-center text-center">
-        <h1 className="font-titulos text-4xl font-extrabold tracking-tight text-primario sm:text-5xl lg:text-6xl">
-          INMERSIVAPP
-        </h1>
-        <p className="mt-4 max-w-2xl text-lg text-texto-secundario sm:text-xl">
-          Conectá con experiencias auténticas cerca tuyo. Talleres, salidas, arte,
-          cocina, naturaleza — todo lo que te saque del piloto automático.
-        </p>
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-          <Link
-            href="/actividades"
-            className="rounded-xl bg-primario px-8 py-3 text-lg font-semibold text-white shadow-lg transition hover:bg-primario-dark"
-          >
-            Explorar actividades
-          </Link>
-          {!session ? (
+      <section className="hero-glow -mx-4 -mt-6 flex min-h-[65vh] flex-col items-center justify-center rounded-b-3xl px-4 text-center sm:-mx-6 lg:-mx-8">
+        <div className="max-w-2xl">
+          <span className="inline-block rounded-full bg-primario/10 px-4 py-1.5 text-xs font-medium text-primario">
+            Descubrí experiencias únicas
+          </span>
+          <h1 className="mt-6 font-titulos text-4xl font-extrabold tracking-tight text-texto sm:text-5xl lg:text-6xl">
+            Viví momentos que
+            <span className="text-primario"> transforman</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-texto-secundario">
+            Conectá con experiencias auténticas y multisensoriales cerca tuyo.
+            Talleres, naturaleza, gastronomía y más.
+          </p>
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/actividades"
+              className="rounded-xl bg-primario px-8 py-3 font-semibold text-white shadow-lg shadow-primario/25 transition hover:bg-primario-dark hover:shadow-xl hover:shadow-primario/30"
+            >
+              Explorar actividades
+            </Link>
             <Link
               href="/registro"
-              className="rounded-xl border-2 border-primario px-8 py-3 text-lg font-semibold text-primario transition hover:bg-primario hover:text-white"
+              className="rounded-xl border-2 border-primario/30 px-8 py-3 font-semibold text-primario transition hover:border-primario hover:bg-primario/5"
             >
               Crear cuenta
             </Link>
-          ) : null}
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Anuncios patrocinados */}
+      {/* Anuncios Patrocinados */}
       <CarruselAnuncios anuncios={anuncios} />
 
-      {/* Recomendaciones */}
-      {recomendadas.length > 0 && (
-        <section className="mt-8">
-          <h2 className="font-titulos text-2xl font-bold text-texto">
-            {perfil?.intereses?.length
-              ? 'Recomendado para vos ✨'
-              : 'Actividades destacadas'}
-          </h2>
+      {/* Actividades destacadas */}
+      {todas.length > 0 && (
+        <section className="mt-12">
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-titulos text-2xl font-bold text-texto">
+              {recomendadas.length > 0 && session
+                ? 'Recomendado para vos'
+                : 'Actividades destacadas'}
+            </h2>
+            <Link
+              href="/actividades"
+              className="text-sm font-medium text-primario transition hover:text-primario-light"
+            >
+              Ver todas →
+            </Link>
+          </div>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {recomendadas.map((act) => (
               <CardActividad key={act.id} actividad={act} />
             ))}
-          </div>
-          <div className="mt-8 text-center">
-            <Link
-              href="/actividades"
-              className="inline-block rounded-lg border-2 border-primario px-6 py-2.5 font-semibold text-primario transition hover:bg-primario hover:text-white"
-            >
-              Ver todas las actividades
-            </Link>
           </div>
         </section>
       )}
 
       {/* Categorías */}
       <section className="mt-16 mb-8">
-        <div className="grid gap-6 sm:grid-cols-3">
-          {[
-            { titulo: '🎨', desc: 'Talleres de arte, cerámica, fotografía' },
-            { titulo: '🥾', desc: 'Senderismo, naturaleza, aventura' },
-            { titulo: '🍝', desc: 'Cocina, gastronomía, sabores locales' },
-          ].map((item) => (
-            <div
-              key={item.titulo}
-              className="rounded-xl bg-superficie p-6 shadow-sm transition hover:shadow-md"
+        <h2 className="font-titulos mb-6 text-2xl font-bold text-texto">
+          Explorá por categoría
+        </h2>
+        <div className="grid gap-5 sm:grid-cols-3">
+          {CATEGORIAS_PORTFOLIO.map((cat) => (
+            <Link
+              key={cat.titulo}
+              href={`/actividades?categoria=${cat.titulo}`}
+              className="card-lift group relative rounded-2xl bg-superficie p-6"
             >
-              <div className="text-4xl">{item.titulo}</div>
-              <p className="mt-2 text-sm text-texto-secundario">{item.desc}</p>
-            </div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primario/10 text-2xl">
+                {cat.emoji}
+              </div>
+              <h3 className="mt-4 font-titulos text-lg font-semibold text-texto">
+                {cat.titulo}
+              </h3>
+              <p className="mt-1 text-sm leading-relaxed text-texto-secundario">
+                {cat.desc}
+              </p>
+              <span className="mt-3 inline-block text-sm font-medium text-primario opacity-0 transition group-hover:opacity-100">
+                Explorar →
+              </span>
+            </Link>
           ))}
         </div>
       </section>
