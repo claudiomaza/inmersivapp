@@ -1,23 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primario: #6a5a82;
-  --color-primario-light: #8b7aa3;
-  --color-primario-dark: #4d3d65;
-  --color-secundario: #a2a869;
-  --color-secundario-light: #b8be83;
-  --color-secundario-dark: #7d8350;
-  --color-acento: #34568b;
-  --color-acento-light: #4d72b0;
-  --color-fondo: #faf9f7;
+  --color-fondo: #f8f7f4;
   --color-superficie: #ffffff;
-  --color-texto: #1a1a2e;
-  --color-texto-secundario: #6b7280;
+  --color-superficie-alt: #f3f1ed;
+  --color-primario: #b85a3a;
+  --color-primario-light: #d97757;
+  --color-primario-dark: #8a3e24;
+  --color-secundario: #5b8a7a;
+  --color-secundario-light: #7ca898;
+  --color-acento: #b8860b;
+  --color-texto: #1c1917;
+  --color-texto-secundario: #78716c;
   --color-error: #dc2626;
   --color-exito: #16a34a;
-
-  --font-titulos: 'Montserrat', sans-serif;
-  --font-cuerpo: 'Open Sans', sans-serif;
+  --font-titulos: 'Outfit', sans-serif;
+  --font-cuerpo: 'DM Sans', sans-serif;
 }
 
 body {
@@ -28,5 +26,27 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-titulos);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-glow {
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(184, 90, 58, 0.12), transparent 70%),
+              radial-gradient(ellipse 60% 50% at 80% 80%, rgba(91, 138, 122, 0.08), transparent 60%);
+}
+
+.card-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 }
