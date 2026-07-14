@@ -14,39 +14,43 @@
   --color-texto-secundario: #78716c;
   --color-error: #dc2626;
   --color-exito: #16a34a;
-  --font-titulos: 'Outfit', sans-serif;
-  --font-cuerpo: 'DM Sans', sans-serif;
+  --font-titulos: "Outfit", sans-serif;
+  --font-cuerpo: "DM Sans", sans-serif;
 }
 
-body {
-  font-family: var(--font-cuerpo);
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
+@layer base {
+  body {
+    font-family: var(--font-cuerpo);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-titulos);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-titulos);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
 
-.glass {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
+  .hero-glow {
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(184, 90, 58, 0.12), transparent 70%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(91, 138, 122, 0.08), transparent 60%);
+  }
 
-.hero-glow {
-  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(184, 90, 58, 0.12), transparent 70%),
-              radial-gradient(ellipse 60% 50% at 80% 80%, rgba(91, 138, 122, 0.08), transparent 60%);
-}
-
-.card-lift {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.card-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  .card-lift {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  }
 }
