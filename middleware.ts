@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
         getAll() {
           return req.cookies.getAll()
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options?: { path?: string; maxAge?: number; domain?: string; secure?: boolean; httpOnly?: boolean; sameSite?: 'lax' | 'strict' | 'none' } }[]) {
           cookiesToSet.forEach(({ name, value }) => res.cookies.set(name, value))
         },
       },
@@ -19,13 +19,15 @@ export async function middleware(req: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
-  const path = req.nextUrl.pathname
 
-  // Rutas que requieren sesión
-  if (!user && (path.startsWith('/perfil') || path.startsWith('/reservas') || path.startsWith('/admin') || path.startsWith('/actividades/nueva'))) {
-    const url = req.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+  // Rutas que requieren sesion
+  if (!user) {
+    const path = req.nextUrl.pathname
+    if (path.startsWith('/perfil') || path.startsWith('/reservas') || path.startsWith('/admin') || path.startsWith('/actividades/nueva')) {
+      const url = req.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
   }
 
   return res
