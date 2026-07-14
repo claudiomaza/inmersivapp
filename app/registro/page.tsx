@@ -46,34 +46,49 @@ export default function RegistroPage() {
     setCargando(true)
     setError('')
 
-    // Usar signInWithOtp directamente para registrar/iniciar sesión sin contraseña
-    // Supabase creará el usuario automáticamente si no existe (ya que shouldCreateUser es true por defecto)
-    // Y adjuntará la metadata de usuario definida en options.data
-    const { data, error: otpErr } = await supabase.auth.signInWithOtp({
+        // Crear usuario en Supabase Auth con metadata completa
+    // Nota: intereses se formatea como literal de array PG para compatibilidad con el trigger
+    const pgIntereses = form.intereses.length > 0
+      ? `{${form.intereses.map(i => `"${i}"`).join(',')}}`
+      : '{}'
+
+    const { data, error: err } = await supabase.auth.signUp({
       email,
+      password: crypto.randomUUID(),
       options: {
-        shouldCreateUser: true,
         data: {
           nombre: form.nombre,
           apellido: form.apellido,
           username: form.username,
           telefono: form.telefono,
+          intereses: pgIntereses,
+          roles: '{participante}',
         },
       },
     })
 
-    if (otpErr) {
-      setError(otpErr.message)
+    if (err) {
+      setError(err.message)
       setCargando(false)
       return
     }
 
-    toast.success('Código enviado a tu email ✉️')
+    // Enviar OTP para verificacion inmediata
+    const { error: otpErr } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: false },
+    })
+
+    if (otpErr) {
+      toast.success('Cuenta creada. Revisa tu email para confirmar.')
+      router.push('/login')
+      return
+    }
+
+    toast.success('Codigo enviado a tu email')
     setPaso('codigo')
     setCargando(false)
-  }
-
-  const verificarYCompletar = async (e: React.FormEvent) => {
+  }  const verificarYCompletar = async (e: React.FormEvent) => {
     e.preventDefault()
     if (codigo.length < 6) return
     setCargando(true)
