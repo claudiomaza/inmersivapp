@@ -58,8 +58,6 @@ export default function RegistroPage() {
           apellido: form.apellido,
           username: form.username,
           telefono: form.telefono,
-          intereses: form.intereses,
-          roles: ['participante'],
         },
       },
     })
