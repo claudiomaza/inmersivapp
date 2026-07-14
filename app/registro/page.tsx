@@ -46,11 +46,13 @@ export default function RegistroPage() {
     setCargando(true)
     setError('')
 
-    // Crear usuario en Supabase Auth
-    const { data, error: err } = await supabase.auth.signUp({
+    // Usar signInWithOtp directamente para registrar/iniciar sesión sin contraseña
+    // Supabase creará el usuario automáticamente si no existe (ya que shouldCreateUser es true por defecto)
+    // Y adjuntará la metadata de usuario definida en options.data
+    const { data, error: otpErr } = await supabase.auth.signInWithOtp({
       email,
-      password: crypto.randomUUID(),
       options: {
+        shouldCreateUser: true,
         data: {
           nombre: form.nombre,
           apellido: form.apellido,
@@ -62,22 +64,9 @@ export default function RegistroPage() {
       },
     })
 
-    if (err) {
-      setError(err.message)
-      setCargando(false)
-      return
-    }
-
-    // Enviar OTP para verificación inmediata
-    const { error: otpErr } = await supabase.auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: false },
-    })
-
     if (otpErr) {
-      // Si falla, al menos la cuenta se creó
-      toast.success('Cuenta creada. Revisá tu email para confirmar.')
-      router.push('/login')
+      setError(otpErr.message)
+      setCargando(false)
       return
     }
 
