@@ -47,11 +47,6 @@ export default function RegistroPage() {
     setError('')
 
         // Crear usuario en Supabase Auth con metadata completa
-    // Nota: intereses se formatea como literal de array PG para compatibilidad con el trigger
-    const pgIntereses = form.intereses.length > 0
-      ? `{${form.intereses.map(i => `"${i}"`).join(',')}}`
-      : '{}'
-
     const { data, error: err } = await supabase.auth.signUp({
       email,
       password: crypto.randomUUID(),
@@ -61,8 +56,8 @@ export default function RegistroPage() {
           apellido: form.apellido,
           username: form.username,
           telefono: form.telefono,
-          intereses: pgIntereses,
-          roles: '{participante}',
+          intereses: form.intereses,
+          roles: ['participante'],
         },
       },
     })
@@ -88,9 +83,7 @@ export default function RegistroPage() {
     toast.success('Codigo enviado a tu email')
     setPaso('codigo')
     setCargando(false)
-  }
-
-  const verificarYCompletar = async (e: React.FormEvent) => {
+  }  const verificarYCompletar = async (e: React.FormEvent) => {
     e.preventDefault()
     if (codigo.length < 6) return
     setCargando(true)
