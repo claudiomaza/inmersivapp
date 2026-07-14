@@ -3,8 +3,6 @@
 import { useCallback } from 'react'
 import type { Anuncio } from '@/types'
 
-const FALLBACK_IMG = 'https://images.unsplash.com/photo-1559526324-4bc2007eaa27?auto=format&fit=crop&w=800&q=60'
-
 export default function CarruselAnuncios({ anuncios }: { anuncios: Anuncio[] }) {
   const registrarClick = useCallback(async (id: string) => {
     try {
@@ -13,17 +11,15 @@ export default function CarruselAnuncios({ anuncios }: { anuncios: Anuncio[] }) 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ anuncio_id: id }),
       })
-    } catch {
-      // Silencioso — no bloquear navegación
-    }
+    } catch { /* silencioso */ }
   }, [])
 
   if (!anuncios.length) return null
 
   return (
     <section className="mt-8 mb-4">
-      <h2 className="font-titulos text-2xl font-bold text-texto mb-4">
-        Patrocinado ✦
+      <h2 className="font-titulos mb-4 text-2xl font-bold text-texto">
+        Patrocinado <span className="text-xs font-normal text-texto-secundario">✦</span>
       </h2>
       <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
         {anuncios.map((anuncio) => (
@@ -33,17 +29,23 @@ export default function CarruselAnuncios({ anuncios }: { anuncios: Anuncio[] }) 
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => registrarClick(anuncio.id)}
-            className="group flex w-72 shrink-0 flex-col overflow-hidden rounded-xl bg-superficie shadow-sm transition hover:shadow-md"
+            className="card-lift group flex w-72 shrink-0 flex-col overflow-hidden rounded-2xl bg-superficie"
           >
-            <div className="aspect-[16/9] overflow-hidden">
-              <img
-                src={anuncio.imagen_url || FALLBACK_IMG}
-                alt={anuncio.titulo}
-                className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-              />
+            <div className="relative aspect-[16/9] overflow-hidden">
+              {anuncio.imagen_url ? (
+                <img
+                  src={anuncio.imagen_url}
+                  alt={anuncio.titulo}
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-superficie-alt">
+                  <span className="text-4xl opacity-20">✦</span>
+                </div>
+              )}
             </div>
             <div className="flex flex-1 flex-col justify-center p-4">
-              <h3 className="font-titulos text-sm font-bold text-texto line-clamp-2 group-hover:text-primario">
+              <h3 className="font-titulos line-clamp-2 text-sm font-semibold text-texto">
                 {anuncio.titulo}
               </h3>
               <span className="mt-2 text-xs font-medium text-primario-light">
