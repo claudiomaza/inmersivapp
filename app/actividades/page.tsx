@@ -1,12 +1,10 @@
-import { createClient } from '@/lib/supabase-server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 import ActividadesClient from './ActividadesClient'
 
 export const dynamic = 'force-dynamic'
 
 export default async function ActividadesPage() {
-  const supabase = await createClient()
-
-  const { data: actividades } = await supabase
+  const { data: actividades } = await supabaseAdmin
     .from('actividades')
     .select('*')
     .eq('activa', true)

@@ -1,18 +1,28 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase-server'
+import { auth } from '@clerk/nextjs/server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 import { crearPreferenciaPago } from '@/lib/mercadopago'
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
     const body = await req.json()
     const { actividad_id, reserva_id, titulo, monto, usuario_id } = body
 
-    // Verificar sesión
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user || user.id !== usuario_id) {
+    if (userId !== usuario_id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
+
+    // Obtener datos del usuario
+    const { data: perfil } = await supabaseAdmin
+      .from('perfiles')
+      .select('nombre, apellido, email')
+      .eq('id', userId)
+      .single()
 
     // Crear preferencia en MercadoPago
     const pref = await crearPreferenciaPago({
@@ -20,12 +30,12 @@ export async function POST(req: Request) {
       monto,
       cantidad: 1,
       reservaId: reserva_id,
-      usuarioEmail: user.email!,
-      usuarioNombre: user.user_metadata?.nombre || 'Usuario',
+      usuarioEmail: perfil?.email || 'usuario@inmersivapp.app',
+      usuarioNombre: perfil ? `${perfil.nombre} ${perfil.apellido}` : 'Usuario',
     })
 
     // Guardar el registro de pago
-    await supabase.from('pagos').insert({
+    await supabaseAdmin.from('pagos').insert({
       reserva_id,
       monto,
       moneda: 'ARS',

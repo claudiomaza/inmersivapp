@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase-server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 import { obtenerPago } from '@/lib/mercadopago'
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const supabase = await createClient()
 
     // MercadoPago envía el payment_id en el webhook
     const mpPaymentId = body.data?.id
@@ -36,7 +35,7 @@ export async function POST(req: Request) {
       : 'pendiente'
 
     // Actualizar pago
-    await supabase
+    await supabaseAdmin
       .from('pagos')
       .update({
         estado: estadoPago,
@@ -45,7 +44,7 @@ export async function POST(req: Request) {
       .eq('reserva_id', reservaId)
 
     // Actualizar estado de la reserva
-    await supabase
+    await supabaseAdmin
       .from('reservas')
       .update({ estado: estadoReserva })
       .eq('id', reservaId)

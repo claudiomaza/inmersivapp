@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase-server'
+import { auth } from '@clerk/nextjs/server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 
 export async function POST(req: Request) {
   try {
-    const supabase = await createClient()
-    const { data: { session } } = await supabase.auth.getSession()
-
-    if (!session) {
+    const { userId } = await auth()
+    if (!userId) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
@@ -20,10 +19,10 @@ export async function POST(req: Request) {
     }
 
     // Insertar mensaje
-    const { data: mensaje, error: errMsg } = await supabase
+    const { data: mensaje, error: errMsg } = await supabaseAdmin
       .from('mensajes')
       .insert({
-        emisor_id: session.user.id,
+        emisor_id: userId,
         receptor_id,
         actividad_id: actividad_id || null,
         contenido: contenido.trim(),
@@ -37,10 +36,10 @@ export async function POST(req: Request) {
     }
 
     // Obtener nombre del emisor para la notificación
-    const { data: perfil } = await supabase
+    const { data: perfil } = await supabaseAdmin
       .from('perfiles')
       .select('nombre, apellido')
-      .eq('id', session.user.id)
+      .eq('id', userId)
       .single()
 
     const nombreEmisor = perfil
@@ -48,7 +47,7 @@ export async function POST(req: Request) {
       : 'Alguien'
 
     // Crear notificación para el receptor
-    const { error: errNotif } = await supabase
+    const { error: errNotif } = await supabaseAdmin
       .from('notificaciones')
       .insert({
         usuario_id: receptor_id,

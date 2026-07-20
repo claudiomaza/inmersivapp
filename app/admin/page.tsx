@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import {
@@ -20,11 +20,11 @@ const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
 ]
 
 export default function AdminPage() {
+  const { isSignedIn, user } = useUser()
   const router = useRouter()
   const [tab, setTab] = useState<Tab>('resumen')
-  const [autenticado, setAutenticado] = useState(false)
+  const [esAdmin, setEsAdmin] = useState<boolean | null>(null)
   const [cargando, setCargando] = useState(true)
-  const [esAdmin, setEsAdmin] = useState(false)
 
   // Datos
   const [totalActividades, setTotalActividades] = useState(0)
@@ -36,105 +36,114 @@ export default function AdminPage() {
   const [reservas, setReservas] = useState<any[]>([])
   const [resenas, setResenas] = useState<any[]>([])
 
-  useEffect(() => {
-    cargarDatos()
-  }, [])
-
-  const cargarDatos = async () => {
-    setCargando(true)
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      router.push('/login')
-      return
+  const fetchDatos = async (tipo: string) => {
+    const res = await fetch(`/api/admin/datos?tipo=${tipo}`)
+    if (!res.ok) {
+      if (res.status === 403) {
+        setEsAdmin(false)
+        toast.error('No tenés permisos de administración')
+      }
+      return null
     }
-    setAutenticado(true)
-
-    const { data: perfil } = await supabase
-      .from('perfiles')
-      .select('roles')
-      .eq('id', session.user.id)
-      .single()
-
-    if (!perfil?.roles?.includes('anfitrion')) {
-      toast.error('No tenés permisos de administración')
-      router.push('/')
-      return
-    }
+    const data = await res.json()
     setEsAdmin(true)
+    return data
+  }
 
-    // Cargar datos
-    const [
-      { count: cAct }, { count: cUsr }, { count: cRes }, { count: cResenas },
-      { data: acts }, { data: usrs }, { data: resvs }, { data: resns },
-    ] = await Promise.all([
-      supabase.from('actividades').select('*', { count: 'exact', head: true }),
-      supabase.from('perfiles').select('*', { count: 'exact', head: true }),
-      supabase.from('reservas').select('*', { count: 'exact', head: true }),
-      supabase.from('resenas').select('*', { count: 'exact', head: true }),
-      supabase.from('actividades').select('*').order('created_at', { ascending: false }),
-      supabase.from('perfiles').select('*').order('username'),
-      supabase.from('reservas').select('*, actividades(titulo)').order('created_at', { ascending: false }).limit(20),
-      supabase.from('resenas').select('*, actividades(titulo)').order('created_at', { ascending: false }),
-    ])
-
-    setTotalActividades(cAct || 0)
-    setTotalUsuarios(cUsr || 0)
-    setTotalReservas(cRes || 0)
-    setTotalResenas(cResenas || 0)
-    setActividades(acts || [])
-    setUsuarios(usrs || [])
-    setReservas(resvs || [])
-    setResenas(resns || [])
+  const cargarResumen = async () => {
+    const data = await fetchDatos('resumen')
+    if (!data) return
+    setTotalActividades(data.totalActividades)
+    setTotalUsuarios(data.totalUsuarios)
+    setTotalReservas(data.totalReservas)
+    setTotalResenas(data.totalResenas)
     setCargando(false)
   }
 
-  const toggleActividad = async (id: string, activa: boolean) => {
-    await supabase.from('actividades').update({ activa }).eq('id', id)
-    setActividades((prev) => prev.map((a) => a.id === id ? { ...a, activa } : a))
-    toast.success(activa ? 'Actividad publicada' : 'Actividad desactivada')
+  const cargarActividades = async () => {
+    const data = await fetchDatos('actividades')
+    if (data) setActividades(data)
   }
 
-  if (cargando) return <p className="mt-8 text-center text-texto-secundario">Cargando panel…</p>
-  if (!autenticado || !esAdmin) return null
+  const cargarUsuarios = async () => {
+    const data = await fetchDatos('usuarios')
+    if (data) setUsuarios(data)
+  }
+
+  const cargarReservas = async () => {
+    const data = await fetchDatos('reservas')
+    if (data) setReservas(data)
+  }
+
+  const cargarResenas = async () => {
+    const data = await fetchDatos('resenas')
+    if (data) setResenas(data)
+  }
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push('/login')
+      return
+    }
+    cargarResumen()
+  }, [isSignedIn])
+
+  useEffect(() => {
+    if (tab === 'actividades') cargarActividades()
+    if (tab === 'usuarios') cargarUsuarios()
+    if (tab === 'reservas') cargarReservas()
+    if (tab === 'resenas') cargarResenas()
+  }, [tab])
+
+  if (!isSignedIn) return null
+
+  if (cargando) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <p className="text-texto-secundario">Verificando permisos…</p>
+      </div>
+    )
+  }
+
+  if (esAdmin === false) {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
+        <h1 className="font-titulos text-2xl font-bold text-texto">Acceso restringido</h1>
+        <p className="text-texto-secundario">No tenés permisos de administración.</p>
+      </div>
+    )
+  }
 
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-titulos text-3xl font-bold text-primario">Panel Admin</h1>
-        <button
-          onClick={() => { supabase.auth.signOut(); router.push('/') }}
-          className="flex items-center gap-1.5 text-sm text-error hover:underline"
-        >
-          <LogOut className="h-4 w-4" /> Salir
-        </button>
+        <h1 className="font-titulos text-2xl font-bold text-texto">Panel de administración</h1>
       </div>
 
       {/* Tabs */}
-      <div className="mt-6 flex flex-wrap gap-2 border-b border-gray-200 pb-2">
+      <div className="mt-6 flex gap-1 overflow-x-auto rounded-xl bg-gray-100 p-1">
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex items-center gap-1.5 rounded-t-lg px-4 py-2 text-sm font-medium transition ${
-              tab === t.key
-                ? 'bg-primario text-white'
-                : 'text-texto-secundario hover:bg-gray-100'
+            className={`flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition ${
+              tab === t.key ? 'bg-white text-texto shadow-sm' : 'text-texto-secundario hover:text-texto'
             }`}
           >
-            {t.icon} {t.label}
+            {t.icon}
+            {t.label}
           </button>
         ))}
       </div>
 
-      {/* Contenido */}
       <div className="mt-6">
         {tab === 'resumen' && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { label: 'Actividades', valor: totalActividades, color: 'bg-primario' },
-              { label: 'Usuarios', valor: totalUsuarios, color: 'bg-secundario' },
-              { label: 'Reservas', valor: totalReservas, color: 'bg-accento' },
-              { label: 'Reseñas', valor: totalResenas, color: 'bg-accento-light' },
+              { label: 'Usuarios', valor: totalUsuarios, color: 'bg-verde' },
+              { label: 'Reservas', valor: totalReservas, color: 'bg-amarillo' },
+              { label: 'Reseñas', valor: totalResenas, color: 'bg-rosa' },
             ].map((card) => (
               <div key={card.label} className="rounded-xl bg-superficie p-6 shadow-sm">
                 <p className="text-sm text-texto-secundario">{card.label}</p>
@@ -156,30 +165,21 @@ export default function AdminPage() {
                   <th className="px-4 py-3 font-medium">Precio</th>
                   <th className="px-4 py-3 font-medium">Anfitrión</th>
                   <th className="px-4 py-3 font-medium">Estado</th>
-                  <th className="px-4 py-3 font-medium">Acción</th>
                 </tr>
               </thead>
               <tbody>
                 {actividades.map((a) => (
                   <tr key={a.id} className="border-b last:border-0 hover:bg-gray-50">
                     <td className="px-4 py-3 font-medium">{a.titulo}</td>
-                    <td className="px-4 py-3 text-texto-secundario">{a.categoria}</td>
+                    <td className="px-4 py-3">{a.categoria}</td>
                     <td className="px-4 py-3">{formatPrecio(a.precio)}</td>
-                    <td className="px-4 py-3 text-texto-secundario">{a.anfitrion_nombre}</td>
+                    <td className="px-4 py-3">{a.anfitrion_nombre}</td>
                     <td className="px-4 py-3">
-                      <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
-                        a.activa ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                        a.activa ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
                       }`}>
                         {a.activa ? 'Activa' : 'Inactiva'}
                       </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <button
-                        onClick={() => toggleActividad(a.id, !a.activa)}
-                        className={`text-xs font-medium ${a.activa ? 'text-error hover:underline' : 'text-exito hover:underline'}`}
-                      >
-                        {a.activa ? 'Desactivar' : 'Activar'}
-                      </button>
                     </td>
                   </tr>
                 ))}
@@ -193,31 +193,30 @@ export default function AdminPage() {
             <table className="w-full text-left text-sm">
               <thead className="border-b bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 font-medium">Usuario</th>
                   <th className="px-4 py-3 font-medium">Nombre</th>
                   <th className="px-4 py-3 font-medium">Email</th>
+                  <th className="px-4 py-3 font-medium">Username</th>
                   <th className="px-4 py-3 font-medium">Roles</th>
-                  <th className="px-4 py-3 font-medium">Intereses</th>
+                  <th className="px-4 py-3 font-medium">Registro</th>
                 </tr>
               </thead>
               <tbody>
                 {usuarios.map((u) => (
                   <tr key={u.id} className="border-b last:border-0 hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium">{u.username}</td>
-                    <td className="px-4 py-3">{u.nombre} {u.apellido}</td>
-                    <td className="px-4 py-3 text-texto-secundario">{u.email}</td>
+                    <td className="px-4 py-3 font-medium">{u.nombre} {u.apellido}</td>
+                    <td className="px-4 py-3 text-texto-secundario">{u.email || '—'}</td>
+                    <td className="px-4 py-3 text-texto-secundario">{u.username || '—'}</td>
                     <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-1">
-                        {(u.roles || []).map((r: string) => (
-                          <span key={r} className="rounded-full bg-primario/10 px-2 py-0.5 text-xs text-primario">
+                      <div className="flex gap-1">
+                        {u.roles?.map((r: string) => (
+                          <span key={r} className="rounded-full bg-primario/10 px-2 py-0.5 text-xs font-medium text-primario">
                             {r}
                           </span>
                         ))}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-texto-secundario">
-                      {(u.intereses || []).slice(0, 3).join(', ')}
-                      {(u.intereses?.length || 0) > 3 ? '…' : ''}
+                    <td className="px-4 py-3 text-xs text-texto-secundario">
+                      {new Date(u.created_at).toLocaleDateString('es-AR')}
                     </td>
                   </tr>
                 ))}
@@ -231,28 +230,31 @@ export default function AdminPage() {
             <table className="w-full text-left text-sm">
               <thead className="border-b bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 font-medium">Código</th>
                   <th className="px-4 py-3 font-medium">Actividad</th>
                   <th className="px-4 py-3 font-medium">Fecha</th>
                   <th className="px-4 py-3 font-medium">Estado</th>
+                  <th className="px-4 py-3 font-medium">Código</th>
                 </tr>
               </thead>
               <tbody>
                 {reservas.map((r) => (
                   <tr key={r.id} className="border-b last:border-0 hover:bg-gray-50">
-                    <td className="px-4 py-3 font-mono text-xs">{r.codigo_confirmacion || '—'}</td>
-                    <td className="px-4 py-3">{r.actividades?.titulo || '—'}</td>
-                    <td className="px-4 py-3 text-texto-secundario">
-                      {r.fecha ? new Date(r.fecha).toLocaleDateString('es-AR') : '—'}
+                    <td className="px-4 py-3 font-medium">{r.actividades?.titulo || '—'}</td>
+                    <td className="px-4 py-3 text-sm text-texto-secundario">
+                      {new Date(r.fecha).toLocaleDateString('es-AR')}
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                         r.estado === 'confirmada' ? 'bg-green-100 text-green-700' :
+                        r.estado === 'completada' ? 'bg-blue-100 text-blue-700' :
                         r.estado === 'pendiente' ? 'bg-yellow-100 text-yellow-700' :
                         'bg-red-100 text-red-700'
                       }`}>
                         {r.estado}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 font-mono text-xs text-texto-secundario">
+                      {r.codigo_confirmacion || '—'}
                     </td>
                   </tr>
                 ))}

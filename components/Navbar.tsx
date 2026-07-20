@@ -1,164 +1,158 @@
 'use client'
 
 import Link from 'next/link'
+import { useUser, useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
 import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
 import { cn } from '@/lib/utils'
-import { Bell, Menu, X } from 'lucide-react'
+import { Bell, Menu, X, UserCircle } from 'lucide-react'
 
 export default function Navbar() {
+  const { isSignedIn, user } = useUser()
+  const { signOut } = useAuth()
   const router = useRouter()
-  const [session, setSession] = useState<any>(null)
   const [esAdmin, setEsAdmin] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [noLeidos, setNoLeidos] = useState(0)
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
-      setSession(data.session)
-      if (data.session) {
-        const { data: perfil } = await supabase
-          .from('perfiles')
-          .select('roles')
-          .eq('id', data.session.user.id)
-          .single()
-        setEsAdmin(perfil?.roles?.includes('anfitrion') ?? false)
-        cargarNoLeidos(data.session)
-      }
-    })
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      if (session) {
-        supabase.from('perfiles').select('roles').eq('id', session.user.id).single()
-          .then(({ data }) => setEsAdmin(data?.roles?.includes('anfitrion') ?? false))
-        cargarNoLeidos(session)
-      } else {
-        setEsAdmin(false)
-        setNoLeidos(0)
-      }
-    })
-    return () => sub?.subscription.unsubscribe()
-  }, [])
+    if (!isSignedIn || !user) {
+      setEsAdmin(false)
+      setNoLeidos(0)
+      return
+    }
 
-  const cargarNoLeidos = async (session: any) => {
-    const { count } = await supabase
+    supabase
+      .from('perfiles')
+      .select('roles')
+      .eq('id', user.id)
+      .single()
+      .then(({ data }) => {
+        setEsAdmin(data?.roles?.includes('anfitrion') ?? false)
+      })
+
+    supabase
       .from('notificaciones')
-      .select('*', { count: 'exact', head: true })
-      .eq('usuario_id', session.user.id)
+      .select('id', { count: 'exact', head: true })
+      .eq('usuario_id', user.id)
       .eq('leido', false)
-    setNoLeidos(count ?? 0)
-  }
+      .then(({ count }) => setNoLeidos(count ?? 0))
+  }, [isSignedIn, user])
 
   const cerrarSesion = async () => {
-    await supabase.auth.signOut()
+    await signOut()
     router.push('/')
-    setMenuOpen(false)
+    router.refresh()
   }
 
   return (
-    <nav className="glass sticky top-0 z-50 border-b border-white/20">
+    <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-titulos text-xl font-bold tracking-tight text-primario">
-            inmersivapp
-          </span>
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+          <span className="font-titulos text-xl font-bold text-texto">Inmersivapp</span>
         </Link>
 
-        {/* Desktop */}
-        <div className="hidden items-center gap-6 md:flex">
-          <Link
-            href="/actividades"
-            className="text-sm font-medium text-texto/80 transition hover:text-primario"
-          >
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-4 md:flex">
+          <Link href="/actividades" className="text-sm font-medium text-texto/70 transition hover:text-texto">
             Explorar
           </Link>
-          {session ? (
+
+          {isSignedIn ? (
             <>
+              <Link href="/notificaciones" className="relative p-2 text-texto/70 transition hover:text-texto">
+                <Bell className="h-5 w-5" />
+                {noLeidos > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-error px-1 text-[9px] font-bold leading-none text-white">
+                    {noLeidos > 99 ? '99+' : noLeidos}
+                  </span>
+                )}
+              </Link>
+
+              <Link
+                href="/perfil"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-gray-100 hover:text-texto"
+              >
+                <UserCircle className="h-5 w-5" />
+                {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || 'Perfil'}
+              </Link>
+
               {esAdmin && (
                 <Link
                   href="/admin"
-                  className="rounded-lg bg-primario/10 px-3 py-1.5 text-sm font-medium text-primario transition hover:bg-primario/20"
+                  className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
                 >
                   Admin
                 </Link>
               )}
-              <Link
-                href="/perfil"
-                className="text-sm font-medium text-texto/80 transition hover:text-primario"
-              >
-                Perfil
-              </Link>
-              <Link
-                href="/notificaciones"
-                className="relative text-sm font-medium text-texto/80 transition hover:text-primario"
-              >
-                <Bell className="h-5 w-5" />
-                {noLeidos > 0 && (
-                  <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-error px-1 text-[9px] font-bold leading-none text-white">
-                    {noLeidos > 9 ? '9+' : noLeidos}
-                  </span>
-                )}
-              </Link>
+
               <button
                 onClick={cerrarSesion}
-                className="rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-error transition hover:bg-error/10"
               >
-                Cerrar sesión
+                Salir
               </button>
             </>
           ) : (
             <Link
               href="/login"
-              className="rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark"
+              className="rounded-lg bg-primario px-4 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark"
             >
               Ingresar
             </Link>
           )}
         </div>
 
-        {/* Hamburger */}
+        {/* Mobile toggle */}
         <button
+          className="rounded-lg p-2 text-texto transition hover:bg-gray-100 md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
-          className="rounded-lg p-2 text-texto transition hover:bg-black/5 md:hidden"
-          aria-label="Menú"
         >
           {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
-      {/* Mobile */}
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="border-t border-white/10 bg-white/90 px-4 pb-4 pt-2 backdrop-blur-lg md:hidden">
-          <div className="flex flex-col gap-2">
+        <div className="border-t border-gray-100 bg-white px-4 pb-4 pt-2 md:hidden">
+          <div className="flex flex-col gap-1">
             <Link
               href="/actividades"
-              className="rounded-lg px-3 py-2 text-sm font-medium text-texto/80 transition hover:bg-black/5"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
               onClick={() => setMenuOpen(false)}
             >
               Explorar
             </Link>
-            {session ? (
+
+            {isSignedIn ? (
               <>
-                {esAdmin && (
-                  <Link
-                    href="/admin"
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-primario transition hover:bg-primario/10"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Admin
-                  </Link>
-                )}
                 <Link
                   href="/perfil"
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-texto/80 transition hover:bg-black/5"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
                   onClick={() => setMenuOpen(false)}
                 >
+                  <UserCircle className="h-4 w-4" />
                   Perfil
                 </Link>
                 <Link
+                  href="/reservas"
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Mis reservas
+                </Link>
+                <Link
+                  href="/mensajes"
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Mensajes
+                </Link>
+                <Link
                   href="/notificaciones"
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-texto/80 transition hover:bg-black/5"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
                   onClick={() => setMenuOpen(false)}
                 >
                   <Bell className="h-4 w-4" />
@@ -169,8 +163,20 @@ export default function Navbar() {
                     </span>
                   )}
                 </Link>
+                {esAdmin && (
+                  <Link
+                    href="/admin"
+                    className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Panel Admin
+                  </Link>
+                )}
                 <button
-                  onClick={cerrarSesion}
+                  onClick={() => {
+                    setMenuOpen(false)
+                    cerrarSesion()
+                  }}
                   className="rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error/10"
                 >
                   Cerrar sesión

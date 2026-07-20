@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase-server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 
 export async function POST(req: Request) {
   try {
-    const supabase = await createClient()
-
     const { anuncio_id } = await req.json()
 
     if (!anuncio_id) {
@@ -15,14 +13,14 @@ export async function POST(req: Request) {
     }
 
     // Leer clicks actual e incrementar
-    const { data: anuncio } = await supabase
+    const { data: anuncio } = await supabaseAdmin
       .from('anuncios')
       .select('clicks')
       .eq('id', anuncio_id)
       .single()
 
     if (anuncio) {
-      const { error } = await supabase
+      const { error } = await supabaseAdmin
         .from('anuncios')
         .update({ clicks: (anuncio.clicks || 0) + 1 })
         .eq('id', anuncio_id)

@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase-server'
+import { auth } from '@clerk/nextjs/server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 import CardActividad from '@/components/CardActividad'
 import CarruselAnuncios from '@/components/CarruselAnuncios'
@@ -12,14 +13,15 @@ const CATEGORIAS_PORTFOLIO = [
 ]
 
 export default async function Home() {
-  const supabase = await createClient()
+  const { userId } = await auth()
+
   const [actividadesRes, anunciosRes] = await Promise.all([
-    supabase
+    supabaseAdmin
       .from('actividades')
       .select('*')
       .eq('activa', true)
       .order('created_at', { ascending: false }),
-    supabase
+    supabaseAdmin
       .from('anuncios')
       .select('*')
       .eq('activo', true)
@@ -30,13 +32,12 @@ export default async function Home() {
   const anuncios = anunciosRes.data || []
   const todas = actividadesRes.data || []
 
-  const { data: { session } } = await supabase.auth.getSession()
   let perfil = null
-  if (session) {
-    const { data } = await supabase
+  if (userId) {
+    const { data } = await supabaseAdmin
       .from('perfiles')
       .select('intereses')
-      .eq('id', session.user.id)
+      .eq('id', userId)
       .single()
     perfil = data
   }
@@ -58,37 +59,40 @@ export default async function Home() {
             <span className="text-primario"> transforman</span>
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-texto-secundario">
-            Conectá con experiencias auténticas y multisensoriales cerca tuyo.
-            Talleres, naturaleza, gastronomía y más.
+            Explorá actividades auténticas, conectá con anfitriones locales y viví
+            experiencias que van más allá de lo cotidiano.
           </p>
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/actividades"
-              className="rounded-xl bg-primario px-8 py-3 font-semibold text-white shadow-lg shadow-primario/25 transition hover:bg-primario-dark hover:shadow-xl hover:shadow-primario/30"
+              className="card-lift inline-flex items-center gap-2 rounded-xl bg-primario px-6 py-3 font-semibold text-white transition hover:bg-primario-dark"
             >
               Explorar actividades
+              <span className="text-lg">→</span>
             </Link>
             <Link
-              href="/registro"
-              className="rounded-xl border-2 border-primario/30 px-8 py-3 font-semibold text-primario transition hover:border-primario hover:bg-primario/5"
+              href="/actividades?categoria=Arte"
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-6 py-3 font-medium text-texto transition hover:bg-gray-50"
             >
-              Crear cuenta
+              Ver categorías
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Anuncios Patrocinados */}
-      <CarruselAnuncios anuncios={anuncios} />
+      {/* Anuncios patrocinados */}
+      {anuncios.length > 0 && (
+        <section className="mt-16">
+          <CarruselAnuncios anuncios={anuncios} />
+        </section>
+      )}
 
-      {/* Actividades destacadas */}
-      {todas.length > 0 && (
-        <section className="mt-12">
-          <div className="flex items-baseline justify-between">
+      {/* Recomendadas */}
+      {recomendadas.length > 0 && (
+        <section className="mt-16 mb-8">
+          <div className="flex items-center justify-between">
             <h2 className="font-titulos text-2xl font-bold text-texto">
-              {recomendadas.length > 0 && session
-                ? 'Recomendado para vos'
-                : 'Actividades destacadas'}
+              {perfil?.intereses?.length ? 'Recomendadas para vos' : 'Actividades destacadas'}
             </h2>
             <Link
               href="/actividades"
