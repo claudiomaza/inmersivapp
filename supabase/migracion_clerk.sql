@@ -50,11 +50,7 @@ DROP FUNCTION IF EXISTS crear_perfil_nuevo();
 -- 4. Eliminar FK de perfiles a auth.users
 ALTER TABLE perfiles DROP CONSTRAINT IF EXISTS perfiles_id_fkey;
 
--- 5. Cambiar perfiles.id de UUID a TEXT
---    Los UUIDs existentes se convierten automáticamente a TEXT
-ALTER TABLE perfiles ALTER COLUMN id TYPE TEXT;
-
--- 6. Eliminar FK constraints existentes en otras tablas
+-- 5. Eliminar FK constraints existentes en otras tablas
 ALTER TABLE actividades DROP CONSTRAINT IF EXISTS actividades_anfitrion_id_fkey;
 ALTER TABLE reservas DROP CONSTRAINT IF EXISTS reservas_usuario_id_fkey;
 ALTER TABLE resenas DROP CONSTRAINT IF EXISTS resenas_usuario_id_fkey;
@@ -62,13 +58,17 @@ ALTER TABLE mensajes DROP CONSTRAINT IF EXISTS mensajes_emisor_id_fkey;
 ALTER TABLE mensajes DROP CONSTRAINT IF EXISTS mensajes_receptor_id_fkey;
 ALTER TABLE notificaciones DROP CONSTRAINT IF EXISTS notificaciones_usuario_id_fkey;
 
--- 7. Cambiar columnas FK a TEXT
+-- 6. Cambiar columnas FK a TEXT (antes de perfiles.id para que los tipos coincidan al recrear FK)
 ALTER TABLE actividades ALTER COLUMN anfitrion_id TYPE TEXT;
 ALTER TABLE reservas ALTER COLUMN usuario_id TYPE TEXT;
 ALTER TABLE resenas ALTER COLUMN usuario_id TYPE TEXT;
 ALTER TABLE mensajes ALTER COLUMN emisor_id TYPE TEXT;
 ALTER TABLE mensajes ALTER COLUMN receptor_id TYPE TEXT;
 ALTER TABLE notificaciones ALTER COLUMN usuario_id TYPE TEXT;
+
+-- 7. Cambiar perfiles.id de UUID a TEXT
+--    Los UUIDs existentes se convierten automáticamente a TEXT
+ALTER TABLE perfiles ALTER COLUMN id TYPE TEXT;
 
 -- 8. Recrear FK constraints
 ALTER TABLE actividades ADD CONSTRAINT actividades_anfitrion_id_fkey
