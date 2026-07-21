@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 import CardActividad from '@/components/CardActividad'
 import CarruselAnuncios from '@/components/CarruselAnuncios'
+import PrimerosPasosModal from '@/components/PrimerosPasosModal'
 
 export const dynamic = 'force-dynamic'
 
@@ -59,8 +60,8 @@ export default async function Home() {
             <span className="text-primario"> transforman</span>
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-texto-secundario">
-            Explorá actividades auténticas, conectá con anfitriones locales y viví
-            experiencias que van más allá de lo cotidiano.
+            Conectá con experiencias auténticas y multisensoriales cerca tuyo.
+            Talleres, naturaleza, gastronomía y más.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
@@ -70,12 +71,15 @@ export default async function Home() {
               Explorar actividades
               <span className="text-lg">→</span>
             </Link>
-            <Link
-              href="/actividades?categoria=Arte"
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-6 py-3 font-medium text-texto transition hover:bg-gray-50"
-            >
-              Ver categorías
-            </Link>
+            {!userId && (
+              <Link
+                href="/registro"
+                className="card-lift inline-flex items-center gap-2 rounded-xl border-2 border-primario px-6 py-3 font-semibold text-primario transition hover:bg-primario hover:text-white"
+              >
+                Crear cuenta
+              </Link>
+            )}
+            <PrimerosPasosModal />
           </div>
         </div>
       </section>
