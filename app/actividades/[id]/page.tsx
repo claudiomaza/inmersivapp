@@ -69,6 +69,7 @@ export default function DetalleActividadPage() {
         fecha: fechaSel,
         estado: 'pendiente',
         codigo_confirmacion: generarCodigoConfirmacion(),
+        cupon_codigo: cuponValido?.valido ? cuponCodigo.toUpperCase() : null,
       })
       .select()
       .single()

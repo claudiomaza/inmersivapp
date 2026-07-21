@@ -1,1 +1,126 @@
-aW1wb3J0IHsgTmV4dFJlcXVlc3QsIE5leHRSZXNwb25zZSB9IGZyb20gJ25leHQvc2VydmVyJwppbXBvcnQgeyBhdXRoIH0gZnJvbSAnQGNsZXJrL25leHRqcy9zZXJ2ZXInCmltcG9ydCB7IHN1cGFiYXNlQWRtaW4gfSBmcm9tICdAL2xpYi9zdXBhYmFzZS1hZG1pbicKCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBHRVQocmVxOiBOZXh0UmVxdWVzdCkgewogIGNvbnN0IHsgdXNlcklkIH0gPSBhd2FpdCBhdXRoKCkKICBpZiAoIXVzZXJJZCkgewogICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6ICdObyBhdXRvcml6YWRvJyB9LCB7IHN0YXR1czogNDAxIH0pCiAgfQoKICBjb25zdCB7IHNlYXJjaFBhcmFtcyB9ID0gbmV3IFVSTChyZXEudXJsKQogIGNvbnN0IHRpcG8gPSBzZWFyY2hQYXJhbXMuZ2V0KCd0aXBvJykgfHwgJ3Jlc3VtZW4nCgogIC8vIFZlcmlmaWNhciBxdWUgc2VhIGFuZml0cmnDs24KICBjb25zdCB7IGRhdGE6IHBlcmZpbCB9ID0gYXdhaXQgc3VwYWJhc2VBZG1pbgogICAgLmZyb20oJ3BlcmZpbGVzJykKICAgIC5zZWxlY3QoJ3JvbGVzJykKICAgIC5lcSgnaWQnLCB1c2VySWQpCiAgICAuc2luZ2xlKCkKCiAgaWYgKCFwZXJmaWw/LnJvbGVzPy5pbmNsdWRlcygnYW5maXRyaW9uJykpIHsKICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IGVycm9yOiAnTm8gdGVuw6lzIHBlcm1pc29zIGRlIGFuZml0cmnDs24nIH0sIHsgc3RhdHVzOiA0MDMgfSkKICB9CgogIC8vIE1pcyBhY3RpdmlkYWRlcwogIGNvbnN0IHsgZGF0YTogbWlzQWN0aXZpZGFkZXMgfSA9IGF3YWl0IHN1cGFiYXNlQWRtaW4KICAgIC5mcm9tKCdhY3RpdmlkYWRlcycpCiAgICAuc2VsZWN0KCdpZCcpCiAgICAuZXEoJ2FuZml0cmlvbl9pZCcsIHVzZXJJZCkKCiAgY29uc3QgaWRzID0gbWlzQWN0aXZpZGFkZXM/Lm1hcCgoYSkgPT4gYS5pZCkgfHwgW10KCiAgaWYgKHRpcG8gPT09ICdyZXN1bWVuJykgewogICAgY29uc3QgW2FjdGl2aWRhZGVzUmVzLCByZXNlcnZhc1JlcywgcmVzZW5hc1Jlc10gPSBhd2FpdCBQcm9taXNlLmFsbChbCiAgICAgIHN1cGFiYXNlQWRtaW4KICAgICAgICAuZnJvbSgnYWN0aXZpZGFkZXMnKQogICAgICAgIC5zZWxlY3QoJyonLCB7IGNvdW50OiAnZXhhY3QnLCBoZWFkOiB0cnVlIH0pCiAgICAgICAgLmVxKCdhbmZpdHJpb25faWQnLCB1c2VySWQpLAogICAgICBpZHMubGVuZ3RoID4gMAogICAgICAgID8gc3VwYWJhc2VBZG1pbgogICAgICAgICAgICAuZnJvbSgncmVzZXJ2YXMnKQogICAgICAgICAgICAuc2VsZWN0KCcqJywgeyBjb3VudDogJ2V4YWN0JywgaGVhZDogdHJ1ZSB9KQogICAgICAgICAgICAuaW4oJ2FjdGl2aWRhZF9pZCcsIGlkcykKICAgICAgICA6IHsgY291bnQ6IDAgfSwKICAgICAgaWRzLmxlbmd0aCA+IDAKICAgICAgICA/IHN1cGFiYXNlQWRtaW4KICAgICAgICAgICAgLmZyb20oJ3Jlc2VuYXMnKQogICAgICAgICAgICAuc2VsZWN0KCcqJywgeyBjb3VudDogJ2V4YWN0JywgaGVhZDogdHJ1ZSB9KQogICAgICAgICAgICAuaW4oJ2FjdGl2aWRhZF9pZCcsIGlkcykKICAgICAgICA6IHsgY291bnQ6IDAgfSwKICAgIF0pCgogICAgLy8gQ2FsY3VsYXIgaW5ncmVzb3MgZXN0aW1hZG9zCiAgICBjb25zdCB7IGRhdGE6IHJlc2VydmFzQ29uZmlybWFkYXMgfSA9IGlkcy5sZW5ndGggPiAwCiAgICAgID8gYXdhaXQgc3VwYWJhc2VBZG1pbgogICAgICAgICAgLmZyb20oJ3Jlc2VydmFzJykKICAgICAgICAgIC5zZWxlY3QoJ2FjdGl2aWRhZF9pZCwgYWN0aXZpZGFkZXMhaW5uZXIocHJlY2lvKScpCiAgICAgICAgICAuaW4oJ2FjdGl2aWRhZF9pZCcsIGlkcykKICAgICAgICAgIC5pbignZXN0YWRvJywgWydjb25maXJtYWRhJywgJ2NvbXBsZXRhZGEnXSkKICAgICAgOiB7IGRhdGE6IFtdIH0KCiAgICBjb25zdCBpbmdyZXNvcyA9IChyZXNlcnZhc0NvbmZpcm1hZGFzIHx8IFtdKS5yZWR1Y2UoCiAgICAgIChzdW0sIHI6IGFueSkgPT4gc3VtICsgKHIuYWN0aXZpZGFkZXM/LnByZWNpbyB8fCAwKSwgMAogICAgKQoKICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7CiAgICAgIHRvdGFsQWN0aXZpZGFkZXM6IGFjdGl2aWRhZGVzUmVzLmNvdW50IHx8IDAsCiAgICAgIHRvdGFsUmVzZXJ2YXM6IHJlc2VydmFzUmVzLmNvdW50IHx8IDAsCiAgICAgIHRvdGFsUmVzZW5hczogcmVzZW5hc1Jlcy5jb3VudCB8fCAwLAogICAgICBpbmdyZXNvcywKICAgIH0pCiAgfQoKICBpZiAodGlwbyA9PT0gJ2FjdGl2aWRhZGVzJykgewogICAgY29uc3QgeyBkYXRhIH0gPSBhd2FpdCBzdXBhYmFzZUFkbWluCiAgICAgIC5mcm9tKCdhY3RpdmlkYWRlcycpCiAgICAgIC5zZWxlY3QoJyonKQogICAgICAuZXEoJ2FuZml0cmlvbl9pZCcsIHVzZXJJZCkKICAgICAgLm9yZGVyKCdjcmVhdGVkX2F0JywgeyBhc2NlbmRpbmc6IGZhbHNlIH0pCiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oZGF0YSB8fCBbXSkKICB9CgogIGlmICh0aXBvID09PSAncmVzZXJ2YXMnKSB7CiAgICBpZiAoaWRzLmxlbmd0aCA9PT0gMCkgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFtdKQogICAgY29uc3QgeyBkYXRhIH0gPSBhd2FpdCBzdXBhYmFzZUFkbWluCiAgICAgIC5mcm9tKCdyZXNlcnZhcycpCiAgICAgIC5zZWxlY3QoJyosIGFjdGl2aWRhZGVzIWlubmVyKHRpdHVsbywgcHJlY2lvLCBhbmZpdHJpb25fbm9tYnJlKScpCiAgICAgIC5pbignYWN0aXZpZGFkX2lkJywgaWRzKQogICAgICAub3JkZXIoJ2NyZWF0ZWRfYXQnLCB7IGFzY2VuZGluZzogZmFsc2UgfSkKICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbihkYXRhIHx8IFtdKQogIH0KCiAgaWYgKHRpcG8gPT09ICdyZXNlbmFzJykgewogICAgaWYgKGlkcy5sZW5ndGggPT09IDApIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbihbXSkKICAgIGNvbnN0IHsgZGF0YSB9ID0gYXdhaXQgc3VwYWJhc2VBZG1pbgogICAgICAuZnJvbSgncmVzZW5hcycpCiAgICAgIC5zZWxlY3QoJyosIGFjdGl2aWRhZGVzIWlubmVyKHRpdHVsbyknKQogICAgICAuaW4oJ2FjdGl2aWRhZF9pZCcsIGlkcykKICAgICAgLm9yZGVyKCdjcmVhdGVkX2F0JywgeyBhc2NlbmRpbmc6IGZhbHNlIH0pCiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oZGF0YSB8fCBbXSkKICB9CgogIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IGVycm9yOiAnVGlwbyBpbnbDoWxpZG8nIH0sIHsgc3RhdHVzOiA0MDAgfSkKfQ==
+import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
+
+export async function GET(req: NextRequest) {
+  const { userId } = await auth()
+  if (!userId) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
+
+  const { searchParams } = new URL(req.url)
+  const tipo = searchParams.get('tipo') || 'resumen'
+
+  // Verificar que sea anfitrión
+  const { data: perfil } = await supabaseAdmin
+    .from('perfiles')
+    .select('roles')
+    .eq('id', userId)
+    .single()
+
+  if (!perfil?.roles?.includes('anfitrion')) {
+    return NextResponse.json({ error: 'No tenés permisos de anfitrión' }, { status: 403 })
+  }
+
+  // Mis actividades
+  const { data: misActividades } = await supabaseAdmin
+    .from('actividades')
+    .select('id')
+    .eq('anfitrion_id', userId)
+
+  const ids = misActividades?.map((a) => a.id) || []
+
+  if (tipo === 'resumen') {
+    const [actividadesRes, reservasRes, resenasRes] = await Promise.all([
+      supabaseAdmin
+        .from('actividades')
+        .select('*', { count: 'exact', head: true })
+        .eq('anfitrion_id', userId),
+      ids.length > 0
+        ? supabaseAdmin
+            .from('reservas')
+            .select('*', { count: 'exact', head: true })
+            .in('actividad_id', ids)
+        : { count: 0 },
+      ids.length > 0
+        ? supabaseAdmin
+            .from('resenas')
+            .select('*', { count: 'exact', head: true })
+            .in('actividad_id', ids)
+        : { count: 0 },
+    ])
+
+    // Calcular ingresos estimados
+    const { data: reservasConfirmadas } = ids.length > 0
+      ? await supabaseAdmin
+          .from('reservas')
+          .select('actividad_id, actividades!inner(precio)')
+          .in('actividad_id', ids)
+          .in('estado', ['confirmada', 'completada'])
+      : { data: [] }
+
+    const ingresos = (reservasConfirmadas || []).reduce(
+      (sum, r: any) => sum + (r.actividades?.precio || 0), 0
+    )
+
+    return NextResponse.json({
+      totalActividades: actividadesRes.count || 0,
+      totalReservas: reservasRes.count || 0,
+      totalResenas: resenasRes.count || 0,
+      ingresos,
+    })
+  }
+
+  if (tipo === 'actividades') {
+    const { data } = await supabaseAdmin
+      .from('actividades')
+      .select('*')
+      .eq('anfitrion_id', userId)
+      .order('created_at', { ascending: false })
+    return NextResponse.json(data || [])
+  }
+
+  if (tipo === 'reservas') {
+    if (ids.length === 0) return NextResponse.json([])
+    const { data } = await supabaseAdmin
+      .from('reservas')
+      .select('*, actividades!inner(titulo, precio, anfitrion_nombre)')
+      .in('actividad_id', ids)
+      .order('created_at', { ascending: false })
+    return NextResponse.json(data || [])
+  }
+
+  if (tipo === 'resenas') {
+    if (ids.length === 0) return NextResponse.json([])
+    const { data } = await supabaseAdmin
+      .from('resenas')
+      .select('*, actividades!inner(titulo)')
+      .in('actividad_id', ids)
+      .order('created_at', { ascending: false })
+    return NextResponse.json(data || [])
+  }
+
+  if (tipo === 'ingresos') {
+    const { data: pendientes } = await supabaseAdmin
+      .from('pagos_anfitrion')
+      .select('*')
+      .eq('anfitrion_id', userId)
+      .eq('estado', 'pendiente')
+      .order('created_at', { ascending: false })
+
+    const { data: pagados } = await supabaseAdmin
+      .from('pagos_anfitrion')
+      .select('monto')
+      .eq('anfitrion_id', userId)
+      .eq('estado', 'pagado')
+
+    const totalPagado = (pagados || []).reduce((sum, p) => sum + p.monto, 0)
+
+    return NextResponse.json({
+      pendientes: pendientes || [],
+      totalPagado,
+    })
+  }
+
+  return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 })
+}

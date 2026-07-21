@@ -49,6 +49,38 @@ export async function POST(req: Request) {
       .update({ estado: estadoReserva })
       .eq('id', reservaId)
 
+    // ─── Si el pago se aprobó ────────────────────────────────
+    if (estadoMP === 'approved') {
+      // Obtener datos de la reserva (actividad + cupón)
+      const { data: reserva } = await supabaseAdmin
+        .from('reservas')
+        .select('cupon_codigo, actividad_id, actividades!inner(anfitrion_id, precio)')
+        .eq('id', reservaId)
+        .single()
+
+      if (reserva) {
+        const anfitrionId = (reserva.actividades as any).anfitrion_id
+        const precio = (reserva.actividades as any).precio
+
+        // 1. Consumir cupón si se usó uno
+        if (reserva.cupon_codigo) {
+          await supabaseAdmin.rpc('incrementar_usos_cupon', {
+            p_codigo: reserva.cupon_codigo,
+          })
+        }
+
+        // 2. Registrar pago a anfitrión (Opción B)
+        const comision = Math.round(precio * 0.1) // 10% comisión plataforma
+        await supabaseAdmin.from('pagos_anfitrion').insert({
+          reserva_id: reservaId,
+          anfitrion_id: anfitrionId,
+          monto: precio - comision,
+          comision,
+          estado: 'pendiente',
+        })
+      }
+    }
+
     return NextResponse.json({ received: true })
   } catch (error) {
     console.error('Error en webhook MP:', error)
