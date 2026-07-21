@@ -37,6 +37,9 @@ DROP POLICY IF EXISTS "Notificaciones lectura" ON notificaciones;
 DROP POLICY IF EXISTS "Notificaciones inserción sistema" ON notificaciones;
 DROP POLICY IF EXISTS "Notificaciones marcado leído" ON notificaciones;
 
+-- Anuncios
+DROP POLICY IF EXISTS "anuncios_all_anfitrion" ON anuncios;
+
 -- 2. Agregar columna email a perfiles
 ALTER TABLE perfiles ADD COLUMN IF NOT EXISTS email TEXT;
 
