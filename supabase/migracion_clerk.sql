@@ -5,41 +5,20 @@
 -- Ejecutar en orden en el SQL Editor de Supabase
 -- ============================================================
 
--- 1. PRIMERO: Eliminar TODAS las políticas de RLS que referencien tablas
---    que vamos a modificar (necesario para poder cambiar tipos de columna)
-
--- Perfiles
-DROP POLICY IF EXISTS "Perfiles lectura pública" ON perfiles;
-DROP POLICY IF EXISTS "Perfiles actualización propia" ON perfiles;
-
--- Actividades
-DROP POLICY IF EXISTS "Actividades lectura pública" ON actividades;
-DROP POLICY IF EXISTS "Actividades escritura anfitrión" ON actividades;
-
--- Reservas
-DROP POLICY IF EXISTS "Reservas lectura usuario" ON reservas;
-DROP POLICY IF EXISTS "Reservas inserción usuario" ON reservas;
-DROP POLICY IF EXISTS "Reservas cancelación usuario" ON reservas;
-
--- Pagos
-DROP POLICY IF EXISTS "Pagos lectura propietario" ON pagos;
-
--- Reseñas
-DROP POLICY IF EXISTS "Reseñas lectura pública" ON resenas;
-DROP POLICY IF EXISTS "Reseñas inserción usuario" ON resenas;
-
--- Mensajes
-DROP POLICY IF EXISTS "Mensajes lectura" ON mensajes;
-DROP POLICY IF EXISTS "Mensajes inserción" ON mensajes;
-DROP POLICY IF EXISTS "mensajes_select_participant" ON mensajes;
-
--- Notificaciones
-DROP POLICY IF EXISTS "Notificaciones lectura" ON notificaciones;
-DROP POLICY IF EXISTS "Notificaciones inserción sistema" ON notificaciones;
-DROP POLICY IF EXISTS "Notificaciones marcado leído" ON notificaciones;
-
--- Anuncios
-DROP POLICY IF EXISTS "anuncios_all_anfitrion" ON anuncios;
+-- 1. PRIMERO: Eliminar TODAS las políticas de RLS de las tablas que vamos a modificar
+--    (necesario para poder cambiar tipos de columna)
+DO $$ DECLARE
+  pol RECORD;
+BEGIN
+  FOR pol IN
+    SELECT policyname, tablename
+    FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename IN ('perfiles', 'actividades', 'reservas', 'pagos', 'resenas', 'mensajes', 'notificaciones', 'anuncios')
+  LOOP
+    EXECUTE format('DROP POLICY IF EXISTS %I ON %I', pol.policyname, pol.tablename);
+  END LOOP;
+END $$;
 
 -- 2. Agregar columna email a perfiles
 ALTER TABLE perfiles ADD COLUMN IF NOT EXISTS email TEXT;
