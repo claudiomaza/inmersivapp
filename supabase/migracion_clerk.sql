@@ -31,6 +31,7 @@ DROP POLICY IF EXISTS "Reseñas inserción usuario" ON resenas;
 -- Mensajes
 DROP POLICY IF EXISTS "Mensajes lectura" ON mensajes;
 DROP POLICY IF EXISTS "Mensajes inserción" ON mensajes;
+DROP POLICY IF EXISTS "mensajes_select_participant" ON mensajes;
 
 -- Notificaciones
 DROP POLICY IF EXISTS "Notificaciones lectura" ON notificaciones;
