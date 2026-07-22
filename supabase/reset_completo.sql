@@ -54,6 +54,7 @@ ALTER TABLE resenas DROP CONSTRAINT IF EXISTS resenas_usuario_id_fkey;
 ALTER TABLE mensajes DROP CONSTRAINT IF EXISTS mensajes_emisor_id_fkey;
 ALTER TABLE mensajes DROP CONSTRAINT IF EXISTS mensajes_receptor_id_fkey;
 ALTER TABLE notificaciones DROP CONSTRAINT IF EXISTS notificaciones_usuario_id_fkey;
+ALTER TABLE anuncios DROP CONSTRAINT IF EXISTS anuncios_patrocinador_id_fkey;
 
 ALTER TABLE actividades ALTER COLUMN anfitrion_id TYPE TEXT;
 ALTER TABLE reservas ALTER COLUMN usuario_id TYPE TEXT;
@@ -61,6 +62,7 @@ ALTER TABLE resenas ALTER COLUMN usuario_id TYPE TEXT;
 ALTER TABLE mensajes ALTER COLUMN emisor_id TYPE TEXT;
 ALTER TABLE mensajes ALTER COLUMN receptor_id TYPE TEXT;
 ALTER TABLE notificaciones ALTER COLUMN usuario_id TYPE TEXT;
+ALTER TABLE anuncios ALTER COLUMN patrocinador_id TYPE TEXT;
 
 ALTER TABLE perfiles ALTER COLUMN id TYPE TEXT;
 
@@ -76,6 +78,8 @@ ALTER TABLE mensajes ADD CONSTRAINT mensajes_receptor_id_fkey
   FOREIGN KEY (receptor_id) REFERENCES perfiles(id) ON DELETE CASCADE;
 ALTER TABLE notificaciones ADD CONSTRAINT notificaciones_usuario_id_fkey
   FOREIGN KEY (usuario_id) REFERENCES perfiles(id) ON DELETE CASCADE;
+ALTER TABLE anuncios ADD CONSTRAINT anuncios_patrocinador_id_fkey
+  FOREIGN KEY (patrocinador_id) REFERENCES perfiles(id) ON DELETE CASCADE;
 
 CREATE POLICY "Perfiles lectura pública" ON perfiles FOR SELECT USING (true);
 CREATE POLICY "Actividades lectura pública" ON actividades FOR SELECT USING (true);
