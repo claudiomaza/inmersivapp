@@ -55,6 +55,11 @@ ALTER TABLE mensajes DROP CONSTRAINT IF EXISTS mensajes_emisor_id_fkey;
 ALTER TABLE mensajes DROP CONSTRAINT IF EXISTS mensajes_receptor_id_fkey;
 ALTER TABLE notificaciones DROP CONSTRAINT IF EXISTS notificaciones_usuario_id_fkey;
 ALTER TABLE anuncios DROP CONSTRAINT IF EXISTS anuncios_patrocinador_id_fkey;
+ALTER TABLE cupones DROP CONSTRAINT IF EXISTS cupones_anfitrion_id_fkey;
+ALTER TABLE pagos DROP CONSTRAINT IF EXISTS pagos_usuario_id_fkey;
+ALTER TABLE pagos DROP CONSTRAINT IF EXISTS pagos_reserva_id_fkey;
+ALTER TABLE pagos_anfitrion DROP CONSTRAINT IF EXISTS pagos_anfitrion_reserva_id_fkey;
+ALTER TABLE pagos_anfitrion DROP CONSTRAINT IF EXISTS pagos_anfitrion_anfitrion_id_fkey;
 
 ALTER TABLE actividades ALTER COLUMN anfitrion_id TYPE TEXT;
 ALTER TABLE reservas ALTER COLUMN usuario_id TYPE TEXT;
@@ -63,6 +68,10 @@ ALTER TABLE mensajes ALTER COLUMN emisor_id TYPE TEXT;
 ALTER TABLE mensajes ALTER COLUMN receptor_id TYPE TEXT;
 ALTER TABLE notificaciones ALTER COLUMN usuario_id TYPE TEXT;
 ALTER TABLE anuncios ALTER COLUMN patrocinador_id TYPE TEXT;
+ALTER TABLE cupones ALTER COLUMN anfitrion_id TYPE TEXT;
+ALTER TABLE pagos ALTER COLUMN usuario_id TYPE TEXT;
+ALTER TABLE pagos ALTER COLUMN reserva_id TYPE TEXT;
+ALTER TABLE reservas ALTER COLUMN id TYPE TEXT;
 
 ALTER TABLE perfiles ALTER COLUMN id TYPE TEXT;
 
@@ -80,6 +89,12 @@ ALTER TABLE notificaciones ADD CONSTRAINT notificaciones_usuario_id_fkey
   FOREIGN KEY (usuario_id) REFERENCES perfiles(id) ON DELETE CASCADE;
 ALTER TABLE anuncios ADD CONSTRAINT anuncios_patrocinador_id_fkey
   FOREIGN KEY (patrocinador_id) REFERENCES perfiles(id) ON DELETE CASCADE;
+ALTER TABLE cupones ADD CONSTRAINT cupones_anfitrion_id_fkey
+  FOREIGN KEY (anfitrion_id) REFERENCES perfiles(id) ON DELETE CASCADE;
+ALTER TABLE pagos ADD CONSTRAINT pagos_usuario_id_fkey
+  FOREIGN KEY (usuario_id) REFERENCES perfiles(id) ON DELETE CASCADE;
+ALTER TABLE pagos ADD CONSTRAINT pagos_reserva_id_fkey
+  FOREIGN KEY (reserva_id) REFERENCES reservas(id) ON DELETE CASCADE;
 
 CREATE POLICY "Perfiles lectura pública" ON perfiles FOR SELECT USING (true);
 CREATE POLICY "Actividades lectura pública" ON actividades FOR SELECT USING (true);
