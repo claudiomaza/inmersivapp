@@ -58,8 +58,12 @@ ALTER TABLE anuncios DROP CONSTRAINT IF EXISTS anuncios_patrocinador_id_fkey;
 ALTER TABLE cupones DROP CONSTRAINT IF EXISTS cupones_anfitrion_id_fkey;
 ALTER TABLE pagos DROP CONSTRAINT IF EXISTS pagos_usuario_id_fkey;
 ALTER TABLE pagos DROP CONSTRAINT IF EXISTS pagos_reserva_id_fkey;
-ALTER TABLE pagos_anfitrion DROP CONSTRAINT IF EXISTS pagos_anfitrion_reserva_id_fkey;
-ALTER TABLE pagos_anfitrion DROP CONSTRAINT IF EXISTS pagos_anfitrion_anfitrion_id_fkey;
+DO $$ BEGIN
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='pagos_anfitrion') THEN
+    ALTER TABLE pagos_anfitrion DROP CONSTRAINT IF EXISTS pagos_anfitrion_reserva_id_fkey;
+    ALTER TABLE pagos_anfitrion DROP CONSTRAINT IF EXISTS pagos_anfitrion_anfitrion_id_fkey;
+  END IF;
+END $$;
 
 ALTER TABLE actividades ALTER COLUMN anfitrion_id TYPE TEXT;
 ALTER TABLE reservas ALTER COLUMN usuario_id TYPE TEXT;
