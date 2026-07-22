@@ -10,17 +10,20 @@
 -- 1. BORRAR TODO (reset completo)
 -- ════════════════════════════════════════════════════════════
 -- Elimina datos existentes en orden inverso a las FK
+-- Usa DO así no falla si alguna tabla no existe todavía
 
-DELETE FROM pagos_anfitrion;
-DELETE FROM pagos;
-DELETE FROM resenas;
-DELETE FROM mensajes;
-DELETE FROM notificaciones;
-DELETE FROM reservas;
-DELETE FROM anuncios;
-DELETE FROM cupones;
-DELETE FROM actividades;
-DELETE FROM perfiles;
+DO $$ BEGIN
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='pagos_anfitrion') THEN DELETE FROM pagos_anfitrion; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='pagos') THEN DELETE FROM pagos; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='resenas') THEN DELETE FROM resenas; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='mensajes') THEN DELETE FROM mensajes; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='notificaciones') THEN DELETE FROM notificaciones; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='reservas') THEN DELETE FROM reservas; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='anuncios') THEN DELETE FROM anuncios; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='cupones') THEN DELETE FROM cupones; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='actividades') THEN DELETE FROM actividades; END IF;
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname='public' AND tablename='perfiles') THEN DELETE FROM perfiles; END IF;
+END $$;
 
 -- ════════════════════════════════════════════════════════════
 -- 2. MIGRACIÓN CLERK (UUID → TEXT + RLS)
