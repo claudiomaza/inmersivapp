@@ -1,1 +1,294 @@
-LS0gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Ci0tIElOTUVSU0lWQVBQIOKAlCBTZWVkIGRlIGRhdG9zIHJlYWxpc3RhcwotLSBTZWxsbzogY20ybGFicyDCtyAyMDI2LTA3LTIxCi0tID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQotLSBFamVjdXRhciBERVNQVcOJUyBkZSBtaWdyYWNpb25fY2xlcmsuc3FsCi0tID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoKLS0g4pSA4pSA4pSAIEFORklUUklPTkVTIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKSU5TRVJUIElOVE8gcGVyZmlsZXMgKGlkLCBlbWFpbCwgdXNlcm5hbWUsIG5vbWJyZSwgYXBlbGxpZG8sIHRlbGVmb25vLCBpbnRlcmVzZXMsIHJvbGVzKSBWQUxVRVMKKCdhbmZpdHJpb25fMDEnLCAnc29maWEubWFydGluZXpAZW1haWwuY29tJywgJ3NvZmlhcnRlJywgJ1NvZsOtYScsICdNYXJ0w61uZXonLCAnKzU0OTI2MTUwMDEwMDEnLCAne0FydGUsRm90b2dyYWbDrWEsTWFudWFsaWRhZGVzfScsICd7YW5maXRyaW9ufScpLAooJ2FuZml0cmlvbl8wMicsICdwYWJsby5naW1lbmV6QGVtYWlsLmNvbScsICdwYWJsb3RyZWtrJywgJ1BhYmxvJywgJ0dpbcOpbmV6JywgJys1NDkyNjE1MDAxMDAyJywgJ3tOYXR1cmFsZXphLERlcG9ydGVzfScsICd7YW5maXRyaW9ufScpLAooJ2FuZml0cmlvbl8wMycsICdsdWNpYS5mZXJuYW5kZXpAZW1haWwuY29tJywgJ2x1Y29vaycsICdMdWPDrWEnLCAnRmVybsOhbmRleicsICcrNTQ5MjYxNTAwMTAwMycsICd7Q29jaW5hLEFydGV9JywgJ3thbmZpdHJpb259JyksCignYW5maXRyaW9uXzA0JywgJ21hcnRpbi5sb3BlekBlbWFpbC5jb20nLCAnbWFydGlubXVzaWNhJywgJ01hcnTDrW4nLCAnTMOzcGV6JywgJys1NDkyNjE1MDAxMDA0JywgJ3tNw7pzaWNhLFRlY25vbG9nw61hfScsICd7YW5maXRyaW9ufScpLAooJ2FuZml0cmlvbl8wNScsICdjYXJvbGluYS5kaWF6QGVtYWlsLmNvbScsICdjYXJveW9nYScsICdDYXJvbGluYScsICdEw61heicsICcrNTQ5MjYxNTAwMTAwNScsICd7WW9nYSxNZWRpdGFjacOzbixOYXR1cmFsZXphfScsICd7YW5maXRyaW9ufScpLAooJ2FuZml0cmlvbl8wNicsICdhbmRyZXMucGVyZXpAZW1haWwuY29tJywgJ2FuZHJlc2ZvdG8nLCAnQW5kcsOpcycsICdQw6lyZXonLCAnKzU0OTI2MTUwMDEwMDYnLCAne0ZvdG9ncmFmw61hLEFydGUsVGVjbm9sb2fDrWF9JywgJ3thbmZpdHJpb259JyksCignYW5maXRyaW9uXzA3JywgJ3ZhbGVudGluYS5yb2phc0BlbWFpbC5jb20nLCAndmFsZWNvY2luYScsICdWYWxlbnRpbmEnLCAnUm9qYXMnLCAnKzU0OTI2MTUwMDEwMDcnLCAne0NvY2luYSxUZWF0cm99JywgJ3thbmZpdHJpb259JyksCignYW5maXRyaW9uXzA4JywgJ2dhYnJpZWwuc29zYUBlbWFpbC5jb20nLCAnZ2FiaXNlbmRlcicsICdHYWJyaWVsJywgJ1Nvc2EnLCAnKzU0OTI2MTUwMDEwMDgnLCAne05hdHVyYWxlemEsRGVwb3J0ZXMsRm90b2dyYWbDrWF9JywgJ3thbmZpdHJpb259Jyk7CgotLSDilIDilIDilIAgUEFSVElDSVBBTlRFUyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCklOU0VSVCBJTlRPIHBlcmZpbGVzIChpZCwgZW1haWwsIHVzZXJuYW1lLCBub21icmUsIGFwZWxsaWRvLCB0ZWxlZm9ubywgaW50ZXJlc2VzLCByb2xlcykgVkFMVUVTCigncGFydF8wMScsICdqdWFuLnBlcmV6QGVtYWlsLmNvbScsICdqdWFucCcsICdKdWFuJywgJ1DDqXJleicsICcrNTQ5MjYxNTAwMjAwMScsICd7QXJ0ZSxNw7pzaWNhLENvY2luYX0nLCAne3BhcnRpY2lwYW50ZX0nKSwKKCdwYXJ0XzAyJywgJ21hcmlhLmdvbnphbGV6QGVtYWlsLmNvbScsICdtYXJpYWcnLCAnTWFyw61hJywgJ0dvbnrDoWxleicsICcrNTQ5MjYxNTAwMjAwMicsICd7TmF0dXJhbGV6YSxZb2dhLE1lZGl0YWNpw7NufScsICd7cGFydGljaXBhbnRlfScpLAooJ3BhcnRfMDMnLCAnY2FybG9zLnNhbmNoZXpAZW1haWwuY29tJywgJ2Nhcmxvc3MnLCAnQ2FybG9zJywgJ1PDoW5jaGV6JywgJys1NDkyNjE1MDAyMDAzJywgJ3tUZWNub2xvZ8OtYSxEZXBvcnRlc30nLCAne3BhcnRpY2lwYW50ZX0nKSwKKCdwYXJ0XzA0JywgJ2FuYS5yb2RyaWd1ZXpAZW1haWwuY29tJywgJ2FuYXJvZCcsICdBbmEnLCAnUm9kcsOtZ3VleicsICcrNTQ5MjYxNTAwMjAwNCcsICd7Rm90b2dyYWbDrWEsQXJ0ZSxNYW51YWxpZGFkZXN9JywgJ3twYXJ0aWNpcGFudGV9JyksCigncGFydF8wNScsICdsYXV0YXJvLm1lbmRvemFAZW1haWwuY29tJywgJ2xhdXRhcm9tJywgJ0xhdXRhcm8nLCAnTWVuZG96YScsICcrNTQ5MjYxNTAwMjAwNScsICd7Q29jaW5hLE5hdHVyYWxlemEsVGVhdHJvfScsICd7cGFydGljaXBhbnRlfScpLAooJ3BhcnRfMDYnLCAnY2FtaWxhLnRvcnJlc0BlbWFpbC5jb20nLCAnY2FtaXRvcnJlcycsICdDYW1pbGEnLCAnVG9ycmVzJywgJys1NDkyNjE1MDAyMDA2JywgJ3tZb2dhLE1lZGl0YWNpw7NuLE3DunNpY2F9JywgJ3twYXJ0aWNpcGFudGV9JyksCigncGFydF8wNycsICdmYWN1bmRvLmFyaWFzQGVtYWlsLmNvbScsICdmYWN1bmRvJywgJ0ZhY3VuZG8nLCAnQXJpYXMnLCAnKzU0OTI2MTUwMDIwMDcnLCAne0RlcG9ydGVzLE5hdHVyYWxlemF9JywgJ3twYXJ0aWNpcGFudGV9JyksCigncGFydF8wOCcsICdmbG9yZW5jaWEubW9saW5hQGVtYWlsLmNvbScsICdmbG9ybW9saW5hJywgJ0Zsb3JlbmNpYScsICdNb2xpbmEnLCAnKzU0OTI2MTUwMDIwMDgnLCAne0FydGUsRm90b2dyYWbDrWEsQ29jaW5hfScsICd7cGFydGljaXBhbnRlfScpLAooJ3BhcnRfMDknLCAnbmljb2xhcy5jYXN0aWxsb0BlbWFpbC5jb20nLCAnbmljb2Nhc3QnLCAnTmljb2zDoXMnLCAnQ2FzdGlsbG8nLCAnKzU0OTI2MTUwMDIwMDknLCAne1RlY25vbG9nw61hLE3DunNpY2EsVGVhdHJvfScsICd7cGFydGljaXBhbnRlfScpLAooJ3BhcnRfMTAnLCAnYWd1c3RpbmEuZmVycmV5cmFAZW1haWwuY29tJywgJ2FndXNmZXInLCAnQWd1c3RpbmEnLCAnRmVycmV5cmEnLCAnKzU0OTI2MTUwMDIwMTAnLCAne05hdHVyYWxlemEsWW9nYSxNYW51YWxpZGFkZXN9JywgJ3twYXJ0aWNpcGFudGV9Jyk7CgotLSDilIDilIDilIAgQUNUSVZJREFERVMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgpJTlNFUlQgSU5UTyBhY3RpdmlkYWRlcyAoaWQsIHRpdHVsbywgZGVzY3JpcGNpb24sIHByZWNpbywgY2F0ZWdvcmlhLCBmb3RvcywgdWJpY2FjaW9uLCBhbmZpdHJpb25faWQsIGFuZml0cmlvbl9ub21icmUsIGhvcmFyaW9zLCBmZWNoYXMsIGFjdGl2YSkgVkFMVUVTCigKICAnYWN0XzAxJywKICAnVGFsbGVyIGRlIEFjdWFyZWxhIEJvdMOhbmljYScsCiAgJ0FwcmVuZMOpIHTDqWNuaWNhcyBkZSBhY3VhcmVsYSBwaW50YW5kbyBmbG9yZXMgeSBwbGFudGFzIG5hdGl2YXMgZGUgTWVuZG96YS4gTWF0ZXJpYWxlcyBpbmNsdWlkb3MuIElkZWFsIHBhcmEgcHJpbmNpcGlhbnRlcy4nLAogIDM1MDAsCiAgJ0FydGUnLAogIEFSUkFZWydodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tMTUxMzM2NDc3NjE0NC02MDk2N2IwZjgwMGY/dz04MDAnXSwKICAneyJwcm92aW5jaWEiOiJNZW5kb3phIiwiZGVwYXJ0YW1lbnRvIjoiQ2FwaXRhbCIsImRpcmVjY2lvbiI6IkF2LiBTYW4gTWFydMOtbiA4NDUsIENpdWRhZCJ9JywKICAnYW5maXRyaW9uXzAxJywKICAnU29mw61hIE1hcnTDrW5leicsCiAgJ3siTHVuZXMiOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIxMDowMCIsImZpbiI6IjEyOjAwIn0sIk1pZXJjb2xlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjEwOjAwIiwiZmluIjoiMTI6MDAifSwiU2FiYWRvIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTU6MDAiLCJmaW4iOiIxNzowMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDMnLCcyMDI2LTA4LTA1JywnMjAyNi0wOC0xMCcsJzIwMjYtMDgtMTInLCcyMDI2LTA4LTE3J10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8wMicsCiAgJ1RyZWtraW5nIGFsIENlcnJvIGRlIGxhIFZpcmdlbicsCiAgJ0NhbWluYXRhIGd1aWFkYSBwb3Igc2VuZGVyb3MgZGVsIENlcnJvIGRlIGxhIFZpcmdlbiBjb24gdmlzdGEgcGFub3LDoW1pY2EgZGUgbGEgY2l1ZGFkLiBJbmNsdXllIG1hdGUgZGUgYmllbnZlbmlkYSBlbiBsYSBjaW1hLicsCiAgMjUwMCwKICAnTmF0dXJhbGV6YScsCiAgQVJSQVlbJ2h0dHBzOi8vaW1hZ2VzLnVuc3BsYXNoLmNvbS9waG90by0xNTUxNjMyODExLTU2MTczMmQxZTMwNj93PTgwMCddLAogICd7InByb3ZpbmNpYSI6Ik1lbmRvemEiLCJkZXBhcnRhbWVudG8iOiJDYXBpdGFsIiwiZGlyZWNjaW9uIjoiQXYuIGRlIGxvcyBUcmFiYWphZG9yZXMgcy9uLCBCYXNlIGRlbCBDZXJybyJ9JywKICAnYW5maXRyaW9uXzAyJywKICAnUGFibG8gR2ltw6luZXonLAogICd7Ik1hcnRlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjA4OjAwIiwiZmluIjoiMTE6MDAifSwiSnVldmVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMDg6MDAiLCJmaW4iOiIxMTowMCJ9LCJTYWJhZG8iOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIwNzowMCIsImZpbiI6IjEwOjAwIn19JywKICBBUlJBWVsnMjAyNi0wOC0wNCcsJzIwMjYtMDgtMDYnLCcyMDI2LTA4LTA4JywnMjAyNi0wOC0xMScsJzIwMjYtMDgtMTMnXSwKICB0cnVlCiksCigKICAnYWN0XzAzJywKICAnQ2xhc2UgZGUgQ29jaW5hIFJlZ2lvbmFsOiBFbXBhbmFkYXMgTWVuZG9jaW5hcycsCiAgJ0FwcmVuZMOpIGEgcHJlcGFyYXIgZW1wYW5hZGFzIG1lbmRvY2luYXMgYXV0w6ludGljYXMgY29uIHJlY2V0YSBmYW1pbGlhci4gSW5jbHV5ZSBkZWd1c3RhY2nDs24gY29uIHZpbm8gZGUgbGEgem9uYS4nLAogIDU1MDAsCiAgJ0NvY2luYScsCiAgQVJSQVlbJ2h0dHBzOi8vaW1hZ2VzLnVuc3BsYXNoLmNvbS9waG90by0xNTU1OTM5NTk0LTU4ZDdjYjU2MWFkMT93PTgwMCddLAogICd7InByb3ZpbmNpYSI6Ik1lbmRvemEiLCJkZXBhcnRhbWVudG8iOiJHb2RveSBDcnV6IiwiZGlyZWNjaW9uIjoiTGF2YWxsZSA0NTAsIEdvZG95IENydXoifScsCiAgJ2FuZml0cmlvbl8wMycsCiAgJ0x1Y8OtYSBGZXJuw6FuZGV6JywKICAneyJNaWVyY29sZXMiOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIxODowMCIsImZpbiI6IjIxOjAwIn0sIlZpZXJuZXMiOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIxODowMCIsImZpbiI6IjIxOjAwIn0sIlNhYmFkbyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjExOjAwIiwiZmluIjoiMTQ6MDAifX0nLAogIEFSUkFZWycyMDI2LTA4LTA1JywnMjAyNi0wOC0wNycsJzIwMjYtMDgtMTInLCcyMDI2LTA4LTE0JywnMjAyNi0wOC0xOSddLAogIHRydWUKKSwKKAogICdhY3RfMDQnLAogICdOb2NoZSBkZSBNw7pzaWNhIGVuIFZpdm86IEphenogRnVzacOzbicsCiAgJ1ZlbGFkYSDDrW50aW1hIGNvbiBtw7pzaWNvcyBsb2NhbGVzIGRlIGphenogZnVzacOzbi4gSW5jbHV5ZSBjb3BhIGRlIHZpbm8geSB0YWJsYSBkZSBxdWVzb3MuIENhcGFjaWRhZCBsaW1pdGFkYSBhIDIwIHBlcnNvbmFzLicsCiAgNjUwMCwKICAnTcO6c2ljYScsCiAgQVJSQVlbJ2h0dHBzOi8vaW1hZ2VzLnVuc3BsYXNoLmNvbS9waG90by0xNTExMTkyMzM2NTc1LTVhNzlhZjY3YTYyOT93PTgwMCddLAogICd7InByb3ZpbmNpYSI6Ik1lbmRvemEiLCJkZXBhcnRhbWVudG8iOiJDYXBpdGFsIiwiZGlyZWNjaW9uIjoiR3V0acOpcnJleiAzMjAsIENpdWRhZCJ9JywKICAnYW5maXRyaW9uXzA0JywKICAnTWFydMOtbiBMw7NwZXonLAogICd7Ikp1ZXZlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjIwOjAwIiwiZmluIjoiMjM6MDAifSwiU2FiYWRvIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMjA6MDAiLCJmaW4iOiIyMzowMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDYnLCcyMDI2LTA4LTA4JywnMjAyNi0wOC0xMycsJzIwMjYtMDgtMTUnLCcyMDI2LTA4LTIwJ10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8wNScsCiAgJ1lvZ2EgYWwgQW1hbmVjZXIgZW4gZWwgUGFycXVlJywKICAnU2VzacOzbiBkZSB5b2dhIGFsIGFpcmUgbGlicmUgZW4gZWwgUGFycXVlIEdlbmVyYWwgU2FuIE1hcnTDrW4gYWwgYW1hbmVjZXIuIFRvZG9zIGxvcyBuaXZlbGVzIGJpZW52ZW5pZG9zLiBUcmFlciBtYXQuJywKICAyMDAwLAogICdZb2dhJywKICBBUlJBWVsnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE1NDQzNjc1NjctMGYyZmNiMDA5ZTBiP3c9ODAwJ10sCiAgJ3sicHJvdmluY2lhIjoiTWVuZG96YSIsImRlcGFydGFtZW50byI6IkNhcGl0YWwiLCJkaXJlY2Npb24iOiJQYXJxdWUgR3JhbC4gU2FuIE1hcnTDrW4sIFJvc2VkYWwifScsCiAgJ2FuZml0cmlvbl8wNScsCiAgJ0Nhcm9saW5hIETDrWF6JywKICAneyJMdW5lcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjA2OjMwIiwiZmluIjoiMDc6MzAifSwiTWllcmNvbGVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMDY6MzAiLCJmaW4iOiIwNzozMCJ9LCJWaWVybmVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMDY6MzAiLCJmaW4iOiIwNzozMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDMnLCcyMDI2LTA4LTA1JywnMjAyNi0wOC0wNycsJzIwMjYtMDgtMTAnLCcyMDI2LTA4LTEyJ10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8wNicsCiAgJ1NhZmFyaSBGb3RvZ3LDoWZpY28gVXJiYW5vJywKICAnUmVjb3JyaWRvIGEgcGllIHBvciBlbCBjZW50cm8gZGUgTWVuZG96YSBjYXB0dXJhbmRvIGFycXVpdGVjdHVyYSwgbXVyYWxlcyB5IHZpZGEgY2FsbGVqZXJhLiBUaXBzIGRlIGNvbXBvc2ljacOzbiB5IGVkaWNpw7NuLicsCiAgNDAwMCwKICAnRm90b2dyYWbDrWEnLAogIEFSUkFZWydodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tMTQ1MjU4NzkyNTE0OC1jZTU0NGU3N2U3MGQ/dz04MDAnXSwKICAneyJwcm92aW5jaWEiOiJNZW5kb3phIiwiZGVwYXJ0YW1lbnRvIjoiQ2FwaXRhbCIsImRpcmVjY2lvbiI6IlBsYXphIEluZGVwZW5kZW5jaWEsIFBlYXRvbmFsIFNhcm1pZW50byJ9JywKICAnYW5maXRyaW9uXzA2JywKICAnQW5kcsOpcyBQw6lyZXonLAogICd7Ik1hcnRlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjE2OjAwIiwiZmluIjoiMTg6MzAifSwiSnVldmVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTY6MDAiLCJmaW4iOiIxODozMCJ9LCJEb21pbmdvIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTA6MDAiLCJmaW4iOiIxMjozMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDQnLCcyMDI2LTA4LTA2JywnMjAyNi0wOC0wOScsJzIwMjYtMDgtMTEnLCcyMDI2LTA4LTEzJ10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8wNycsCiAgJ1RhbGxlciBkZSBDb2NpbmEgVmVnYW5hOiBQYXN0YXMgQXJ0ZXNhbmFsZXMnLAogICdBcHJlbmTDqSBhIGhhY2VyIHBhc3RhcyB2ZWdhbmFzIGRlc2RlIGNlcm86IHRhbGxhcmluZXMgZGUgZXNwaW5hY2EsIHJhdmlvbGVzIGRlIGNhbGFiYXphIHkgc2Fsc2EgZGUgaG9uZ29zLicsCiAgNDgwMCwKICAnQ29jaW5hJywKICBBUlJBWVsnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE1NzI0NDE3MTA0MzItNjI0YjVkMGYxOTQ0P3c9ODAwJ10sCiAgJ3sicHJvdmluY2lhIjoiTWVuZG96YSIsImRlcGFydGFtZW50byI6IkNoYWNyYXMgZGUgQ29yaWEiLCJkaXJlY2Npb24iOiJSdXRhIDgyIGttIDE1LCBDaGFjcmFzIGRlIENvcmlhIn0nLAogICdhbmZpdHJpb25fMDcnLAogICdWYWxlbnRpbmEgUm9qYXMnLAogICd7Ik1hcnRlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjE4OjAwIiwiZmluIjoiMjE6MDAifSwiSnVldmVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTg6MDAiLCJmaW4iOiIyMTowMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDQnLCcyMDI2LTA4LTA2JywnMjAyNi0wOC0xMScsJzIwMjYtMDgtMTMnLCcyMDI2LTA4LTE4J10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8wOCcsCiAgJ0NhYmFsZ2F0YSBwb3IgZWwgUGllIGRlIGxhIENvcmRpbGxlcmEnLAogICdDYWJhbGdhdGEgZ3VpYWRhIGRlIDMgaG9yYXMgcG9yIGxvcyBwYWlzYWplcyBkZSBMdWrDoW4gZGUgQ3V5byBjb24gdmlzdGEgYSBsYSBDb3JkaWxsZXJhIGRlIGxvcyBBbmRlcy4gQ2FiYWxsb3MgZMOzY2lsZXMuJywKICA4MDAwLAogICdOYXR1cmFsZXphJywKICBBUlJBWVsnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE1OTkwNTk4MTMwMDUtMTEyNjViYTRiNGNlP3c9ODAwJ10sCiAgJ3sicHJvdmluY2lhIjoiTWVuZG96YSIsImRlcGFydGFtZW50byI6Ikx1asOhbiBkZSBDdXlvIiwiZGlyZWNjaW9uIjoiUlAgOTkga20gMTgsIEx1asOhbiBkZSBDdXlvIn0nLAogICdhbmZpdHJpb25fMDgnLAogICdHYWJyaWVsIFNvc2EnLAogICd7Ik1pZXJjb2xlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjA5OjAwIiwiZmluIjoiMTI6MDAifSwiU2FiYWRvIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMDk6MDAiLCJmaW4iOiIxMjowMCJ9LCJEb21pbmdvIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMDk6MDAiLCJmaW4iOiIxMjowMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDUnLCcyMDI2LTA4LTA4JywnMjAyNi0wOC0wOScsJzIwMjYtMDgtMTInLCcyMDI2LTA4LTE1J10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8wOScsCiAgJ0NsdWIgZGUgTGVjdHVyYTogTGl0ZXJhdHVyYSBBcmdlbnRpbmEgQ29udGVtcG9yw6FuZWEnLAogICdFbmN1ZW50cm8gc2VtYW5hbCBwYXJhIGRlYmF0aXIgb2JyYXMgZGUgYXV0b3JlcyBhcmdlbnRpbm9zIGFjdHVhbGVzLiBJbmNsdXllIGNhZsOpIHkgZmFjdHVyYXMuIEVsIGxpYnJvIGRlbCBtZXMgc2Ugc29ydGVhLicsCiAgMTUwMCwKICAnQXJ0ZScsCiAgQVJSQVlbJ2h0dHBzOi8vaW1hZ2VzLnVuc3BsYXNoLmNvbS9waG90by0xNTEyODIwNzkwODAzLTgzY2E3MzRkYTc5ND93PTgwMCddLAogICd7InByb3ZpbmNpYSI6Ik1lbmRvemEiLCJkZXBhcnRhbWVudG8iOiJDYXBpdGFsIiwiZGlyZWNjaW9uIjoiOSBkZSBKdWxpbyAxMDIzLCBDaXVkYWQifScsCiAgJ2FuZml0cmlvbl8wMScsCiAgJ1NvZsOtYSBNYXJ0w61uZXonLAogICd7Ikp1ZXZlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjE4OjAwIiwiZmluIjoiMjA6MDAifX0nLAogIEFSUkFZWycyMDI2LTA4LTA2JywnMjAyNi0wOC0xMycsJzIwMjYtMDgtMjAnLCcyMDI2LTA4LTI3J10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8xMCcsCiAgJ1RhbGxlciBkZSBDZXLDoW1pY2E6IFR1IFByaW1lciBNYWNldGVybycsCiAgJ01vZGVsYWRvIGVuIGFyY2lsbGEgcGFyYSBjcmVhciB0dSBwcm9waW8gbWFjZXRlcm8uIEluY2x1eWUgaG9ybmVhZGEsIGVzbWFsdGFkbyB5IHBsYW50YXMgcGFyYSBsbGV2YXIuJywKICA0NTAwLAogICdBcnRlJywKICBBUlJBWVsnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE1NjUxOTM1NjYxNzMtN2EwZWUzZGJlMjYxP3c9ODAwJ10sCiAgJ3sicHJvdmluY2lhIjoiTWVuZG96YSIsImRlcGFydGFtZW50byI6Ik1haXDDuiIsImRpcmVjY2lvbiI6Ik96YW1pcyA3ODAsIE1haXDDuiJ9JywKICAnYW5maXRyaW9uXzAxJywKICAnU29mw61hIE1hcnTDrW5leicsCiAgJ3siU2FiYWRvIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTA6MDAiLCJmaW4iOiIxMjozMCJ9LCJEb21pbmdvIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTA6MDAiLCJmaW4iOiIxMjozMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDgnLCcyMDI2LTA4LTA5JywnMjAyNi0wOC0xNScsJzIwMjYtMDgtMTYnLCcyMDI2LTA4LTIyJ10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8xMScsCiAgJ0JpY2ljbGV0ZWFkYSBwb3IgbG9zIFZpw7FlZG9zJywKICAnUmVjb3JyaWRvIGVuIGJpY2kgcG9yIGJvZGVnYXMgZGUgTWFpcMO6IGNvbiBkZWd1c3RhY2nDs24gaW5jbHVpZGEuIDI1IGttIGRlIHBhc2VvLCByaXRtbyB0cmFucXVpbG8uIEJpY2ljbGV0YSBpbmNsdWlkYS4nLAogIDcwMDAsCiAgJ0RlcG9ydGVzJywKICBBUlJBWVsnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE1OTg0ODgwMzUxMzktYmRiYjIyMzFjZTA0P3c9ODAwJ10sCiAgJ3sicHJvdmluY2lhIjoiTWVuZG96YSIsImRlcGFydGFtZW50byI6Ik1haXDDuiIsImRpcmVjY2lvbiI6IlJ1dGEgNjAga20gNSwgTWFpcMO6IOKAlCBCb2RlZ2EgTGEgUnVyYWwifScsCiAgJ2FuZml0cmlvbl8wMicsCiAgJ1BhYmxvIEdpbcOpbmV6JywKICAneyJTYWJhZG8iOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIwODowMCIsImZpbiI6IjEyOjAwIn0sIkRvbWluZ28iOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIwODowMCIsImZpbiI6IjEyOjAwIn19JywKICBBUlJBWVsnMjAyNi0wOC0wOCcsJzIwMjYtMDgtMDknLCcyMDI2LTA4LTE1JywnMjAyNi0wOC0xNicsJzIwMjYtMDgtMjInXSwKICB0cnVlCiksCigKICAnYWN0XzEyJywKICAnTWVkaXRhY2nDs24gR3VpYWRhIGVuIEJvZGVnYScsCiAgJ1Nlc2nDs24gZGUgbWVkaXRhY2nDs24geSBtaW5kZnVsbmVzcyBlbnRyZSB2acOxZWRvcyBhbCBhdGFyZGVjZXIsIHNlZ3VpZGEgZGUgdW5hIGNvcGEgZGUgdmlubyBwcmVtaXVtLicsCiAgMzUwMCwKICAnTWVkaXRhY2nDs24nLAogIEFSUkFZWydodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tMTUwNjEyNjYxMzQwOC1lY2EwN2NlNjg3NzM/dz04MDAnXSwKICAneyJwcm92aW5jaWEiOiJNZW5kb3phIiwiZGVwYXJ0YW1lbnRvIjoiTHVqw6FuIGRlIEN1eW8iLCJkaXJlY2Npb24iOiJSUCA4MiBrbSAxMiwgQm9kZWdhIENhdGVuYSBaYXBhdGEifScsCiAgJ2FuZml0cmlvbl8wNScsCiAgJ0Nhcm9saW5hIETDrWF6JywKICAneyJWaWVybmVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTc6MDAiLCJmaW4iOiIxODozMCJ9LCJTYWJhZG8iOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIxNzowMCIsImZpbiI6IjE4OjMwIn19JywKICBBUlJBWVsnMjAyNi0wOC0wNycsJzIwMjYtMDgtMDgnLCcyMDI2LTA4LTE0JywnMjAyNi0wOC0xNScsJzIwMjYtMDgtMjEnXSwKICB0cnVlCiksCigKICAnYWN0XzEzJywKICAnVGFsbGVyIGRlIEVkaWNpw7NuIGRlIEZvdG9zIGNvbiBDZWx1bGFyJywKICAnQXByZW5kw6kgYSBlZGl0YXIgdHVzIGZvdG9zIGNvbW8gdW4gcHJvZmVzaW9uYWwgdXNhbmRvIHNvbG8gYXBwcyBkZSBjZWx1bGFyLiBDb21wb3NpY2nDs24sIGNvbG9yIHkgcmV0b3F1ZSBhdmFuemFkby4nLAogIDMwMDAsCiAgJ1RlY25vbG9nw61hJywKICBBUlJBWVsnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE1MTYwMzUwNjkzNzEtMjlhMWIyNDRjYzMyP3c9ODAwJ10sCiAgJ3sicHJvdmluY2lhIjoiTWVuZG96YSIsImRlcGFydGFtZW50byI6IkNhcGl0YWwiLCJkaXJlY2Npb24iOiJDb2zDs24gMjUwLCBDaXVkYWQsIEVzcGFjaW8gQ3VsdHVyYWwifScsCiAgJ2FuZml0cmlvbl8wNicsCiAgJ0FuZHLDqXMgUMOpcmV6JywKICAneyJMdW5lcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjE4OjAwIiwiZmluIjoiMjA6MDAifSwiTWllcmNvbGVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTg6MDAiLCJmaW4iOiIyMDowMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDMnLCcyMDI2LTA4LTA1JywnMjAyNi0wOC0xMCcsJzIwMjYtMDgtMTInLCcyMDI2LTA4LTE3J10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8xNCcsCiAgJ0ltcHJvdmlzYWNpw7NuIFRlYXRyYWw6IFNvbHTDoSB0dSBDcmVhdGl2aWRhZCcsCiAgJ1RhbGxlciBkZSB0ZWF0cm8gZGUgaW1wcm92aXNhY2nDs24gcGFyYSBwcmluY2lwaWFudGVzLiBKdWVnb3MgZXNjw6luaWNvcywgcGVyc29uYWplcyB5IG11Y2hhIGRpdmVyc2nDs24uIFNpbiBleHBlcmllbmNpYSBwcmV2aWEuJywKICAzNTAwLAogICdUZWF0cm8nLAogIEFSUkFZWydodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tMTUwNzAwMzIxMTE2OS0wYTFkZDcyMjhmMmQ/dz04MDAnXSwKICAneyJwcm92aW5jaWEiOiJNZW5kb3phIiwiZGVwYXJ0YW1lbnRvIjoiQ2FwaXRhbCIsImRpcmVjY2lvbiI6Ik1pdHJlIDQ1MCwgU2FsYSBMYSBOYXZlIn0nLAogICdhbmZpdHJpb25fMDcnLAogICdWYWxlbnRpbmEgUm9qYXMnLAogICd7Ik1hcnRlcyI6eyJhY3Rpdm8iOnRydWUsImluaWNpbyI6IjE5OjAwIiwiZmluIjoiMjE6MDAifSwiSnVldmVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMTk6MDAiLCJmaW4iOiIyMTowMCJ9fScsCiAgQVJSQVlbJzIwMjYtMDgtMDQnLCcyMDI2LTA4LTA2JywnMjAyNi0wOC0xMScsJzIwMjYtMDgtMTMnLCcyMDI2LTA4LTE4J10sCiAgdHJ1ZQopLAooCiAgJ2FjdF8xNScsCiAgJ0F2aXN0YWplIGRlIEF2ZXMgZW4gZWwgRGlxdWUgQ2lwb2xsZXR0aScsCiAgJ0NhbWluYXRhIGd1aWFkYSBwb3IgZWwgZGlxdWUgcGFyYSBvYnNlcnZhciBhdmVzIG5hdGl2YXMgeSBtaWdyYXRvcmlhcy4gQmlub2N1bGFyZXMgeSBndcOtYSBpbXByZXNhIGluY2x1aWRvcy4nLAogIDI4MDAsCiAgJ05hdHVyYWxlemEnLAogIEFSUkFZWydodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tMTQ3MDA3MTQ1OTYwNC0zYjVlYzNhN2ZlMDU/dz04MDAnXSwKICAneyJwcm92aW5jaWEiOiJNZW5kb3phIiwiZGVwYXJ0YW1lbnRvIjoiR29kb3kgQ3J1eiIsImRpcmVjY2lvbiI6IkRpcXVlIENpcG9sbGV0dGksIEFjY2VzbyBTdXIifScsCiAgJ2FuZml0cmlvbl8wOCcsCiAgJ0dhYnJpZWwgU29zYScsCiAgJ3siTWFydGVzIjp7ImFjdGl2byI6dHJ1ZSwiaW5pY2lvIjoiMDc6MDAiLCJmaW4iOiIxMDowMCJ9LCJKdWV2ZXMiOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIwNzowMCIsImZpbiI6IjEwOjAwIn0sIkRvbWluZ28iOnsiYWN0aXZvIjp0cnVlLCJpbmljaW8iOiIwNzowMCIsImZpbiI6IjEwOjAwIn19JywKICBBUlJBWVsnMjAyNi0wOC0wNCcsJzIwMjYtMDgtMDYnLCcyMDI2LTA4LTA5JywnMjAyNi0wOC0xMScsJzIwMjYtMDgtMTMnXSwKICB0cnVlCik7CgotLSDilIDilIDilIAgUkVTRVJWQVMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgpJTlNFUlQgSU5UTyByZXNlcnZhcyAoaWQsIHVzdWFyaW9faWQsIGFjdGl2aWRhZF9pZCwgZmVjaGEsIGVzdGFkbywgY29kaWdvX2NvbmZpcm1hY2lvbikgVkFMVUVTCigncmVzXzAxJywgJ3BhcnRfMDEnLCAnYWN0XzAxJywgJzIwMjYtMDgtMDMnLCAnY29uZmlybWFkYScsICdJTk0tQTFCMkMzJyksCigncmVzXzAyJywgJ3BhcnRfMDInLCAnYWN0XzA1JywgJzIwMjYtMDgtMDMnLCAnY29uZmlybWFkYScsICdJTk0tRDRFNUY2JyksCigncmVzXzAzJywgJ3BhcnRfMDMnLCAnYWN0XzAzJywgJzIwMjYtMDgtMDUnLCAncGVuZGllbnRlJywgJ0lOTS1HN0g4STknKSwKKCdyZXNfMDQnLCAncGFydF8wNCcsICdhY3RfMDYnLCAnMjAyNi0wOC0wNCcsICdjb25maXJtYWRhJywgJ0lOTS1KMEsxTDInKSwKKCdyZXNfMDUnLCAncGFydF8wNScsICdhY3RfMDgnLCAnMjAyNi0wOC0wNScsICdjb21wbGV0YWRhJywgJ0lOTS1NM040TzUnKSwKKCdyZXNfMDYnLCAncGFydF8wNicsICdhY3RfMTInLCAnMjAyNi0wOC0wNycsICdjb25maXJtYWRhJywgJ0lOTS1QNlE3UjgnKSwKKCdyZXNfMDcnLCAncGFydF8wNycsICdhY3RfMTEnLCAnMjAyNi0wOC0wOCcsICdwZW5kaWVudGUnLCAnSU5NLVM5VDBVMScpLAooJ3Jlc18wOCcsICdwYXJ0XzA4JywgJ2FjdF8xMCcsICcyMDI2LTA4LTA4JywgJ2NvbmZpcm1hZGEnLCAnSU5NLVYyVzNYNCcpLAooJ3Jlc18wOScsICdwYXJ0XzA5JywgJ2FjdF8wNCcsICcyMDI2LTA4LTA2JywgJ2NvbXBsZXRhZGEnLCAnSU5NLVk1WjZBNycpLAooJ3Jlc18xMCcsICdwYXJ0XzEwJywgJ2FjdF8wMicsICcyMDI2LTA4LTA0JywgJ2NhbmNlbGFkYScsICdJTk0tQjhDOUQwJyksCigncmVzXzExJywgJ3BhcnRfMDEnLCAnYWN0XzE1JywgJzIwMjYtMDgtMDQnLCAnY29uZmlybWFkYScsICdJTk0tRTFGMkczJyksCigncmVzXzEyJywgJ3BhcnRfMDMnLCAnYWN0XzEzJywgJzIwMjYtMDgtMDMnLCAnY29tcGxldGFkYScsICdJTk0tSDRJNUo2JyksCigncmVzXzEzJywgJ3BhcnRfMDUnLCAnYWN0XzE0JywgJzIwMjYtMDgtMDQnLCAncGVuZGllbnRlJywgJ0lOTS1LN0w4TTknKSwKKCdyZXNfMTQnLCAncGFydF8wOCcsICdhY3RfMDknLCAnMjAyNi0wOC0wNicsICdjb25maXJtYWRhJywgJ0lOTS1OME8xUDInKSwKKCdyZXNfMTUnLCAncGFydF8wMicsICdhY3RfMDcnLCAnMjAyNi0wOC0wNCcsICdjb21wbGV0YWRhJywgJ0lOTS1RM1I0UzUnKTsKCi0tIOKUgOKUgOKUgCBSRVNFw5FBUyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCklOU0VSVCBJTlRPIHJlc2VuYXMgKGlkLCB1c3VhcmlvX2lkLCBhY3RpdmlkYWRfaWQsIHB1bnR1YWNpb24sIGNvbWVudGFyaW8pIFZBTFVFUwooJ3Jlc2VuYV8wMScsICdwYXJ0XzA1JywgJ2FjdF8wOCcsIDUsICdVbmEgZXhwZXJpZW5jaWEgaW5jcmXDrWJsZS4gR2FicmllbCBlcyB1biBndcOtYSBleGNlbGVudGUsIGxvcyBjYWJhbGxvcyBzb24gZMOzY2lsZXMgeSBlbCBwYWlzYWplIGVzIGRlIG90cm8gbXVuZG8uJyksCigncmVzZW5hXzAyJywgJ3BhcnRfMDknLCAnYWN0XzA0JywgNSwgJ0xhIG5vY2hlIGRlIGphenogZnVlIGVzcGVjdGFjdWxhci4gTcO6c2ljb3MgZGUgcHJpbWVyIG5pdmVsLCBlbCB2aW5vIGV4Y2VsZW50ZSwgZWwgYW1iaWVudGUgw61udGltby4gVm95IGEgcmVwZXRpci4nKSwKKCdyZXNlbmFfMDMnLCAncGFydF8wMycsICdhY3RfMTMnLCA0LCAnTXV5IGJ1ZW4gdGFsbGVyLCBhcHJlbmTDrSB1biBtb250w7NuIGRlIHRydWNvcyBxdWUgbm8gY29ub2PDrWEuIFNvbG8gbGUgZmFsdMOzIHVuIHBvY28gbcOhcyBkZSBwcsOhY3RpY2EgZ3VpYWRhLicpLAooJ3Jlc2VuYV8wNCcsICdwYXJ0XzAyJywgJ2FjdF8wNycsIDUsICdMYXMgcGFzdGFzIHZlZ2FuYXMgc29uIHVuYSBsb2N1cmEuIFZhbGVudGluYSBleHBsaWNhIHRvZG8gY29uIG11Y2hhIHBhY2llbmNpYSB5IGxvcyBzYWJvcmVzIHNvbiBpbmNyZcOtYmxlcy4nKSwKKCdyZXNlbmFfMDUnLCAncGFydF8wNCcsICdhY3RfMDYnLCA0LCAnQW5kcsOpcyBzYWJlIG11Y2jDrXNpbW8gZGUgZm90b2dyYWbDrWEgeSBsYSBjYW1pbmF0YSBwb3IgZWwgY2VudHJvIGZ1ZSBtdXkgZW50cmV0ZW5pZGEuIERlc2N1YnLDrSByaW5jb25lcyBxdWUgbm8gY29ub2PDrWEuJyksCigncmVzZW5hXzA2JywgJ3BhcnRfMDYnLCAnYWN0XzEyJywgNSwgJ01lZGl0YXIgZW50cmUgbG9zIHZpw7FlZG9zIGFsIGF0YXJkZWNlciBlcyBhbGdvIHF1ZSB0b2RvcyBkZWJlcsOtYW4gZXhwZXJpbWVudGFyLiBDYXJvbGluYSB0aWVuZSB1bmEgZW5lcmfDrWEgaGVybW9zYS4nKSwKKCdyZXNlbmFfMDcnLCAncGFydF8wMScsICdhY3RfMDEnLCA1LCAnU29mw61hIGVzIHVuYSBhcnRpc3RhIHRhbGVudG9zYSB5IG11eSBwYWNpZW50ZS4gU2Fsw60gY29uIHVuYSBhY3VhcmVsYSBxdWUgeWEgdGVuZ28gZW5tYXJjYWRhIGVuIG1pIGxpdmluZy4nKSwKKCdyZXNlbmFfMDgnLCAncGFydF8wOCcsICdhY3RfMTAnLCA1LCAnRWwgdGFsbGVyIGRlIGNlcsOhbWljYSBzdXBlcsOzIG1pcyBleHBlY3RhdGl2YXMuIFRlcm1pbsOpIGNvbiB1biBtYWNldGVybyBoZXJtb3NvIHkgbXVjaGFzIGdhbmFzIGRlIHNlZ3VpciBhcHJlbmRpZW5kby4nKSwKKCdyZXNlbmFfMDknLCAncGFydF8wMScsICdhY3RfMTUnLCA0LCAnTXV5IGxpbmRvIHBhc2VvLiBHYWJyaWVsIGNvbm9jZSB0b2RhcyBsYXMgZXNwZWNpZXMgZGUgbGEgem9uYS4gRXNvIHPDrSwgaGF5IHF1ZSBtYWRydWdhciBwZXJvIHZhbGUgbGEgcGVuYS4nKSwKKCdyZXNlbmFfMTAnLCAncGFydF8xMCcsICdhY3RfMDInLCAzLCAnRWwgdHJla2tpbmcgZXN0w6EgYnVlbm8gcGVybyBzZSBjYW5jZWzDsyBwb3IgbGx1dmlhIHkgbm8gYXZpc2Fyb24gYSB0aWVtcG8uIExhIGdlc3Rpw7NuIGRlIHJlcHJvZ3JhbWFjacOzbiBmdWUgY29tcGxpY2FkYS4nKTsKCi0tIOKUgOKUgOKUgCBBTlVOQ0lPUyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCklOU0VSVCBJTlRPIGFudW5jaW9zIChpZCwgcGF0cm9jaW5hZG9yX2lkLCB0aXR1bG8sIGltYWdlbl91cmwsIHVybF9kZXN0aW5vLCBzZWdtZW50bywgaW1wcmVzaW9uZXMsIGNsaWNrcywgYWN0aXZvKSBWQUxVRVMKKCdhbnVuXzAxJywgJ2FuZml0cmlvbl8wMicsICdUcmHDqSB0dSBncnVwbyB5IGxsZXZhdGUgMjAlIG9mZiBlbiBjYWJhbGdhdGFzJywgJ2h0dHBzOi8vaW1hZ2VzLnVuc3BsYXNoLmNvbS9waG90by0xNTU5MTgxNTY3LWMzMTkwY2E5OTU5Yj93PTgwMCcsICcvYWN0aXZpZGFkZXMvYWN0XzA4JywgQVJSQVlbJ05hdHVyYWxlemEnLCdEZXBvcnRlcyddLCAxMjQwLCA4OSwgdHJ1ZSksCignYW51bl8wMicsICdhbmZpdHJpb25fMDMnLCAnQ29jaW5hIHJlZ2lvbmFsOiAyZGEgcGVyc29uYSBncmF0aXMnLCAnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE0MTQyMzUwNzc0MjgtMzM4OTg5YTJlOGMwP3c9ODAwJywgJy9hY3RpdmlkYWRlcy9hY3RfMDMnLCBBUlJBWVsnQ29jaW5hJ10sIDk4MCwgNjcsIHRydWUpLAooJ2FudW5fMDMnLCAnYW5maXRyaW9uXzA0JywgJ05vY2hlIGRlIEphenogKyBWaW5vOiBjdXBvcyBsaW1pdGFkb3MnLCAnaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE0MTUyMDEzNjQ3NzQtZjZmMGJiMzVmMjhmP3c9ODAwJywgJy9hY3RpdmlkYWRlcy9hY3RfMDQnLCBBUlJBWVsnTcO6c2ljYSddLCAyMTAwLCAxNDUsIHRydWUpOwoKLS0g4pSA4pSA4pSAIENVUE9ORVMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgpJTlNFUlQgSU5UTyBjdXBvbmVzIChpZCwgYW5maXRyaW9uX2lkLCBjb2RpZ28sIGRlc2N1ZW50b19wb3JjZW50YWplLCB1c29zX21heGltb3MsIHVzb3NfYWN0dWFsZXMsIGFjdGl2bywgdmVuY2UpIFZBTFVFUwooJ2N1cG9uXzAxJywgJ2FuZml0cmlvbl8wMScsICdBQ1VBUkVMQTEwJywgMTAsIDIwLCAzLCB0cnVlLCAnMjAyNi0wOS0zMCcpLAooJ2N1cG9uXzAyJywgJ2FuZml0cmlvbl8wMycsICdFTVBBTkFEQTIwJywgMjAsIDE1LCAxLCB0cnVlLCAnMjAyNi0wOS0xNScpLAooJ2N1cG9uXzAzJywgJ2FuZml0cmlvbl8wNScsICdBTUFORUNFUjE1JywgMTUsIDEwLCAwLCB0cnVlLCAnMjAyNi0xMC0wMScpLAooJ2N1cG9uXzA0JywgJ2FuZml0cmlvbl8wOCcsICdDQUJBTEdBVEEyNScsIDI1LCA1LCAyLCB0cnVlLCAnMjAyNi0wOC0zMScpOw==
+-- ============================================================
+-- INMERSIVAPP — Seed de datos realistas
+-- Sello: cm2labs · 2026-07-21
+-- ============================================================
+-- Ejecutar DESPUÉS de migracion_clerk.sql
+-- ============================================================
+
+-- ─── ANFITRIONES ────────────────────────────────────────────
+
+INSERT INTO perfiles (id, email, username, nombre, apellido, telefono, intereses, roles) VALUES
+('anfitrion_01', 'sofia.martinez@email.com', 'sofiarte', 'Sofía', 'Martínez', '+5492615001001', '{Arte,Fotografía,Manualidades}', '{anfitrion}'),
+('anfitrion_02', 'pablo.gimenez@email.com', 'pablotrekk', 'Pablo', 'Giménez', '+5492615001002', '{Naturaleza,Deportes}', '{anfitrion}'),
+('anfitrion_03', 'lucia.fernandez@email.com', 'lucook', 'Lucía', 'Fernández', '+5492615001003', '{Cocina,Arte}', '{anfitrion}'),
+('anfitrion_04', 'martin.lopez@email.com', 'martinmusica', 'Martín', 'López', '+5492615001004', '{Música,Tecnología}', '{anfitrion}'),
+('anfitrion_05', 'carolina.diaz@email.com', 'caroyoga', 'Carolina', 'Díaz', '+5492615001005', '{Yoga,Meditación,Naturaleza}', '{anfitrion}'),
+('anfitrion_06', 'andres.perez@email.com', 'andresfoto', 'Andrés', 'Pérez', '+5492615001006', '{Fotografía,Arte,Tecnología}', '{anfitrion}'),
+('anfitrion_07', 'valentina.rojas@email.com', 'valecocina', 'Valentina', 'Rojas', '+5492615001007', '{Cocina,Teatro}', '{anfitrion}'),
+('anfitrion_08', 'gabriel.sosa@email.com', 'gabisender', 'Gabriel', 'Sosa', '+5492615001008', '{Naturaleza,Deportes,Fotografía}', '{anfitrion}');
+
+-- ─── PARTICIPANTES ───────────────────────────────────────────
+
+INSERT INTO perfiles (id, email, username, nombre, apellido, telefono, intereses, roles) VALUES
+('part_01', 'juan.perez@email.com', 'juanp', 'Juan', 'Pérez', '+5492615002001', '{Arte,Música,Cocina}', '{participante}'),
+('part_02', 'maria.gonzalez@email.com', 'mariag', 'María', 'González', '+5492615002002', '{Naturaleza,Yoga,Meditación}', '{participante}'),
+('part_03', 'carlos.sanchez@email.com', 'carloss', 'Carlos', 'Sánchez', '+5492615002003', '{Tecnología,Deportes}', '{participante}'),
+('part_04', 'ana.rodriguez@email.com', 'anarod', 'Ana', 'Rodríguez', '+5492615002004', '{Fotografía,Arte,Manualidades}', '{participante}'),
+('part_05', 'lautaro.mendoza@email.com', 'lautarom', 'Lautaro', 'Mendoza', '+5492615002005', '{Cocina,Naturaleza,Teatro}', '{participante}'),
+('part_06', 'camila.torres@email.com', 'camitorres', 'Camila', 'Torres', '+5492615002006', '{Yoga,Meditación,Música}', '{participante}'),
+('part_07', 'facundo.arias@email.com', 'facundo', 'Facundo', 'Arias', '+5492615002007', '{Deportes,Naturaleza}', '{participante}'),
+('part_08', 'florencia.molina@email.com', 'flormolina', 'Florencia', 'Molina', '+5492615002008', '{Arte,Fotografía,Cocina}', '{participante}'),
+('part_09', 'nicolas.castillo@email.com', 'nicocast', 'Nicolás', 'Castillo', '+5492615002009', '{Tecnología,Música,Teatro}', '{participante}'),
+('part_10', 'agustina.ferreyra@email.com', 'agusfer', 'Agustina', 'Ferreyra', '+5492615002010', '{Naturaleza,Yoga,Manualidades}', '{participante}');
+
+-- ─── ACTIVIDADES ────────────────────────────────────────────
+
+INSERT INTO actividades (id, titulo, descripcion, precio, categoria, fotos, ubicacion, anfitrion_id, anfitrion_nombre, horarios, fechas, activa) VALUES
+(
+  'act_01',
+  'Taller de Acuarela Botánica',
+  'Aprendé técnicas de acuarela pintando flores y plantas nativas de Mendoza. Materiales incluidos. Ideal para principiantes.',
+  3500,
+  'Arte',
+  ARRAY['https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"Av. San Martín 845, Ciudad"}',
+  'anfitrion_01',
+  'Sofía Martínez',
+  '{"Lunes":{"activo":true,"inicio":"10:00","fin":"12:00"},"Miercoles":{"activo":true,"inicio":"10:00","fin":"12:00"},"Sabado":{"activo":true,"inicio":"15:00","fin":"17:00"}}',
+  ARRAY['2026-08-03','2026-08-05','2026-08-10','2026-08-12','2026-08-17'],
+  true
+),
+(
+  'act_02',
+  'Trekking al Cerro de la Virgen',
+  'Caminata guiada por senderos del Cerro de la Virgen con vista panorámica de la ciudad. Incluye mate de bienvenida en la cima.',
+  2500,
+  'Naturaleza',
+  ARRAY['https://images.unsplash.com/photo-1551632811-561732d1e306?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"Av. de los Trabajadores s/n, Base del Cerro"}',
+  'anfitrion_02',
+  'Pablo Giménez',
+  '{"Martes":{"activo":true,"inicio":"08:00","fin":"11:00"},"Jueves":{"activo":true,"inicio":"08:00","fin":"11:00"},"Sabado":{"activo":true,"inicio":"07:00","fin":"10:00"}}',
+  ARRAY['2026-08-04','2026-08-06','2026-08-08','2026-08-11','2026-08-13'],
+  true
+),
+(
+  'act_03',
+  'Clase de Cocina Regional: Empanadas Mendocinas',
+  'Aprendé a preparar empanadas mendocinas auténticas con receta familiar. Incluye degustación con vino de la zona.',
+  5500,
+  'Cocina',
+  ARRAY['https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800'],
+  '{"provincia":"Mendoza","departamento":"Godoy Cruz","direccion":"Lavalle 450, Godoy Cruz"}',
+  'anfitrion_03',
+  'Lucía Fernández',
+  '{"Miercoles":{"activo":true,"inicio":"18:00","fin":"21:00"},"Viernes":{"activo":true,"inicio":"18:00","fin":"21:00"},"Sabado":{"activo":true,"inicio":"11:00","fin":"14:00"}}',
+  ARRAY['2026-08-05','2026-08-07','2026-08-12','2026-08-14','2026-08-19'],
+  true
+),
+(
+  'act_04',
+  'Noche de Música en Vivo: Jazz Fusión',
+  'Velada íntima con músicos locales de jazz fusión. Incluye copa de vino y tabla de quesos. Capacidad limitada a 20 personas.',
+  6500,
+  'Música',
+  ARRAY['https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"Gutiérrez 320, Ciudad"}',
+  'anfitrion_04',
+  'Martín López',
+  '{"Jueves":{"activo":true,"inicio":"20:00","fin":"23:00"},"Sabado":{"activo":true,"inicio":"20:00","fin":"23:00"}}',
+  ARRAY['2026-08-06','2026-08-08','2026-08-13','2026-08-15','2026-08-20'],
+  true
+),
+(
+  'act_05',
+  'Yoga al Amanecer en el Parque',
+  'Sesión de yoga al aire libre en el Parque General San Martín al amanecer. Todos los niveles bienvenidos. Traer mat.',
+  2000,
+  'Yoga',
+  ARRAY['https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"Parque Gral. San Martín, Rosedal"}',
+  'anfitrion_05',
+  'Carolina Díaz',
+  '{"Lunes":{"activo":true,"inicio":"06:30","fin":"07:30"},"Miercoles":{"activo":true,"inicio":"06:30","fin":"07:30"},"Viernes":{"activo":true,"inicio":"06:30","fin":"07:30"}}',
+  ARRAY['2026-08-03','2026-08-05','2026-08-07','2026-08-10','2026-08-12'],
+  true
+),
+(
+  'act_06',
+  'Safari Fotográfico Urbano',
+  'Recorrido a pie por el centro de Mendoza capturando arquitectura, murales y vida callejera. Tips de composición y edición.',
+  4000,
+  'Fotografía',
+  ARRAY['https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"Plaza Independencia, Peatonal Sarmiento"}',
+  'anfitrion_06',
+  'Andrés Pérez',
+  '{"Martes":{"activo":true,"inicio":"16:00","fin":"18:30"},"Jueves":{"activo":true,"inicio":"16:00","fin":"18:30"},"Domingo":{"activo":true,"inicio":"10:00","fin":"12:30"}}',
+  ARRAY['2026-08-04','2026-08-06','2026-08-09','2026-08-11','2026-08-13'],
+  true
+),
+(
+  'act_07',
+  'Taller de Cocina Vegana: Pastas Artesanales',
+  'Aprendé a hacer pastas veganas desde cero: tallarines de espinaca, ravioles de calabaza y salsa de hongos.',
+  4800,
+  'Cocina',
+  ARRAY['https://images.unsplash.com/photo-1572441710432-624b5d0f1944?w=800'],
+  '{"provincia":"Mendoza","departamento":"Chacras de Coria","direccion":"Ruta 82 km 15, Chacras de Coria"}',
+  'anfitrion_07',
+  'Valentina Rojas',
+  '{"Martes":{"activo":true,"inicio":"18:00","fin":"21:00"},"Jueves":{"activo":true,"inicio":"18:00","fin":"21:00"}}',
+  ARRAY['2026-08-04','2026-08-06','2026-08-11','2026-08-13','2026-08-18'],
+  true
+),
+(
+  'act_08',
+  'Cabalgata por el Pie de la Cordillera',
+  'Cabalgata guiada de 3 horas por los paisajes de Luján de Cuyo con vista a la Cordillera de los Andes. Caballos dóciles.',
+  8000,
+  'Naturaleza',
+  ARRAY['https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?w=800'],
+  '{"provincia":"Mendoza","departamento":"Luján de Cuyo","direccion":"RP 99 km 18, Luján de Cuyo"}',
+  'anfitrion_08',
+  'Gabriel Sosa',
+  '{"Miercoles":{"activo":true,"inicio":"09:00","fin":"12:00"},"Sabado":{"activo":true,"inicio":"09:00","fin":"12:00"},"Domingo":{"activo":true,"inicio":"09:00","fin":"12:00"}}',
+  ARRAY['2026-08-05','2026-08-08','2026-08-09','2026-08-12','2026-08-15'],
+  true
+),
+(
+  'act_09',
+  'Club de Lectura: Literatura Argentina Contemporánea',
+  'Encuentro semanal para debatir obras de autores argentinos actuales. Incluye café y facturas. El libro del mes se sortea.',
+  1500,
+  'Arte',
+  ARRAY['https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"9 de Julio 1023, Ciudad"}',
+  'anfitrion_01',
+  'Sofía Martínez',
+  '{"Jueves":{"activo":true,"inicio":"18:00","fin":"20:00"}}',
+  ARRAY['2026-08-06','2026-08-13','2026-08-20','2026-08-27'],
+  true
+),
+(
+  'act_10',
+  'Taller de Cerámica: Tu Primer Macetero',
+  'Modelado en arcilla para crear tu propio macetero. Incluye horneada, esmaltado y plantas para llevar.',
+  4500,
+  'Arte',
+  ARRAY['https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800'],
+  '{"provincia":"Mendoza","departamento":"Maipú","direccion":"Ozamis 780, Maipú"}',
+  'anfitrion_01',
+  'Sofía Martínez',
+  '{"Sabado":{"activo":true,"inicio":"10:00","fin":"12:30"},"Domingo":{"activo":true,"inicio":"10:00","fin":"12:30"}}',
+  ARRAY['2026-08-08','2026-08-09','2026-08-15','2026-08-16','2026-08-22'],
+  true
+),
+(
+  'act_11',
+  'Bicicleteada por los Viñedos',
+  'Recorrido en bici por bodegas de Maipú con degustación incluida. 25 km de paseo, ritmo tranquilo. Bicicleta incluida.',
+  7000,
+  'Deportes',
+  ARRAY['https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800'],
+  '{"provincia":"Mendoza","departamento":"Maipú","direccion":"Ruta 60 km 5, Maipú — Bodega La Rural"}',
+  'anfitrion_02',
+  'Pablo Giménez',
+  '{"Sabado":{"activo":true,"inicio":"08:00","fin":"12:00"},"Domingo":{"activo":true,"inicio":"08:00","fin":"12:00"}}',
+  ARRAY['2026-08-08','2026-08-09','2026-08-15','2026-08-16','2026-08-22'],
+  true
+),
+(
+  'act_12',
+  'Meditación Guiada en Bodega',
+  'Sesión de meditación y mindfulness entre viñedos al atardecer, seguida de una copa de vino premium.',
+  3500,
+  'Meditación',
+  ARRAY['https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800'],
+  '{"provincia":"Mendoza","departamento":"Luján de Cuyo","direccion":"RP 82 km 12, Bodega Catena Zapata"}',
+  'anfitrion_05',
+  'Carolina Díaz',
+  '{"Viernes":{"activo":true,"inicio":"17:00","fin":"18:30"},"Sabado":{"activo":true,"inicio":"17:00","fin":"18:30"}}',
+  ARRAY['2026-08-07','2026-08-08','2026-08-14','2026-08-15','2026-08-21'],
+  true
+),
+(
+  'act_13',
+  'Taller de Edición de Fotos con Celular',
+  'Aprendé a editar tus fotos como un profesional usando solo apps de celular. Composición, color y retoque avanzado.',
+  3000,
+  'Tecnología',
+  ARRAY['https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"Colón 250, Ciudad, Espacio Cultural"}',
+  'anfitrion_06',
+  'Andrés Pérez',
+  '{"Lunes":{"activo":true,"inicio":"18:00","fin":"20:00"},"Miercoles":{"activo":true,"inicio":"18:00","fin":"20:00"}}',
+  ARRAY['2026-08-03','2026-08-05','2026-08-10','2026-08-12','2026-08-17'],
+  true
+),
+(
+  'act_14',
+  'Improvisación Teatral: Soltá tu Creatividad',
+  'Taller de teatro de improvisación para principiantes. Juegos escénicos, personajes y mucha diversión. Sin experiencia previa.',
+  3500,
+  'Teatro',
+  ARRAY['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800'],
+  '{"provincia":"Mendoza","departamento":"Capital","direccion":"Mitre 450, Sala La Nave"}',
+  'anfitrion_07',
+  'Valentina Rojas',
+  '{"Martes":{"activo":true,"inicio":"19:00","fin":"21:00"},"Jueves":{"activo":true,"inicio":"19:00","fin":"21:00"}}',
+  ARRAY['2026-08-04','2026-08-06','2026-08-11','2026-08-13','2026-08-18'],
+  true
+),
+(
+  'act_15',
+  'Avistaje de Aves en el Dique Cipolletti',
+  'Caminata guiada por el dique para observar aves nativas y migratorias. Binoculares y guía impresa incluidos.',
+  2800,
+  'Naturaleza',
+  ARRAY['https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800'],
+  '{"provincia":"Mendoza","departamento":"Godoy Cruz","direccion":"Dique Cipolletti, Acceso Sur"}',
+  'anfitrion_08',
+  'Gabriel Sosa',
+  '{"Martes":{"activo":true,"inicio":"07:00","fin":"10:00"},"Jueves":{"activo":true,"inicio":"07:00","fin":"10:00"},"Domingo":{"activo":true,"inicio":"07:00","fin":"10:00"}}',
+  ARRAY['2026-08-04','2026-08-06','2026-08-09','2026-08-11','2026-08-13'],
+  true
+);
+
+-- ─── RESERVAS ────────────────────────────────────────────────
+
+INSERT INTO reservas (id, usuario_id, actividad_id, fecha, estado, codigo_confirmacion) VALUES
+('res_01', 'part_01', 'act_01', '2026-08-03', 'confirmada', 'INM-A1B2C3'),
+('res_02', 'part_02', 'act_05', '2026-08-03', 'confirmada', 'INM-D4E5F6'),
+('res_03', 'part_03', 'act_03', '2026-08-05', 'pendiente', 'INM-G7H8I9'),
+('res_04', 'part_04', 'act_06', '2026-08-04', 'confirmada', 'INM-J0K1L2'),
+('res_05', 'part_05', 'act_08', '2026-08-05', 'completada', 'INM-M3N4O5'),
+('res_06', 'part_06', 'act_12', '2026-08-07', 'confirmada', 'INM-P6Q7R8'),
+('res_07', 'part_07', 'act_11', '2026-08-08', 'pendiente', 'INM-S9T0U1'),
+('res_08', 'part_08', 'act_10', '2026-08-08', 'confirmada', 'INM-V2W3X4'),
+('res_09', 'part_09', 'act_04', '2026-08-06', 'completada', 'INM-Y5Z6A7'),
+('res_10', 'part_10', 'act_02', '2026-08-04', 'cancelada', 'INM-B8C9D0'),
+('res_11', 'part_01', 'act_15', '2026-08-04', 'confirmada', 'INM-E1F2G3'),
+('res_12', 'part_03', 'act_13', '2026-08-03', 'completada', 'INM-H4I5J6'),
+('res_13', 'part_05', 'act_14', '2026-08-04', 'pendiente', 'INM-K7L8M9'),
+('res_14', 'part_08', 'act_09', '2026-08-06', 'confirmada', 'INM-N0O1P2'),
+('res_15', 'part_02', 'act_07', '2026-08-04', 'completada', 'INM-Q3R4S5');
+
+-- ─── RESEÑAS ─────────────────────────────────────────────────
+
+INSERT INTO resenas (id, usuario_id, actividad_id, puntuacion, comentario) VALUES
+('resena_01', 'part_05', 'act_08', 5, 'Una experiencia increíble. Gabriel es un guía excelente, los caballos son dóciles y el paisaje es de otro mundo.'),
+('resena_02', 'part_09', 'act_04', 5, 'La noche de jazz fue espectacular. Músicos de primer nivel, el vino excelente, el ambiente íntimo. Voy a repetir.'),
+('resena_03', 'part_03', 'act_13', 4, 'Muy buen taller, aprendí un montón de trucos que no conocía. Solo le faltó un poco más de práctica guiada.'),
+('resena_04', 'part_02', 'act_07', 5, 'Las pastas veganas son una locura. Valentina explica todo con mucha paciencia y los sabores son increíbles.'),
+('resena_05', 'part_04', 'act_06', 4, 'Andrés sabe muchísimo de fotografía y la caminata por el centro fue muy entretenida. Descubrí rincones que no conocía.'),
+('resena_06', 'part_06', 'act_12', 5, 'Meditar entre los viñedos al atardecer es algo que todos deberían experimentar. Carolina tiene una energía hermosa.'),
+('resena_07', 'part_01', 'act_01', 5, 'Sofía es una artista talentosa y muy paciente. Salí con una acuarela que ya tengo enmarcada en mi living.'),
+('resena_08', 'part_08', 'act_10', 5, 'El taller de cerámica superó mis expectativas. Terminé con un macetero hermoso y muchas ganas de seguir aprendiendo.'),
+('resena_09', 'part_01', 'act_15', 4, 'Muy lindo paseo. Gabriel conoce todas las especies de la zona. Eso sí, hay que madrugar pero vale la pena.'),
+('resena_10', 'part_10', 'act_02', 3, 'El trekking está bueno pero se canceló por lluvia y no avisaron a tiempo. La gestión de reprogramación fue complicada.');
+
+-- ─── ANUNCIOS ─────────────────────────────────────────────────
+
+INSERT INTO anuncios (id, patrocinador_id, titulo, imagen_url, url_destino, segmento, impresiones, clicks, activo) VALUES
+('anun_01', 'anfitrion_02', 'Traé tu grupo y llevate 20% off en cabalgatas', 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=800', '/actividades/act_08', ARRAY['Naturaleza','Deportes'], 1240, 89, true),
+('anun_02', 'anfitrion_03', 'Cocina regional: 2da persona gratis', 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800', '/actividades/act_03', ARRAY['Cocina'], 980, 67, true),
+('anun_03', 'anfitrion_04', 'Noche de Jazz + Vino: cupos limitados', 'https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=800', '/actividades/act_04', ARRAY['Música'], 2100, 145, true);
+
+-- ─── CUPONES ─────────────────────────────────────────────────
+
+INSERT INTO cupones (id, anfitrion_id, codigo, descuento_porcentaje, usos_maximos, usos_actuales, activo, vence) VALUES
+('cupon_01', 'anfitrion_01', 'ACUARELA10', 10, 20, 3, true, '2026-09-30'),
+('cupon_02', 'anfitrion_03', 'EMPANADA20', 20, 15, 1, true, '2026-09-15'),
+('cupon_03', 'anfitrion_05', 'AMANECER15', 15, 10, 0, true, '2026-10-01'),
+('cupon_04', 'anfitrion_08', 'CABALGATA25', 25, 5, 2, true, '2026-08-31');
