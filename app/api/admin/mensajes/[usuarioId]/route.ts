@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin'
 
 export async function GET(
   req: Request,
-  { params }: { params: { usuarioId: string } }
+  { params }: { params: Promise<{ usuarioId: string }> }
 ) {
   const { userId } = await auth()
   if (!userId) {
@@ -21,7 +21,7 @@ export async function GET(
     return NextResponse.json({ error: 'No tenés permisos de administración' }, { status: 403 })
   }
 
-  const { usuarioId } = params
+  const { usuarioId } = await params
 
   const { data: mensajes } = await supabaseAdmin
     .from('mensajes')
