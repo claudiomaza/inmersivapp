@@ -8,14 +8,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
-  // Verificar que sea admin (anfitrión)
+  // Verificar admin usando roles (array)
   const { data: perfil } = await supabaseAdmin
     .from('perfiles')
-    .select('rol')
+    .select('roles')
     .eq('id', userId)
     .single()
 
-  if (perfil?.rol !== 'anfitrion') {
+  if (!perfil?.roles?.includes('admin')) {
     return NextResponse.json({ error: 'No tenés permisos de administración' }, { status: 403 })
   }
 
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
   if (tipo === 'actividades') {
     const { data } = await supabaseAdmin
       .from('actividades')
-      .select('*, perfiles(nombre, email)')
+      .select('*, perfiles!inner(nombre, email)')
       .order('created_at', { ascending: false })
     return NextResponse.json(data || [])
   }
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
   if (tipo === 'reservas') {
     const { data } = await supabaseAdmin
       .from('reservas')
-      .select('*, actividades(*)')
+      .select('*, actividades(titulo, precio)')
       .order('created_at', { ascending: false })
     return NextResponse.json(data || [])
   }
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
   if (tipo === 'resenas') {
     const { data } = await supabaseAdmin
       .from('resenas')
-      .select('*, actividades(titulo)')
+      .select('*, actividades!inner(titulo)')
       .order('created_at', { ascending: false })
     return NextResponse.json(data || [])
   }

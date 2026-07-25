@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@clerk/nextjs/server"
+import { auth, clerkClient } from "@clerk/nextjs/server"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 
 export async function GET() {
@@ -8,13 +8,43 @@ export async function GET() {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 })
   }
 
-  const { data: perfil, error } = await supabaseAdmin
+  let { data: perfil, error } = await supabaseAdmin
     .from("perfiles")
     .select("*")
     .eq("id", userId)
     .single()
 
-  if (error && error.code !== "PGRST116") {
+  // Si no existe el perfil, lo creamos automáticamente
+  if (error && error.code === "PGRST116") {
+    const client = await clerkClient()
+    const clerkUser = await client.users.getUser(userId)
+    const email = clerkUser.emailAddresses?.[0]?.emailAddress || ""
+    const nombre = clerkUser.firstName || clerkUser.username || "Sin nombre"
+    const apellido = clerkUser.lastName || null
+
+    const { data: nuevoPerfil, error: insertError } = await supabaseAdmin
+      .from("perfiles")
+      .insert({
+        id: userId,
+        email,
+        nombre,
+        apellido,
+        username: clerkUser.username || null,
+        rol: "participante",
+        roles: ["participante"],
+      })
+      .select()
+      .single()
+
+    if (insertError) {
+      console.error("Error al crear perfil:", insertError)
+      return NextResponse.json({ error: "Error al crear perfil" }, { status: 500 })
+    }
+
+    return NextResponse.json({ perfil: nuevoPerfil })
+  }
+
+  if (error) {
     return NextResponse.json({ error: "Error al obtener perfil" }, { status: 500 })
   }
 
@@ -37,6 +67,10 @@ export async function PUT(req: NextRequest) {
   if (telefono !== undefined) updates.telefono = telefono
   if (intereses !== undefined) updates.intereses = intereses
   if (roles !== undefined) updates.roles = roles
+  // Si se actualiza roles, también sincronizar rol singular
+  if (roles !== undefined) {
+    updates.rol = roles.includes("anfitrion") ? "anfitrion" : "participante"
+  }
 
   const { error } = await supabaseAdmin
     .from("perfiles")

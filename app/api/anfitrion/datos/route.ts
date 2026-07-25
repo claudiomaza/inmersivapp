@@ -11,14 +11,14 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const tipo = searchParams.get('tipo') || 'resumen'
 
-  // Verificar que sea anfitrión
+  // Verificar que sea anfitrión (usando el array roles)
   const { data: perfil } = await supabaseAdmin
     .from('perfiles')
-    .select('rol')
+    .select('roles')
     .eq('id', userId)
     .single()
 
-  if (perfil?.rol !== 'anfitrion') {
+  if (!perfil?.roles?.includes('anfitrion')) {
     return NextResponse.json({ error: 'No tenés permisos de anfitrión' }, { status: 403 })
   }
 
@@ -50,7 +50,6 @@ export async function GET(req: NextRequest) {
         : { count: 0 },
     ])
 
-    // Calcular ingresos estimados
     const { data: reservasConfirmadas } = ids.length > 0
       ? await supabaseAdmin
           .from('reservas')
