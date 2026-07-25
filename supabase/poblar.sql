@@ -45,128 +45,168 @@ INSERT INTO actividades (id, anfitrion_id, titulo, descripcion, categoria, preci
   -- 🎭 Sofía Martínez — Teatro Inmersivo / Storytelling
   ('a0000000-0000-0000-0000-000000000001', 'user_anfitrion_1',
    'Misterio en el Jardín Botánico',
-   'Escape room al aire libre. Un botánico desapareció en el jardín y vos y tu equipo tienen 90 minutos para encontrar las pistas ocultas entre las plantas, descifrar los acertijos y resolver el misterio antes del atardecer. Actores en vivo guían la historia.',
+   'Un botánico mendocino desapareció en el Jardín Botánico de Chacras de Coria mientras investigaba una especie invasora en el sector de cactus. La policía encontró su cuaderno de bitácora con anotaciones crípticas y un mapa dibujado a mano que nadie logra interpretar. El caso está abierto y necesita cerrarse antes del atardecer, cuando el jardín cierra sus puertas.
+
+Te vas a convertir en investigador por 90 minutos. Tu equipo de 4 a 6 personas recorrerá 1.2 km de senderos en busca de 12 pistas ocultas entre la vegetación, con 4 acertijos codificados que deberán descifrar en equipo. Actores profesionales interpretan a los testigos en vivo y reaccionan a las decisiones del grupo. Incluye linterna LED, mapa plastificado, cuaderno de pistas y lupa. Se recomienda calzado cómodo y repelente de insectos. La actividad se suspende solo por lluvia torrencial.',
    'Inmersión', 9000, '2026-08-15', '10:00', 'Jardín Botánico, Chacras de Coria, Luján de Cuyo', 15,
    'https://images.unsplash.com/photo-1520324761-0ceb1f0b0e89?w=800'),
 
   ('a0000000-0000-0000-0000-000000000011', 'user_anfitrion_1',
    'Mendoza 1861: Teatro Inmersivo en la Plaza',
-   'Viajá al pasado. Con vestuario de época, cada participante interpreta un personaje real de la Mendoza del siglo XIX y reconstruye la historia de la Plaza Independencia a través de escenas improvisadas. No necesita experiencia en actuación.',
+   'Corre 1861 y Mendoza está a punto de ser arrasada por el terremoto más devastador de su historia. En la Plaza Independencia, un grupo de ciudadanos —comerciantes, políticos, inmigrantes y damas de sociedad— se reúne sin saber que en pocas horas todo cambiará. Cada persona que camina por la plaza tiene un rol en esta historia que necesita ser contada antes de que el polvo la borre.
+
+Te vamos a asignar un personaje histórico real con una biografía escrita en una carta de época. Vas a recibir vestuario completo (sombrero, chaleco, pollera larga o bastón según el personaje) y 30 minutos de taller preparatorio con Sofía para entender tus motivaciones. Durante 2 horas, la plaza se convierte en un escenario vivo donde improvisás escenas junto a otros 11 participantes mientras un narrador introduce los giros de la historia. No se necesita experiencia actoral, solo compromiso con el personaje y ganas de jugar.',
    'Inmersión', 7500, '2026-08-29', '16:00', 'Plaza Independencia, Ciudad', 12,
    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800'),
 
   ('a0000000-0000-0000-0000-000000000012', 'user_anfitrion_1',
    'La Trama Oculta del Barrio Bombal',
-   'Juego de detectives por el barrio más histórico de Mendoza. Cada participante recibe un rol (investigador, periodista, cómplice) y debe seguir pistas escondidas en comercios reales, interrogar a personajes y descubrir el secreto del Barrio Bombal.',
+   'El Barrio Bombal, el primer barrio jardín de Mendoza construido en 1925, guarda un secreto que sus vecinos protegen desde hace décadas. Una caja de seguridad fue encontrada en el sótano de una de las casas originales, pero nadie sabe la combinación ni a quién pertenece. Los únicos indicios son fotografías antiguas repartidas entre los comercios del barrio.
+
+Cada participante recibe un rol secreto: investigador, periodista, cómplice o infiltrado. Tu misión es recorrer 6 comercios reales del barrio (librería, café, ferretería, panadería, taller de arte y peluquería) donde actores te darán pistas. Tenés 2 horas para conectar la información, descubrir el código y abrir la caja. Cada equipo de hasta 10 personas compite contra el reloj y contra otros equipos que recorren las mismas calles al mismo tiempo. Al final, todos los equipos se reúnen en el café del barrio para revelar sus teorías.',
    'Inmersión', 6500, '2026-09-12', '15:00', 'Barrio Bombal, Ciudad', 10,
    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800'),
 
   -- 🥾 Pablo Giménez — Aventura Inmersiva / Supervivencia
   ('a0000000-0000-0000-0000-000000000003', 'user_anfitrion_2',
    'Operación Cerro de la Gloria',
-   'Misión de exploración y rescate en el Cerro de la Gloria. Divididos en equipos, deben navegar con mapa y brújula, superar estaciones de habilidades (nudos, primeros auxilios, orientación) y llegar a la cima con el informe completo. Sin celulares.',
+   'Un grupo de excursionistas desapareció en el Cerro de la Gloria y el centro de operaciones necesita coordinar el rescate antes del mediodía, cuando las temperaturas superan los 35°C. El equipo de búsqueda debe dividirse en dos brigadas, navegar con mapa topográfico y brújula, superar estaciones de habilidades de supervivencia y llegar a la cima con el informe de ubicación completo.
+
+Te vamos a dividir en dos brigadas de hasta 10 personas cada una. Cada brigada recibe un mapa topográfico del cerro, una brújula, un kit de primeros auxilios básico y una radio de comunicación. En el camino hay 4 estaciones obligatorias: nudos de rescate, orientación con sol, armado de camilla improvisada y señalización. Un instructor certificado en montaña evalúa cada estación. La actividad dura 4 horas e incluye 3.5 km de ascenso con 320 metros de desnivel. Se recomienda llevar botella de agua de 1.5 litros mínimo, protector solar y gorra. No se permite el uso de celulares durante la misión.',
    'Aventura', 4500, '2026-08-22', '08:00', 'Cerro de la Gloria, Parque General San Martín, Ciudad', 20,
    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800'),
 
   ('a0000000-0000-0000-0000-000000000013', 'user_anfitrion_2',
    'Expedición Nocturna en Potrerillos',
-   'Caminata nocturna de 5 km por senderos del dique con linternas frontales. En el camino, paradas con narración de mitos andinos alrededor de fogatas. La experiencia culmina con un silencio colectivo bajo las estrellas y chocolate caliente.',
+   'Cuando el sol se pone detrás de la Cordillera de los Andes, el Dique Potrerillos se transforma en un paisaje de sombras y sonidos que pocos conocen. Los mitos andinos cobran vida alrededor del fuego: historias de la luz mala, el familiar y la viuda que guardan los secretos de la montaña. La noche es el personaje principal de esta caminata.
+
+La caminata nocturna recorre 5 km de senderos junto al dique con linternas frontales (incluidas). Hay 3 paradas programadas: la primera para escuchar la leyenda del Cerro de la Calavera, la segunda para una dinámica de silencio colectivo de 5 minutos donde solo se escucha el agua y el viento, y la tercera para chocolate caliente con torta frita alrededor de una fogata. Pablo guía el grupo y va narrando las historias mientras camina. La actividad dura 3 horas y es de dificultad baja. Se recomienda abrigo y calzado cerrado.',
    'Aventura', 8000, '2026-09-06', '17:00', 'Dique Potrerillos, Luján de Cuyo', 12,
    'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800'),
 
   ('a0000000-0000-0000-0000-000000000014', 'user_anfitrion_2',
    'Misión Río Mendoza: Rescate Acuático',
-   'Simulación de operación de rescate en el río. Cada participante asume un rol (coordinador, rescatista, comunicación). Incluye técnicas básicas de RCP, uso de cuerdas y trabajo en equipo en corriente controlada. Instructores certificados.',
+   'Un kayakista volcó en el Río Mendoza a la altura de Potrerillos y la corriente lo arrastró 200 metros río abajo. El centro de coordinación activó un operativo de rescate que necesita 16 personas distribuidas en 4 roles específicos: coordinación, rescate en agua, seguridad en costa y comunicaciones. Cada minuto cuenta cuando el agua corre a 8 km/h.
+
+Vas a asumir uno de los 4 roles del operativo en una simulación supervisada por instructores certificados en rescate acuático (IRF y Cruz Roja). La capacitación previa dura 45 minutos e incluye técnicas básicas de RCP, uso de cuerdas de rescate, señales de comunicación y protocolo de extracción. Después se realiza la simulación completa en un sector controlado del río con corriente real pero sin profundidad crítica. Cada participante rota al menos 2 roles durante la jornada. La actividad dura 4 horas e incluye equipo de seguridad completo (chaleco salvavidas, casco, traje de neopreno). Edad mínima 16 años, saber nadar es requisito.',
    'Aventura', 15000, '2026-09-20', '09:00', 'Río Mendoza, Potrerillos, Luján de Cuyo', 16,
    'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800'),
 
   ('a0000000-0000-0000-0000-000000000015', 'user_anfitrion_2',
    'La Carrera del Pedemonte',
-   'Competencia de mountain bike por equipos con postas. Cada posta combina un desafío físico (trepada, descenso técnico) con uno mental (acertijo, memoria, coordinación). El equipo completo debe cruzar la meta. Bicicletas incluidas.',
+   'El Pedemonte de Las Heras esconde un circuito de senderos y trialetas que solo los mountain bikers locales conocen. La premisa es simple: llegar a la meta con todo el equipo o no llegar. Cada posta del recorrido combina un desafío físico (trepada, descenso técnico, zigzag entre árboles) con uno mental que solo se puede resolver en equipo (acertijo visual, memoria de secuencia, coordinación rítmica).
+
+Te organizamos en equipos de 5 personas. Cada equipo recibe un mapa del circuito con 6 postas numeradas. En cada posta, primero resuelven el desafío físico (por ejemplo, descenso de 200 metros con 8 curvas cerradas) y después el mental (por ejemplo, memorizar una secuencia de colores y repetirla en orden inverso). El equipo completo debe cruzar la meta junta; si alguien se queda, el equipo espera. Se proveen bicicletas mountain bike rodado 29, casco y guantes. La actividad dura 3 horas y cubre 12 km de recorrido total. Dificultad media, se requiere saber andar en bicicleta.',
    'Aventura', 10000, '2026-10-04', '09:00', 'Pedemonte, Las Heras', 10,
    'https://images.unsplash.com/photo-1576435771530-0c0e240e0d4e?w=800'),
 
   -- 🍲 Lucía Fernández — Inmersión Cultural / Turismo Humano
   ('a0000000-0000-0000-0000-000000000005', 'user_anfitrion_3',
    'Almuerzo en Casa de los Fernández',
-   'Compartí un almuerzo familiar auténtico en la casa de Lucía. No es una clase de cocina: es una experiencia de pertenencia. Ayudás a preparar las empanadas con la receta de la abuela, ponés la mesa, comés con la familia y escuchás las historias de la mesa familiar.',
+   'La familia Fernández vive en Godoy Cruz desde hace tres generaciones. Todos los domingos preparan empanadas con la receta de la abuela Hortensia, que llegó de Galicia en 1952 y nunca volvió. El almuerzo no es una clase de cocina: es una invitación a la mesa familiar. Acá no hay turistas, hay invitados.
+
+Llegás a la casa de Lucía a las 18:00. Te recibimos con un aperitivo (vino de la casa o jugo de uva) mientras conocés a la familia. Después pasás a la cocina donde ayudás a preparar las empanadas: cortar la masa, hacer el repulgue, probar el relleno. La cena se sirve en la mesa del patio con toda la familia: empanadas, ensalada, vino y postre casero. Durante la comida, cada persona cuenta una historia de su familia. La experiencia dura aproximadamente 3 horas. Te llevás las recetas escritas a mano por Lucía y la foto familiar del día.',
    'Cultura', 6500, '2026-08-30', '18:00', 'Godoy Cruz', 12,
    'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800'),
 
   ('a0000000-0000-0000-0000-000000000016', 'user_anfitrion_3',
    'Un Día en la Bodega: Vigneron por Jornada',
-   'Trabajá como un vigneron real por un día. Te levantás temprano, participás de la cosecha (o la poda según la temporada), limpiás barricas, aprendés a catar mosto y al final del día compartís una cena con los trabajadores de la bodega. El vino que ayudaste a hacer es tuyo.',
+   'La Bodega Carmine, en la Ruta del Vino de Maipú, produce Malbec, Cabernet Sauvignon y Bonarda desde 1932. Cada año, durante la cosecha de febrero a abril, los viñateros trabajan de sol a sol para llevar la uva al lagar en su punto exacto de azúcar. Pero no vienen turistas a mirar: vienen brazos a trabajar.
+
+Te levantás a las 7:00 y te presentás en la bodega. Después del mate de bienvenida, te asignan una cuadrilla y empezás la cosecha: cortar racimos con tijera de podar, llenar los cajones de 20 kg, llevarlos al tractor. A media mañana, pausa para almuerzo con los trabajadores. Por la tarde, si es temporada de poda, aprendés a seleccionar brotes; si no, limpiás barricas o aprendés a catar mosto en la sala de degustación. Al final del día, compartís una cena con el equipo de la bodega y te llevás dos botellas del vino que ayudaste a procesar. Incluye guantes de trabajo, tijera de poda y botella de agua recargable.',
    'Cultura', 12000, '2026-09-13', '07:00', 'Ruta del Vino, Maipú', 15,
    'https://images.unsplash.com/photo-1510812431401-41d46bd4722f?w=800'),
 
   ('a0000000-0000-0000-0000-000000000017', 'user_anfitrion_3',
    'Cosecha de Olivos con la Familia Quiroga',
-   'Pasá el día completo con una familia olivícola de Lunlunta. Cosechás aceitunas a mano, llevás la cosecha al molino familiar, prensás tu propio aceite, y almorzás en su casa con los productos de la huerta. Te llevás una botella de aceite que vos mismo produjiste.',
+   'La familia Quiroga cultiva olivos en Lunlunta, Maipú, desde 1947. Producen aceite de oliva extra virgen de la variedad Arauco, la misma que los españoles trajeron a América en el siglo XVI. En la finca trabajan tres generaciones juntas: el abuelo José, sus hijos y los nietos. La cosecha se hace a mano, como siempre.
+
+Llegás a la finca a las 8:00. Te recibimos con medialunas y café, y después de una charla de 20 minutos sobre la historia de la olivicultura en Mendoza, empezás la cosecha con los Quiroga. Cosechás aceitunas a mano, las llevás al molino familiar, participás del prensado en frío y probás el aceite recién salido sobre pan. Al mediodía, almuerzo casero en la galería de la casa familiar con productos de la huerta. Te llevás una botella de aceite de 500 ml producido por vos y la receta de la abuela Quiroga para hacer pan casero.',
    'Cultura', 6000, '2026-09-27', '08:00', 'Lunlunta, Maipú', 20,
    'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800'),
 
   -- 📸 Andrés Pérez — Narrativa Visual Inmersiva
   ('a0000000-0000-0000-0000-000000000008', 'user_anfitrion_4',
    'Misión Fotográfica: Documentá Potrerillos',
-   'Cada participante recibe un personaje y una misión fotográfica distinta. Unos son arqueólogos visuales, otros cronistas de viaje, otros documentalistas. Deben capturar la historia de Potrerillos desde la mirada de su rol. Al final, cada uno revela su historia en una proyección colectiva.',
+   'El Dique Potrerillos no es solo un espejo de agua de 12 km²: es un territorio de historias visuales. Hay un pueblo sumergido bajo el agua, hay cóndores volando sobre el Cañón del Atuel, hay fogatas de puesteros que viven allí desde antes de la represa. Cada participante recibe un personaje distinto con una misión fotográfica que contar.
+
+Vas a recibir tu personaje al llegar: arqueólogo visual (documentá las ruinas), cronista de viaje (contá la historia del día), documentalista de naturaleza (capturá flora y fauna) o retratista de la comunidad (fotografíá a la gente del lugar). Tenés 3 horas para completar tu misión con una cámara réflex digital (incluida) o tu propio equipo. Andrés te da una guía técnica de 30 minutos al inicio. Al final, cada uno proyecta sus 10 mejores fotos en una pantalla colectiva y el grupo vota la mejor historia visual del día. Te llevás tus fotos en un pendrive de regalo.',
    'Arte', 8000, '2026-08-24', '16:00', 'Potrerillos, Luján de Cuyo', 10,
    'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800'),
 
   ('a0000000-0000-0000-0000-000000000018', 'user_anfitrion_4',
    'Mendoza en 24 Fotos: Competencia por Equipos',
-   'Competencia de fotografía narrativa. Equipos de 3 personas reciben un mapa de la ciudad con ubicaciones secretas y un tema distinto cada una. Tienen 3 horas para capturar 24 fotos que cuenten una historia coherente. Gana el equipo que mejor narre su versión de Mendoza.',
+   'Mendoza tiene 5 zonas históricas que cuentan 5 historias diferentes: la Ciudad Antigua, el Barrio de las Artes, el Corredor del Vino, la Boca del Monte y el Parque de los Inmigrantes. Cada una tiene un código visual distinto que solo un ojo entrenado puede capturar. Hoy, tu ojo va a competir en equipos.
+
+Cada equipo de 3 personas recibe un mapa plastificado con 24 ubicaciones secretas distribuidas por el centro histórico. En cada ubicación hay un tema fotográfico distinto que deben interpretar (luz, textura, contraste, sombra, simetría, caos, vacío, color, etc.). Tienen 3 horas para capturar exactamente 24 fotos que cuenten una historia coherente del viaje. Gana el equipo que mejor narre su versión de Mendoza. Al final, se hace una proyección de las 3 historias en un café del centro. Andrés evalúa composición, narrativa y coherencia. Cámaras incluidas o podés usar tu celular.',
    'Arte', 5000, '2026-09-05', '09:00', 'Centro Histórico, Ciudad', 12,
    'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800'),
 
   ('a0000000-0000-0000-0000-000000000019', 'user_anfitrion_4',
    'El Estudio Viviente',
-   'El estudio de Andrés se transforma en 5 escenografías distintas (un café parisino, una casa de campo, un estudio de los 50, un jardín japonés, un taller mecánico). Los participantes rotan roles de fotógrafo y modelo, creando una historia visual colaborativa.',
+   'El estudio de Andrés en la Quinta Sección es una casona de 1920 con 5 ambientes que él transforma en escenografías completas: un café parisino con barra de madera y espejos biselados, una casa de campo mendocina con enredaderas, un estudio fotográfico de los años 50 con luces de tungsteno, un jardín japonés de mesa, y un taller mecánico vintage con herramientas originales.
+
+Los participantes rotan por las 5 escenografías en grupos de 3, alternando roles de fotógrafo y modelo. Cada escenario tiene 15 minutos: 5 para ambientar la escena y 10 para disparar. Al final de la rotación, cada persona tiene 5 fotos de cada escenario. Entre todos eligen las mejores 10 y las imprimen en el taller de Andrés en papel de algodón 24x30 cm. La actividad incluye café de especialidad y medialunas. Cada participante se lleva su copia impresa.',
    'Arte', 6000, '2026-09-19', '10:00', 'Quinta Sección, Ciudad', 15,
    'https://images.unsplash.com/photo-1504898770365-14caca6a7320?w=800'),
 
   -- 🧘 Carolina Díaz — Inmersión Sensorial / Corporal
   ('a0000000-0000-0000-0000-000000000009', 'user_anfitrion_5',
    'El Cuerpo Habla: Teatro Sensorial en el Parque',
-   'Experiencia de movimiento y expresión corporal sin palabras. Inspirada en los elementos del Rosedal, cada participante explora el lenguaje del cuerpo a través de dinámicas de confianza, contacto visual, y movimiento guiado. No importa la flexibilidad, importa la presencia.',
+   'El Rosedal del Parque General San Martín tiene 3.000 rosales de 200 variedades distintas. Cada rosa tiene un olor, una textura, un color. Carolina propone una experiencia donde el cuerpo es el instrumento de exploración: sin palabras, solo movimiento, tacto, mirada y presencia. Inspirada en la técnica de teatro sensorial de Enrique Papatino.
+
+La experiencia empieza con una dinámica de confianza en parejas: te vendamos los ojos y tu compañero te guía a tocar un rosal, olerlo, sentir su textura. Después, sin la venda, explorás el lenguaje del cuerpo a través de movimientos inspirados en los elementos del parque: el agua de la fuente, el viento entre los árboles, la tierra del camino. Carolina guía con sonidos y percusión suave. No se necesita flexibilidad, coordinación ni experiencia previa. Solo se necesita presencia. La actividad dura 2 horas y se realiza sobre el pasto. Se recomienda ropa cómoda.',
    'Bienestar', 2500, '2026-08-23', '09:00', 'Rosedal, Parque General San Martín, Ciudad', 25,
    'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800'),
 
   ('a0000000-0000-0000-0000-000000000010', 'user_anfitrion_5',
    'Baño de Sonido al Pie del Dique',
-   'Viaje sonoro inmersivo al atardecer. Acostados sobre mantas al borde del Dique Cipolletti, Carolina guía una meditación mientras cuencos, gongs y tambores envuelven el espacio. El cierre es un silencio colectivo donde solo se escucha el agua y el viento.',
+   'El Dique Cipolletti, a 15 minutos de la Ciudad de Mendoza, es un espejo de agua de 3 km de largo rodeado de montañas. Al atardecer, el viento baja del Cerro Arco y el agua se calma. Carolina dispone mantas y cojines en la orilla, y empieza un viaje sonoro con cuencos tibetanos, gongs planetarios, tambores oceánicos y palos de lluvia.
+
+Te acostás sobre una manta con los ojos cerrados. Carolina guía una respiración inicial de 5 minutos y después empieza el viaje sonoro: 40 minutos donde los instrumentos te envuelven sin que sepas de dónde viene el sonido. No hay instrucciones ni meditación guiada, solo el sonido moviéndose por el espacio. El cierre es un silencio colectivo de 5 minutos donde solo se escucha el agua y el viento. Después compartimos un té de hierbas serranas. La actividad dura 1.5 horas. Se recomienda llevar abrigo, manta personal y algo para acostarse (colchoneta o aislante).',
    'Bienestar', 5000, '2026-09-05', '18:00', 'Dique Cipolletti, Las Heras', 20,
    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800'),
 
   ('a0000000-0000-0000-0000-000000000020', 'user_anfitrion_5',
    'Retiro de Reconexión en Cacheuta',
-   '3 días de desconexión total. Yoga al amanecer, caminatas silenciosas por la montaña, meditación guiada, comidas conscientes preparadas con ingredientes de la zona, baños termales bajo las estrellas y una fogata de cierre donde cada persona comparte su experiencia.',
+   'Cacheuta, a 45 km de Mendoza, es un valle termal rodeado de montañas donde el río Mendoza forma pozones de agua caliente natural. Durante 3 días, no hay reloj, no hay señal, no hay pantallas. Solo hay montaña, agua, comida consciente y silencio. El retiro está diseñado para 10 personas y se realiza en una finca privada con capacidad para alojar a todos los participantes.
+
+Día 1: llegada a las 9:00, instalación en las cabañas, yoga de apertura, caminata silenciosa de 3 km por la montaña, meditación guiada al atardecer, cena consciente en silencio. Día 2: yoga al amanecer, taller de respiración, baños termales, caminata de reconocimiento de plantas nativas, taller de mandalas con elementos naturales, fogata de cierre donde cada persona comparte su experiencia. Día 3: yoga al amanecer, desayuno comunitario, cierre del retiro y regreso a las 13:00. Incluye alojamiento en cabañas compartidas (2 personas por cabaña), todas las comidas preparadas con ingredientes de la zona, y materiales para los talleres. No incluye traslado.',
    'Bienestar', 35000, '2026-10-10', '09:00', 'Cacheuta, Luján de Cuyo', 10,
    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'),
 
   -- 🎵 Martín López — Inmersión Musical Colectiva
   ('a0000000-0000-0000-0000-000000000004', 'user_anfitrion_6',
    'Círculo de Tambores en el Centro',
-   'Percusión colectiva sin experiencia previa. Cada participante elige un instrumento de percusión y Martín guía al grupo en la construcción de una canción en vivo. Nadie dirige, todos escuchan y responden. El círculo se convierte en una conversación rítmica.',
+   'En una sala del centro de Mendoza, 20 personas se sientan en círculo sin conocerse. Sobre la mesa hay bombos, cajones peruanos, djembe africanos, shakers, campanas y palos de lluvia. Martín, percusionista con 15 años de experiencia, da una consigna simple: nadie dirige, todos escuchan y responden. El círculo se convierte en una conversación rítmica donde cada persona propone y el grupo acompaña.
+
+La experiencia empieza con una ronda de presentación rítmica: cada persona dice su nombre con un golpe en el tambor. Después Martín enseña 3 ritmos básicos (tuntún, marcha, swing) y los practicamos en conjunto. La parte central es libre: Martín lanza consignas al círculo (silencio, solo percusión menor, duelo de tambores, crescendo colectivo) y el grupo responde. La actividad dura 2 horas y no requiere experiencia musical previa. Todos los instrumentos están incluidos. Al final se hace una grabación de 3 minutos de lo que tocaron entre todos.',
    'Música', 3500, '2026-08-16', '20:00', 'Ciudad', 20,
    'https://images.unsplash.com/photo-1547153760-18fc86324498?w=800'),
 
   ('a0000000-0000-0000-0000-000000000021', 'user_anfitrion_6',
    'Cantata al Atardecer en los Viñedos',
-   'El grupo aprende una canción folclórica cuyana completa (letra, armonía, ritmo) y la graba en vivo entre los viñedos al atardecer. Cada persona elige su rol: voz, percusión corporal o acompañamiento. Al final, escuchan la grabación con una copa de vino.',
+   'Entre las hileras de Malbec de la Bodega en Vistalba, Luján de Cuyo, un grupo de 25 personas se prepara para cantar. La canción es una tonada cuyana tradicional, con letra de la cosecha de uva, armonía de tres voces y ritmo de percusión corporal. Martín enseña la canción completa en 90 minutos y después se graba en vivo mientras el sol se pone detrás de la Cordillera.
+
+Cada persona elige su rol al llegar: voz principal (melodía), voz armónica (segunda y tercera), percusión corporal (palmas, pies, chasquidos) o acompañamiento con instrumentos de viento (zampoñas, quenas, sikus). Martín dirige el ensayo dividido en 3 bloques de 30 minutos: primero la letra y la melodía, después las armonías, y finalmente la percusión. Después de 30 minutos de descanso con degustación de vino, se hace la grabación en vivo: 3 tomas, el grupo elige la mejor. La grabación final se comparte digitalmente con todos los participantes. Incluye copa de vino al final.',
    'Música', 7500, '2026-09-26', '17:00', 'Bodega en Vistalba, Luján de Cuyo', 25,
    'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800'),
 
   -- 🧵 Valentina Rojas — Inmersión Ancestral
   ('a0000000-0000-0000-0000-000000000006', 'user_anfitrion_7',
    'Tejedora por un Día',
-   'Viví como una artesana textil mapuche. Valentina te recibe en su taller en Chacras, te enseña las técnicas ancestrales de telar, teje con vos mientras compartís un almuerzo tradicional y escuchás las historias de su comunidad. Te llevás tu propia pieza tejida.',
+   'Valentina Rojas es artesana textil mapuche de la comunidad de Chacras de Coria. Su taller es su casa, donde tiene un telar mapuche de 2 metros de ancho que perteneció a su abuela. Ella teje en lana de oveja hilada a mano y tiñe con tintes naturales: cáscara de cebolla para el amarillo, raíz de molle para el marrón, hoja de vid para el verde. Hoy te va a recibir como aprendiz.
+
+La experiencia empieza con un mate y una charla sobre la cosmovisión mapuche y el significado del tejido como memoria. Después Valentina te enseña las técnicas básicas del telar mapuche: urdimbre, trama, diseños de la comunidad. Teje con vos durante 2 horas mientras comparten un almuerzo tradicional (tortilla de papa, charqui, sopa de quinoa). Al final, te llevás tu propia pieza tejida de 20x30 cm (individual para mesa, pared o lo que quieras). La actividad dura 4 horas. Incluye todos los materiales y el almuerzo.',
    'Cultura', 6000, '2026-08-17', '14:00', 'Chacras de Coria, Luján de Cuyo', 10,
    'https://images.unsplash.com/photo-1565193566173-7a0ee3dbea78?w=800'),
 
   -- 💻 Fernando Quiroga — Inmersión Digital
   ('a0000000-0000-0000-0000-000000000007', 'user_anfitrion_8',
    'Escape Room Digital: El Misterio del Código',
-   'Escape room físico donde cada acertijo se resuelve escribiendo código. No necesitás saber programar — Fernando te guía. Combinás lógica, trabajo en equipo y tecnología para desbloquear puertas, descifrar mensajes y encontrar la salida. Laptops incluidas.',
+   'Una inteligencia artificial llamada ARGOS se descontroló en un servidor de Godoy Cruz y encerró todos los datos de la ciudad tras un cifrado de 4 niveles. Cada nivel es un acertijo que se resuelve con lógica y código: un mensaje cifrado en binario, una puerta que se abre con el resultado de una función matemática, un laberinto que se resuelve con un algoritmo de búsqueda, y un candado final que necesita coordinación en equipo.
+
+No necesitás saber programar. Fernando te guía paso a paso: cada acertijo viene con una explicación y un ejemplo. Los equipos de hasta 4 personas tienen 90 minutos para resolver los 4 niveles y liberar los datos. Hay laptops con el entorno de desarrollo ya configurado (VS Code con Python y Node.js). Si un equipo se traba, hay 3 pistas disponibles que pueden canjear. La actividad dura 2 horas incluyendo la explicación inicial. Al final, el equipo que libera los datos recibe un certificado de "Hacker Ético de Inmersivapp" y un código de descuento para la próxima actividad.',
    'Tecnología', 5000, '2026-08-18', '10:00', 'Godoy Cruz', 20,
    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800')
 ON CONFLICT (id) DO NOTHING;
