@@ -10,20 +10,20 @@
 
 BEGIN;
 
-INSERT INTO perfiles (id, email, nombre, apellido, username, telefono, avatar_url, intereses, rol, roles) VALUES
-  ('user_3H0xBWNBlh1Nwas6ul1dqxdcNbg', 'm33570855@gmail.com', 'Super', 'Admin', 'sadmin', NULL, NULL, '{Administración,Gestión}', 'admin', '{admin,anfitrion}'),
-  ('user_anfitrion_1', 'maria@inmersivapp.com', 'María', 'García', 'maria_garcia', NULL, NULL, '{Arte,Cocina,Inmersión}', 'anfitrion', '{anfitrion}'),
-  ('user_anfitrion_2', 'carlos@inmersivapp.com', 'Carlos', 'López', 'carlos_lopez', NULL, NULL, '{Naturaleza,Aventura,Deportes}', 'anfitrion', '{anfitrion}'),
-  ('user_anfitrion_3', 'lucia.fernandez@inmersivapp.com', 'Lucía', 'Fernández', 'lucia_fdez', '+5492615001003', NULL, '{Gastronomía,Cultura}', 'anfitrion', '{anfitrion}'),
-  ('user_anfitrion_4', 'andres.perez@inmersivapp.com', 'Andrés', 'Pérez', 'andres_perez', '+5492615001004', NULL, '{Fotografía,Tecnología}', 'anfitrion', '{anfitrion}'),
-  ('user_anfitrion_5', 'carolina.diaz@inmersivapp.com', 'Carolina', 'Díaz', 'caro_diaz', '+5492615001005', NULL, '{Bienestar,Inmersión}', 'anfitrion', '{anfitrion}'),
-  ('user_anfitrion_6', 'martin.sosa@inmersivapp.com', 'Martín', 'Sosa', 'martin_sosa', '+5492615001006', NULL, '{Música,Arte}', 'anfitrion', '{anfitrion}'),
-  ('user_anfitrion_7', 'valentina.ruiz@inmersivapp.com', 'Valentina', 'Ruiz', 'valen_ruiz', '+5492615001007', NULL, '{Arte,Manualidades,Cultura}', 'anfitrion', '{anfitrion}'),
-  ('user_anfitrion_8', 'fernando.torres@inmersivapp.com', 'Fernando', 'Torres', 'fer_torres', '+5492615001008', NULL, '{Tecnología,Innovación}', 'anfitrion', '{anfitrion}'),
-  ('user_participante_1', 'laura@inmersivapp.com', 'Laura', 'Martínez', 'lau_martinez', NULL, NULL, '{Arte,Naturaleza}', 'participante', '{participante}'),
-  ('user_participante_2', 'pedro@inmersivapp.com', 'Pedro', 'Ramírez', 'pedro_ramirez', NULL, NULL, '{Aventura,Deportes}', 'participante', '{participante}'),
-  ('user_participante_3', 'sofia@inmersivapp.com', 'Sofía', 'Morales', 'sofia_morales', NULL, NULL, '{Cultura,Gastronomía}', 'participante', '{participante}'),
-  ('user_participante_4', 'juan@inmersivapp.com', 'Juan', 'Álvarez', 'juan_alvarez', NULL, NULL, '{Tecnología,Música}', 'participante', '{participante}')
+INSERT INTO perfiles (id, email, nombre, apellido, username, telefono, cuil, alias_mp, avatar_url, intereses, rol, roles) VALUES
+  ('user_3H0xBWNBlh1Nwas6ul1dqxdcNbg', 'm33570855@gmail.com', 'Super', 'Admin', 'sadmin', NULL, NULL, NULL, NULL, '{Administración,Gestión}', 'admin', '{admin,anfitrion}'),
+  ('user_anfitrion_1', 'maria@inmersivapp.com', 'María', 'García', 'maria_garcia', NULL, '27-23456789-4', 'maria.garcia.mp', NULL, '{Arte,Cocina,Inmersión}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_2', 'carlos@inmersivapp.com', 'Carlos', 'López', 'carlos_lopez', NULL, '20-34567890-1', 'carlos.lopez.mp', NULL, '{Naturaleza,Aventura,Deportes}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_3', 'lucia.fernandez@inmersivapp.com', 'Lucía', 'Fernández', 'lucia_fdez', '+5492615001003', '27-45678901-8', 'lucia.fernandez.mp', NULL, '{Gastronomía,Cultura}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_4', 'andres.perez@inmersivapp.com', 'Andrés', 'Pérez', 'andres_perez', '+5492615001004', '20-56789012-5', 'andres.perez.mp', NULL, '{Fotografía,Tecnología}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_5', 'carolina.diaz@inmersivapp.com', 'Carolina', 'Díaz', 'caro_diaz', '+5492615001005', '27-67890123-2', 'caro.diaz.mp', NULL, '{Bienestar,Inmersión}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_6', 'martin.sosa@inmersivapp.com', 'Martín', 'Sosa', 'martin_sosa', '+5492615001006', '20-78901234-9', 'martin.sosa.mp', NULL, '{Música,Arte}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_7', 'valentina.ruiz@inmersivapp.com', 'Valentina', 'Ruiz', 'valen_ruiz', '+5492615001007', '27-89012345-6', 'valen.ruiz.mp', NULL, '{Arte,Manualidades,Cultura}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_8', 'fernando.torres@inmersivapp.com', 'Fernando', 'Torres', 'fer_torres', '+5492615001008', '20-90123456-3', 'fer.torres.mp', NULL, '{Tecnología,Innovación}', 'anfitrion', '{anfitrion}'),
+  ('user_participante_1', 'laura@inmersivapp.com', 'Laura', 'Martínez', 'lau_martinez', NULL, NULL, NULL, NULL, '{Arte,Naturaleza}', 'participante', '{participante}'),
+  ('user_participante_2', 'pedro@inmersivapp.com', 'Pedro', 'Ramírez', 'pedro_ramirez', NULL, NULL, NULL, NULL, '{Aventura,Deportes}', 'participante', '{participante}'),
+  ('user_participante_3', 'sofia@inmersivapp.com', 'Sofía', 'Morales', 'sofia_morales', NULL, NULL, NULL, NULL, '{Cultura,Gastronomía}', 'participante', '{participante}'),
+  ('user_participante_4', 'juan@inmersivapp.com', 'Juan', 'Álvarez', 'juan_alvarez', NULL, NULL, NULL, NULL, '{Tecnología,Música}', 'participante', '{participante}')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO actividades (id, anfitrion_id, titulo, descripcion, categoria, fecha, hora, lugar, precio, capacidad_max, imagen_url) VALUES

@@ -49,6 +49,8 @@ CREATE TABLE perfiles (
   apellido TEXT,
   username TEXT,
   telefono TEXT,
+  cuil TEXT,
+  alias_mp TEXT,
   avatar_url TEXT,
   intereses TEXT[] DEFAULT '{}',
   rol TEXT NOT NULL DEFAULT 'participante' CHECK (rol IN ('participante', 'anfitrion', 'admin')),
@@ -141,6 +143,7 @@ CREATE TABLE mensajes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   emisor_id TEXT NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
   receptor_id TEXT NOT NULL REFERENCES perfiles(id) ON DELETE CASCADE,
+  actividad_id UUID REFERENCES actividades(id) ON DELETE SET NULL,
   contenido TEXT NOT NULL,
   leido BOOLEAN DEFAULT false,
   created_at TIMESTAMP DEFAULT NOW()
