@@ -1,44 +1,55 @@
-// ─── Tipos compartidos de Inmersivapp (v2 — schema nuevo) ───
+// ─── Tipos compartidos de Inmersivapp ───
 
-export type Rol = 'participante' | 'anfitrion' | 'admin'
+export type Rol = 'participante' | 'anfitrion' | 'admin' | 'patrocinador'
 
 export interface Perfil {
   id: string
-  email: string
+  username: string
   nombre: string
+  apellido: string
   telefono: string
   avatar_url?: string
-  rol: Rol
+  intereses: string[]
+  roles: Rol[]
   created_at: string
 }
 
 export type Categoria =
   | 'Arte'
-  | 'Naturaleza'
-  | 'Gastronomía'
-  | 'Música'
-  | 'Fotografía'
-  | 'Yoga'
-  | 'Meditación'
   | 'Tecnología'
   | 'Deportes'
-  | 'Manualidades'
-  | 'Teatro'
-  | 'Educación'
+  | 'Cocina'
+  | 'Naturaleza'
+  | 'Música'
+  | 'Fotografía'
 
 export interface Actividad {
   id: string
-  anfitrion_id: string
   titulo: string
   descripcion: string
-  categoria: Categoria
-  fecha: string
-  hora: string
-  lugar: string
   precio: number
-  capacidad_max: number
-  imagen_url: string
+  categoria: Categoria
+  fotos: string[]
+  ubicacion: Ubicacion
+  anfitrion_id: string
+  horarios: HorarioSemanal
+  fechas: string[] // ISO dates
+  activa: boolean
   created_at: string
+  perfiles?: {
+    nombre: string
+    avatar_url?: string
+  }
+}
+
+export interface Ubicacion {
+  provincia: string
+  departamento: string
+  direccion: string
+}
+
+export interface HorarioSemanal {
+  [dia: string]: { activo: boolean; inicio: string; fin: string }
 }
 
 export type EstadoReserva = 'pendiente' | 'confirmada' | 'cancelada' | 'completada'
@@ -47,8 +58,9 @@ export interface Reserva {
   id: string
   usuario_id: string
   actividad_id: string
-  cantidad: number
+  fecha: string // ISO
   estado: EstadoReserva
+  codigo_confirmacion?: string
   created_at: string
 }
 
@@ -56,10 +68,10 @@ export type EstadoPago = 'pendiente' | 'aprobado' | 'rechazado' | 'reembolsado'
 
 export interface Pago {
   id: string
-  usuario_id: string
   reserva_id: string
   monto: number
-  metodo_pago: string
+  moneda: string
+  metodo: string
   estado: EstadoPago
   mp_preference_id?: string
   mp_payment_id?: string
@@ -70,30 +82,31 @@ export interface Resena {
   id: string
   usuario_id: string
   actividad_id: string
-  puntuacion: number
+  puntuacion: number // 1-5
   comentario: string
   created_at: string
 }
 
-export interface Comercio {
+export interface Cupon {
   id: string
   anfitrion_id: string
-  nombre: string
-  rubro: string
-  direccion: string
-  contacto: string
-  beneficio_desc: string
-  created_at: string
-}
-
-export interface Cupon {
   codigo: string
-  comercio_id: string
-  descuento_tipo: 'porcentaje' | 'fijo'
-  descuento_valor: number
-  condiciones: string
+  descuento_porcentaje: number
   usos_maximos: number
   usos_actuales: number
+  activo: boolean
+  vence: string
+}
+
+export interface Anuncio {
+  id: string
+  patrocinador_id: string
+  titulo: string
+  imagen_url: string
+  url_destino: string
+  segmento?: Categoria[]
+  impresiones: number
+  clicks: number
   activo: boolean
   created_at: string
 }
@@ -101,10 +114,11 @@ export interface Cupon {
 export interface Notificacion {
   id: string
   usuario_id: string
-  tipo: string
   titulo: string
-  mensaje?: string
+  cuerpo?: string
   leido: boolean
+  tipo?: string
+  referencia_id?: string
   created_at: string
 }
 
@@ -112,6 +126,7 @@ export interface Mensaje {
   id: string
   emisor_id: string
   receptor_id: string
+  actividad_id?: string
   contenido: string
   leido: boolean
   created_at: string
