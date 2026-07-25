@@ -14,8 +14,8 @@ export default function SignUpPage() {
       <SignUp
         appearance={{
           elements: {
-            socialButtons: { display: 'none' },
-            dividerRow: { display: 'none' },
+            socialButtons: 'hidden',
+            dividerRow: 'hidden',
           },
         }}
         afterSignInUrl="/"
