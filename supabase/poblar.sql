@@ -13,19 +13,19 @@ BEGIN;
 -- 1. PERFILES — 12 usuarios
 -- ════════════════════════════════════════════════════════════
 
-INSERT INTO perfiles (id, email, nombre, telefono, avatar_url, rol) VALUES
-  ('user_anfitrion_1', 'maria@inmersivapp.com', 'María García', NULL, NULL, 'anfitrion'),
-  ('user_anfitrion_2', 'carlos@inmersivapp.com', 'Carlos López', NULL, NULL, 'anfitrion'),
-  ('user_anfitrion_3', 'lucia.fernandez@inmersivapp.com', 'Lucía Fernández', '+5492615001003', NULL, 'anfitrion'),
-  ('user_anfitrion_4', 'andres.perez@inmersivapp.com', 'Andrés Pérez', '+5492615001004', NULL, 'anfitrion'),
-  ('user_anfitrion_5', 'carolina.diaz@inmersivapp.com', 'Carolina Díaz', '+5492615001005', NULL, 'anfitrion'),
-  ('user_anfitrion_6', 'martin.lopez@inmersivapp.com', 'Martín López', '+5492615001006', NULL, 'anfitrion'),
-  ('user_anfitrion_7', 'valentina.rojas@inmersivapp.com', 'Valentina Rojas', '+5492615001007', NULL, 'anfitrion'),
-  ('user_anfitrion_8', 'fernando.quiroga@inmersivapp.com', 'Fernando Quiroga', '+5492615001008', NULL, 'anfitrion'),
-  ('user_participante_1', 'laura@inmersivapp.com', 'Laura Martínez', NULL, NULL, 'participante'),
-  ('user_participante_2', 'pedro@inmersivapp.com', 'Pedro Ramírez', NULL, NULL, 'participante'),
-  ('user_participante_3', 'florencia.molina@email.com', 'Florencia Molina', NULL, NULL, 'participante'),
-  ('user_participante_4', 'nicolas.contreras@email.com', 'Nicolás Contreras', NULL, NULL, 'participante')
+INSERT INTO perfiles (id, email, nombre, apellido, username, telefono, avatar_url, intereses, rol, roles) VALUES
+  ('user_anfitrion_1', 'maria@inmersivapp.com', 'María', 'García', 'maria_garcia', NULL, NULL, '{Arte,Cocina,Inmersión}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_2', 'carlos@inmersivapp.com', 'Carlos', 'López', 'carlos_lopez', NULL, NULL, '{Naturaleza,Aventura,Deportes}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_3', 'lucia.fernandez@inmersivapp.com', 'Lucía', 'Fernández', 'lucia_fdez', '+5492615001003', NULL, '{Gastronomía,Cultura}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_4', 'andres.perez@inmersivapp.com', 'Andrés', 'Pérez', 'andres_perez', '+5492615001004', NULL, '{Fotografía,Tecnología}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_5', 'carolina.diaz@inmersivapp.com', 'Carolina', 'Díaz', 'caro_diaz', '+5492615001005', NULL, '{Bienestar,Inmersión}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_6', 'martin.lopez@inmersivapp.com', 'Martín', 'López', 'martin_lopez', '+5492615001006', NULL, '{Música,Arte,Cultura}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_7', 'valentina.rojas@inmersivapp.com', 'Valentina', 'Rojas', 'vale_rojas', '+5492615001007', NULL, '{Cultura,Arte}', 'anfitrion', '{anfitrion}'),
+  ('user_anfitrion_8', 'fernando.quiroga@inmersivapp.com', 'Fernando', 'Quiroga', 'fer_quiroga', '+5492615001008', NULL, '{Tecnología,Deportes,Aventura}', 'anfitrion', '{anfitrion}'),
+  ('user_participante_1', 'laura@inmersivapp.com', 'Laura', 'Martínez', 'lau_martinez', NULL, NULL, '{Arte,Cocina,Naturaleza}', 'participante', '{participante}'),
+  ('user_participante_2', 'pedro@inmersivapp.com', 'Pedro', 'Ramírez', 'pedro_ramirez', NULL, NULL, '{Deportes,Aventura,Tecnología}', 'participante', '{participante}'),
+  ('user_participante_3', 'florencia.molina@email.com', 'Florencia', 'Molina', 'flor_molina', NULL, NULL, '{Música,Fotografía,Bienestar}', 'participante', '{participante}'),
+  ('user_participante_4', 'nicolas.contreras@email.com', 'Nicolás', 'Contreras', 'nico_contreras', NULL, NULL, '{Gastronomía,Cultura,Inmersión}', 'participante', '{participante}')
 ON CONFLICT (id) DO NOTHING;
 
 -- ════════════════════════════════════════════════════════════
@@ -105,12 +105,12 @@ ON CONFLICT (codigo) DO NOTHING;
 -- 5. RESERVAS — 5 reservas
 -- ════════════════════════════════════════════════════════════
 
-INSERT INTO reservas (id, usuario_id, actividad_id, cupon_codigo, cantidad, estado) VALUES
-  ('00000000-0000-0000-0000-000000000001', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', 'Maria1', 2, 'confirmada'),
-  ('00000000-0000-0000-0000-000000000002', 'user_participante_2', 'a0000000-0000-0000-0000-000000000003', NULL, 1, 'pendiente'),
-  ('00000000-0000-0000-0000-000000000003', 'user_participante_1', 'a0000000-0000-0000-0000-000000000011', 'Maria2', 3, 'confirmada'),
-  ('00000000-0000-0000-0000-000000000004', 'user_participante_3', 'a0000000-0000-0000-0000-000000000005', NULL, 2, 'confirmada'),
-  ('00000000-0000-0000-0000-000000000005', 'user_participante_4', 'a0000000-0000-0000-0000-000000000009', 'Carolina1', 1, 'pendiente')
+INSERT INTO reservas (id, usuario_id, actividad_id, fecha, cupon_codigo, cantidad, estado, codigo_confirmacion) VALUES
+  ('00000000-0000-0000-0000-000000000001', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', '2026-08-15', 'Maria1', 2, 'confirmada', 'CONF-A001'),
+  ('00000000-0000-0000-0000-000000000002', 'user_participante_2', 'a0000000-0000-0000-0000-000000000003', '2026-08-17', NULL, 1, 'pendiente', NULL),
+  ('00000000-0000-0000-0000-000000000003', 'user_participante_1', 'a0000000-0000-0000-0000-000000000011', '2026-08-29', 'Maria2', 3, 'confirmada', 'CONF-A011'),
+  ('00000000-0000-0000-0000-000000000004', 'user_participante_3', 'a0000000-0000-0000-0000-000000000005', '2026-08-23', NULL, 2, 'confirmada', 'CONF-A005'),
+  ('00000000-0000-0000-0000-000000000005', 'user_participante_4', 'a0000000-0000-0000-0000-000000000009', '2026-08-28', 'Carolina1', 1, 'pendiente', NULL)
 ON CONFLICT (id) DO NOTHING;
 
 -- ════════════════════════════════════════════════════════════
