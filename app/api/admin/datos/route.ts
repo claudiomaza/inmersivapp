@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     .eq('id', userId)
     .single()
 
-  if (!perfil?.roles?.includes('anfitrion')) {
+  if (perfil?.rol !== 'anfitrion') {
     return NextResponse.json({ error: 'No tenés permisos de administración' }, { status: 403 })
   }
 

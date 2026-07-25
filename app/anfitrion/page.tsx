@@ -184,12 +184,12 @@ export default function AnfitrionPage() {
                       </td>
                       <td className="px-4 py-3 text-texto-secundario">{a.categoria}</td>
                       <td className="px-4 py-3 font-semibold text-primario">{formatPrecio(a.precio)}</td>
-                      <td className="px-4 py-3 text-texto-secundario">{a.ubicacion?.departamento}</td>
+                      <td className="px-4 py-3 text-texto-secundario">{a.lugar?.split(",")[0] || a.lugar}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-                          a.activa ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+                          true ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
                         }`}>
-                          {a.activa ? 'Activa' : 'Inactiva'}
+                          {true ? 'Activa' : 'Inactiva'}
                         </span>
                       </td>
                     </tr>

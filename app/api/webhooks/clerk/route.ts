@@ -12,31 +12,26 @@ export async function POST(req: NextRequest) {
   }
 
   if (evt.type === 'user.created') {
-    const { id, email_addresses, first_name, last_name, username } = evt.data
+    const { id, email_addresses, first_name, last_name } = evt.data
     const email = email_addresses?.[0]?.email_address || ''
 
     await supabaseAdmin.from('perfiles').insert({
       id,
       email,
-      username: username || '',
-      nombre: first_name || '',
-      apellido: last_name || '',
-      intereses: [],
-      roles: ['participante'],
+      nombre: [first_name, last_name].filter(Boolean).join(' ') || 'Sin nombre',
+      rol: 'participante',
     })
   }
 
   if (evt.type === 'user.updated') {
-    const { id, email_addresses, first_name, last_name, username } = evt.data
+    const { id, email_addresses, first_name, last_name } = evt.data
     const email = email_addresses?.[0]?.email_address || ''
 
     await supabaseAdmin
       .from('perfiles')
       .update({
         email,
-        username: username || '',
-        nombre: first_name || '',
-        apellido: last_name || '',
+        nombre: [first_name, last_name].filter(Boolean).join(' ') || 'Sin nombre',
       })
       .eq('id', id)
   }

@@ -173,7 +173,7 @@ export default function AdminPage() {
                     <td className="px-4 py-3 font-medium">{a.titulo}</td>
                     <td className="px-4 py-3">{a.categoria}</td>
                     <td className="px-4 py-3">{formatPrecio(a.precio)}</td>
-                    <td className="px-4 py-3">{a.anfitrion_nombre}</td>
+                    <td className="px-4 py-3">{a.anfitrion_id}</td>
                     <td className="px-4 py-3">
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                         a.activa ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
@@ -203,7 +203,7 @@ export default function AdminPage() {
               <tbody>
                 {usuarios.map((u) => (
                   <tr key={u.id} className="border-b last:border-0 hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium">{u.nombre} {u.apellido}</td>
+                    <td className="px-4 py-3 font-medium">{u.nombre}</td>
                     <td className="px-4 py-3 text-texto-secundario">{u.email || '—'}</td>
                     <td className="px-4 py-3 text-texto-secundario">{u.username || '—'}</td>
                     <td className="px-4 py-3">

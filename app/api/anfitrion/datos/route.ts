@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     .eq('id', userId)
     .single()
 
-  if (!perfil?.roles?.includes('anfitrion')) {
+  if (perfil?.rol !== 'anfitrion') {
     return NextResponse.json({ error: 'No tenés permisos de anfitrión' }, { status: 403 })
   }
 
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
     if (ids.length === 0) return NextResponse.json([])
     const { data } = await supabaseAdmin
       .from('reservas')
-      .select('*, actividades!inner(titulo, precio, anfitrion_nombre)')
+      .select('*, actividades!inner(titulo, precio)')
       .in('actividad_id', ids)
       .order('created_at', { ascending: false })
     return NextResponse.json(data || [])

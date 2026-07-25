@@ -38,12 +38,12 @@ export async function POST(req: Request) {
     // Obtener nombre del emisor para la notificación
     const { data: perfil } = await supabaseAdmin
       .from('perfiles')
-      .select('nombre, apellido')
+      .select('nombre')
       .eq('id', userId)
       .single()
 
     const nombreEmisor = perfil
-      ? `${perfil.nombre} ${perfil.apellido}`
+      ? `${perfil.nombre}`
       : 'Alguien'
 
     // Crear notificación para el receptor
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       .insert({
         usuario_id: receptor_id,
         titulo: `Nuevo mensaje de ${nombreEmisor}`,
-        cuerpo: contenido.trim().slice(0, 120),
+        mensaje: contenido.trim().slice(0, 120),
         tipo: 'mensaje',
         referencia_id: mensaje.id,
         leido: false,
