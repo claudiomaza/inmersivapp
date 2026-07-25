@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Plus, MapPin, Clock } from 'lucide-react'
@@ -56,27 +55,29 @@ export default function NuevaActividadPage() {
       return
     }
 
-    // Parse fechas
     const fechasArray = form.fechas
       ? form.fechas.split(',').map((f) => f.trim()).filter(Boolean)
       : []
 
-    const { error } = await supabase.from('actividades').insert({
-      anfitrion_id: user.id,
-      titulo: form.titulo,
-      descripcion: form.descripcion || 'Sin descripción',
-      categoria: form.categoria,
-      fecha: fechasArray.length > 0 ? fechasArray[0] : null,
-      hora: form.horaInicio || null,
-      lugar: [form.direccion, form.departamento, form.provincia].filter(Boolean).join(', ') || 'A confirmar',
-      precio: Number(form.precio),
-      capacidad_max: 20,
-      imagen_url: form.foto || null,
+    const res = await fetch('/api/actividades', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        titulo: form.titulo,
+        descripcion: form.descripcion || 'Sin descripción',
+        categoria: form.categoria,
+        fecha: fechasArray.length > 0 ? fechasArray[0] : null,
+        hora: form.horaInicio || null,
+        lugar: [form.direccion, form.departamento, form.provincia].filter(Boolean).join(', ') || 'A confirmar',
+        precio: Number(form.precio),
+        capacidad_max: 20,
+        imagen_url: form.foto || null,
+      }),
     })
 
     setCargando(false)
 
-    if (error) {
+    if (!res.ok) {
       toast.error('Error al crear la actividad')
       return
     }
@@ -85,191 +86,150 @@ export default function NuevaActividadPage() {
     router.push('/anfitrion')
   }
 
-  if (!isSignedIn) return null // middleware ya redirige
+  if (!isSignedIn) return null
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="mb-8 flex items-center gap-3">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primario/10">
-          <Plus className="h-6 w-6 text-primario" />
-        </div>
-        <div>
-          <h1 className="font-titulos text-2xl font-bold text-texto">Nueva actividad</h1>
-          <p className="text-sm text-texto-secundario">Completá los datos para publicar tu experiencia</p>
-        </div>
+      <div className="mb-6">
+        <h1 className="font-titulos text-2xl font-bold text-texto">Nueva actividad</h1>
+        <p className="mt-1 text-sm text-texto-secundario">
+          Completá los datos para publicar tu experiencia
+        </p>
       </div>
 
-      <form onSubmit={crearActividad} className="space-y-6">
-        {/* Título */}
+      <form onSubmit={crearActividad} className="space-y-5">
         <div>
           <label className="mb-1 block text-sm font-medium text-texto">Título *</label>
           <input
             type="text"
             value={form.titulo}
-            onChange={(e) => setForm((f) => ({ ...f, titulo: e.target.value }))}
+            onChange={(e) => setForm({ ...form, titulo: e.target.value })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
             placeholder="Ej: Taller de cerámica artesanal"
           />
         </div>
 
-        {/* Descripción */}
         <div>
           <label className="mb-1 block text-sm font-medium text-texto">Descripción</label>
           <textarea
             value={form.descripcion}
-            onChange={(e) => setForm((f) => ({ ...f, descripcion: e.target.value }))}
-            rows={4}
+            onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
+            rows={3}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            placeholder="Contá de qué se trata tu experiencia…"
+            placeholder="Describí de qué se trata la experiencia..."
           />
         </div>
 
-        {/* Precio y categoría */}
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Precio ($ARS) *</label>
-            <input
-              type="number"
-              value={form.precio}
-              onChange={(e) => setForm((f) => ({ ...f, precio: e.target.value }))}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              placeholder="5000"
-              min={0}
-            />
-          </div>
           <div>
             <label className="mb-1 block text-sm font-medium text-texto">Categoría *</label>
             <select
               value={form.categoria}
-              onChange={(e) => setForm((f) => ({ ...f, categoria: e.target.value }))}
+              onChange={(e) => setForm({ ...form, categoria: e.target.value })}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
             >
-              <option value="">Seleccioná una categoría</option>
+              <option value="">Seleccioná...</option>
               {CATEGORIAS.map((cat) => (
                 <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
           </div>
-        </div>
-
-        {/* Ubicación */}
-        <div>
-          <h3 className="mb-2 flex items-center gap-2 text-sm font-medium text-texto">
-            <MapPin className="h-4 w-4" /> Ubicación
-          </h3>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div>
-              <label className="mb-1 block text-xs text-texto-secundario">Provincia *</label>
-              <input
-                type="text"
-                value={form.provincia}
-                onChange={(e) => setForm((f) => ({ ...f, provincia: e.target.value }))}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                placeholder="Mendoza"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs text-texto-secundario">Departamento</label>
-              <input
-                type="text"
-                value={form.departamento}
-                onChange={(e) => setForm((f) => ({ ...f, departamento: e.target.value }))}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                placeholder="Luján de Cuyo"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs text-texto-secundario">Dirección</label>
-              <input
-                type="text"
-                value={form.direccion}
-                onChange={(e) => setForm((f) => ({ ...f, direccion: e.target.value }))}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                placeholder="Calle 123"
-              />
-            </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-texto">Precio * ($)</label>
+            <input
+              type="number"
+              value={form.precio}
+              onChange={(e) => setForm({ ...form, precio: e.target.value })}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+              placeholder="2500"
+              min="0"
+            />
           </div>
         </div>
 
-        {/* Horarios */}
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="sm:col-span-2">
+            <label className="mb-1 block text-sm font-medium text-texto">Provincia *</label>
+            <input
+              type="text"
+              value={form.provincia}
+              onChange={(e) => setForm({ ...form, provincia: e.target.value })}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+              placeholder="Buenos Aires"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-texto">Departamento</label>
+            <input
+              type="text"
+              value={form.departamento}
+              onChange={(e) => setForm({ ...form, departamento: e.target.value })}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+              placeholder="Gral. Pueyrredón"
+            />
+          </div>
+        </div>
+
         <div>
-          <h3 className="mb-2 flex items-center gap-2 text-sm font-medium text-texto">
-            <Clock className="h-4 w-4" /> Horarios
-          </h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className="mb-1 block text-xs text-texto-secundario">Hora inicio</label>
+          <label className="mb-1 block text-sm font-medium text-texto">Dirección</label>
+          <input
+            type="text"
+            value={form.direccion}
+            onChange={(e) => setForm({ ...form, direccion: e.target.value })}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+            placeholder="Av. Colón 1234"
+          />
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-texto">Fechas</label>
+            <input
+              type="text"
+              value={form.fechas}
+              onChange={(e) => setForm({ ...form, fechas: e.target.value })}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+              placeholder="2026-08-01, 2026-08-08"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-texto">Horario</label>
+            <div className="flex items-center gap-2">
               <input
                 type="time"
                 value={form.horaInicio}
-                onChange={(e) => setForm((f) => ({ ...f, horaInicio: e.target.value }))}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                onChange={(e) => setForm({ ...form, horaInicio: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs text-texto-secundario">Hora fin</label>
+              <span className="text-texto-secundario">a</span>
               <input
                 type="time"
                 value={form.horaFin}
-                onChange={(e) => setForm((f) => ({ ...f, horaFin: e.target.value }))}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                onChange={(e) => setForm({ ...form, horaFin: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
             </div>
           </div>
-          <div className="mt-3">
-            <label className="mb-2 block text-xs text-texto-secundario">Días activos</label>
-            <div className="flex flex-wrap gap-2">
-              {DIAS.map((dia) => (
-                <button
-                  key={dia}
-                  type="button"
-                  onClick={() => toggleDia(dia)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-                    form.diasActivos.includes(dia)
-                      ? 'bg-primario text-white'
-                      : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
-                  }`}
-                >
-                  {dia}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Fechas */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Fechas disponibles</label>
+          <label className="mb-1 block text-sm font-medium text-texto">Foto (URL)</label>
           <input
             type="text"
-            value={form.fechas}
-            onChange={(e) => setForm((f) => ({ ...f, fechas: e.target.value }))}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            placeholder="2026-08-01, 2026-08-08, 2026-08-15"
-          />
-          <p className="mt-1 text-xs text-texto-secundario">Separadas por coma, formato YYYY-MM-DD</p>
-        </div>
-
-        {/* Foto */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-texto">URL de foto (opcional)</label>
-          <input
-            type="url"
             value={form.foto}
-            onChange={(e) => setForm((f) => ({ ...f, foto: e.target.value }))}
+            onChange={(e) => setForm({ ...form, foto: e.target.value })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
             placeholder="https://ejemplo.com/foto.jpg"
           />
         </div>
 
-        {/* Submit */}
         <button
           type="submit"
           disabled={cargando}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primario px-4 py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
         >
           <Plus className="h-5 w-5" />
-          {cargando ? 'Publicando…' : 'Publicar actividad'}
+          {cargando ? 'Publicando…' : 'Publicar experiencia'}
         </button>
       </form>
     </div>
