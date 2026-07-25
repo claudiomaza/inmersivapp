@@ -17,8 +17,8 @@ export default function LoginPage() {
       <SignIn
         appearance={{
           elements: {
-            socialButtons: { display: 'none' },
-            dividerRow: { display: 'none' },
+            socialButtons: 'hidden',
+            dividerRow: 'hidden',
             rootBox: 'mx-auto w-full max-w-sm',
             card: 'shadow-none border border-gray-200 rounded-xl',
             headerTitle: 'font-titulos text-xl text-texto',
