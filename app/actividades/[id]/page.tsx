@@ -18,12 +18,10 @@ export default function DetalleActividadPage() {
   const [reservando, setReservando] = useState(false)
   const [fechaSel, setFechaSel] = useState('')
 
-  // Formulario de reseña
   const [puntuacion, setPuntuacion] = useState(0)
   const [comentario, setComentario] = useState('')
   const [enviandoResena, setEnviandoResena] = useState(false)
 
-  // Cupón
   const [cuponCodigo, setCuponCodigo] = useState('')
   const [cuponValido, setCuponValido] = useState<{ valido: boolean; descuento: number; mensaje: string } | null>(null)
   const [verificandoCupon, setVerificandoCupon] = useState(false)
@@ -39,263 +37,233 @@ export default function DetalleActividadPage() {
 
   useEffect(() => {
     Promise.all([
-      supabase.from('actividades').select('*, perfiles(id, nombre, avatar_url)').eq('id', id).single(),
+      supabase.from('actividades').select('*').eq('id', id).single().then(({ data }) => setActividad(data)),
       cargarResenas(),
-    ]).then(([act]) => {
-      setActividad(act.data)
-      setCargando(false)
-    })
+    ]).finally(() => setCargando(false))
   }, [id, cargarResenas])
 
   const reservar = async () => {
-    if (!isSignedIn) {
-      toast.error('Primero iniciá sesión')
-      router.push('/login')
-      return
-    }
-    if (!fechaSel) {
-      toast.error('Seleccioná una fecha')
-      return
-    }
-
+    if (!isSignedIn) return router.push('/login')
+    if (!fechaSel) return toast.error('Seleccioná una fecha')
     setReservando(true)
 
-    // Crear reserva
-    const { data: reserva, error } = await supabase
-      .from('reservas')
-      .insert({
-        usuario_id: user.id,
-        actividad_id: id,
-        fecha: fechaSel,
-        estado: 'pendiente',
-        codigo_confirmacion: generarCodigoConfirmacion(),
-        cupon_codigo: cuponValido?.valido ? cuponCodigo.toUpperCase() : null,
-      })
-      .select()
-      .single()
-
-    if (error || !reserva) {
-      toast.error('Error al crear la reserva')
-      setReservando(false)
-      return
-    }
-
-    // Crear preferencia de pago
-    const res = await fetch('/api/pagos/crear', {
+    const res = await fetch('/api/reservas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         actividad_id: id,
-        reserva_id: reserva.id,
-        titulo: actividad.titulo,
-        monto: cuponValido?.valido
-          ? actividad.precio * (1 - cuponValido.descuento / 100)
-          : actividad.precio,
-        usuario_id: user.id,
+        fecha: fechaSel,
+        cupon_codigo: cuponValido?.valido ? cuponCodigo : undefined,
       }),
     })
 
-    const data = await res.json()
-
-    if (data.init_point) {
-      window.location.href = data.init_point
-    } else {
-      toast.error('Error al procesar el pago')
-    }
-
     setReservando(false)
+    if (!res.ok) {
+      const { error } = await res.json()
+      toast.error('Error al crear la reserva: ' + error)
+      return
+    }
+    toast.success('Reserva confirmada 🎉')
+    router.push('/reservas/exito')
+  }
+
+  const verificarCupon = async () => {
+    if (!cuponCodigo.trim()) return
+    setVerificandoCupon(true)
+
+    const res = await fetch('/api/cupones/verificar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codigo: cuponCodigo }),
+    })
+
+    const data = await res.json()
+    setVerificandoCupon(false)
+    setCuponValido(data)
+    if (!data.valido) toast.error(data.mensaje)
+    else toast.success(data.mensaje)
   }
 
   const enviarResena = async () => {
-    if (!isSignedIn || puntuacion === 0) return
+    if (!user || puntuacion === 0) return
     setEnviandoResena(true)
-    const { error } = await supabase.from('resenas').insert({
-      usuario_id: user.id,
-      actividad_id: id,
-      puntuacion,
-      comentario,
+
+    const res = await fetch('/api/resenas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ actividad_id: id, puntuacion, comentario }),
     })
+
     setEnviandoResena(false)
-    if (error) {
-      toast.error('Ya dejaste una reseña para esta actividad')
+    if (!res.ok) {
+      const { error } = await res.json()
+      toast.error('Error al enviar reseña: ' + error)
       return
     }
-    toast.success('Reseña publicada')
+    toast.success('Reseña publicada gracias!')
     setPuntuacion(0)
     setComentario('')
     cargarResenas()
   }
 
-  const verificarCupon = async () => {
-    if (!cuponCodigo) return
-    setVerificandoCupon(true)
-    const { data } = await supabase
-      .from('cupones')
-      .select('*')
-      .eq('codigo', cuponCodigo.toUpperCase())
-      .eq('activo', true)
-      .single()
-    setVerificandoCupon(false)
-
-    if (!data) {
-      setCuponValido({ valido: false, descuento: 0, mensaje: 'Cupón inválido o vencido' })
-      return
-    }
-    if (data.usos_actuales >= data.usos_maximos) {
-      setCuponValido({ valido: false, descuento: 0, mensaje: 'Este cupón ya no tiene usos disponibles' })
-      return
-    }
-    setCuponValido({ valido: true, descuento: data.descuento_valor, mensaje: `${data.descuento_valor}${data.descuento_tipo === 'porcentaje' ? '%' : '$'} de descuento aplicado` })
-  }
-
   if (cargando) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-texto-secundario">Cargando actividad…</p>
+        <p className="text-texto-secundario">Cargando actividad...</p>
       </div>
     )
   }
 
   if (!actividad) {
     return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
-        <h1 className="font-titulos text-2xl font-bold text-texto">Actividad no encontrada</h1>
-        <p className="text-texto-secundario">Esta actividad no existe o fue eliminada.</p>
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <p className="text-texto-secundario">Actividad no encontrada</p>
       </div>
     )
   }
 
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="mb-8">
-        <span className="inline-block rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">
-          {actividad.categoria}
-        </span>
-        <h1 className="mt-3 font-titulos text-3xl font-bold text-texto">{actividad.titulo}</h1>
-        <p className="mt-2 text-lg text-texto-secundario">{actividad.descripcion}</p>
-      </div>
+      <div className="grid gap-8 lg:grid-cols-5">
+        {/* Columna principal */}
+        <div className="lg:col-span-3">
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <span className="inline-block rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">
+              {actividad.categoria}
+            </span>
+            <h1 className="mt-3 font-titulos text-3xl font-bold text-texto">{actividad.titulo}</h1>
+            <p className="mt-3 text-texto-secundario leading-relaxed">{actividad.descripcion}</p>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <div className="space-y-6">
-          <div className="rounded-xl bg-superficie p-6 shadow-sm">
-            <h2 className="font-titulos text-lg font-semibold text-texto">Detalles</h2>
-            <div className="mt-4 space-y-3 text-sm">
-              <p><span className="font-medium text-texto-secundario">Anfitrión:</span> {actividad.perfiles?.nombre || actividad.anfitrion_id}</p>
-              <p><span className="font-medium text-texto-secundario">Precio:</span> <span className="font-semibold text-primario">{formatPrecio(actividad.precio)}</span></p>
-              <p><span className="font-medium text-texto-secundario">Ubicación:</span> {actividad.lugar}</p>
-            </div>
+            {actividad.lugar && (
+              <p className="mt-4 text-sm text-texto-secundario">
+                📍 {actividad.lugar}
+              </p>
+            )}
           </div>
 
           {/* Cupón */}
-          <div className="rounded-xl bg-superficie p-6 shadow-sm">
-            <h3 className="flex items-center gap-2 font-titulos text-base font-semibold text-texto">
+          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
+            <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
               <Ticket className="h-4 w-4" /> ¿Tenés un cupón?
             </h3>
-            <div className="mt-3 flex gap-2">
+            <div className="mt-2 flex gap-2">
               <input
                 type="text"
                 value={cuponCodigo}
                 onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
-                placeholder="CÓDIGO"
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm uppercase focus:border-primario focus:ring-2 focus:ring-primario/20"
+                placeholder="Código"
+                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
               <button
                 onClick={verificarCupon}
-                disabled={verificandoCupon || !cuponCodigo}
-                className="rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
+                disabled={verificandoCupon || !cuponCodigo.trim()}
+                className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium transition hover:bg-gray-200 disabled:opacity-50"
               >
-                {verificandoCupon ? '…' : 'Aplicar'}
+                {verificandoCupon ? '...' : 'Verificar'}
               </button>
             </div>
             {cuponValido && (
-              <p className={`mt-2 text-sm ${cuponValido.valido ? 'text-green-600' : 'text-error'}`}>
+              <p className={`mt-2 text-sm ${cuponValido.valido ? 'text-green-600' : 'text-red-600'}`}>
                 {cuponValido.mensaje}
               </p>
             )}
           </div>
+
+          {/* Reseñas */}
+          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
+            <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
+              <MessageCircle className="h-4 w-4" /> Reseñas ({resenas.length})
+            </h3>
+
+            {resenas.length === 0 ? (
+              <p className="mt-3 text-sm text-texto-secundario">Todavía no hay reseñas. Sé el primero en opinar.</p>
+            ) : (
+              <div className="mt-4 space-y-4">
+                {resenas.map((r) => (
+                  <div key={r.id} className="border-b border-gray-100 pb-4 last:border-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium text-texto">{r.perfiles?.nombre || 'Anónimo'}</p>
+                      <span className="text-yellow-500">{'★'.repeat(r.puntuacion)}</span>
+                    </div>
+                    <p className="mt-1 text-sm text-texto-secundario">{r.comentario}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {isSignedIn && (
+              <div className="mt-6 border-t pt-4">
+                <h3 className="font-titulos text-base font-semibold text-texto">Dejá tu reseña</h3>
+                <div className="mt-2 flex gap-1">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button
+                      key={n}
+                      onClick={() => setPuntuacion(n)}
+                      className={`text-xl transition ${n <= puntuacion ? 'text-yellow-500' : 'text-gray-300'}`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+                <textarea
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  placeholder="Contá tu experiencia…"
+                  rows={3}
+                  className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                />
+                <button
+                  onClick={enviarResena}
+                  disabled={enviandoResena || puntuacion === 0}
+                  className="mt-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
+                >
+                  {enviandoResena ? 'Enviando…' : 'Publicar reseña'}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="space-y-6">
-          {/* Selección de fecha */}
-          <div className="rounded-xl bg-superficie p-6 shadow-sm">
-            <h2 className="font-titulos text-lg font-semibold text-texto">Reservá tu lugar</h2>
+        {/* Sidebar — Reserva */}
+        <div className="lg:col-span-2">
+          <div className="sticky top-6 rounded-xl bg-white p-6 shadow-sm">
+            <p className="font-titulos text-3xl font-bold text-primario">{formatPrecio(actividad.precio)}</p>
+            <p className="mt-1 text-sm text-texto-secundario">por persona</p>
+
+            {actividad.capacidad_max && (
+              <p className="mt-2 text-sm text-texto-secundario">
+                Capacidad máxima: {actividad.capacidad_max} personas
+              </p>
+            )}
+
+            {actividad.fecha && (
+              <p className="mt-2 text-sm text-texto-secundario">
+                📅 {new Date(actividad.fecha).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
+              </p>
+            )}
+
             <div className="mt-4">
-              <label className="mb-1 block text-sm font-medium text-texto-secundario">Elegí una fecha</label>
+              <label className="mb-1 block text-sm font-medium text-texto">Fecha de reserva</label>
               <input
                 type="date"
                 value={fechaSel}
                 onChange={(e) => setFechaSel(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
             </div>
+
             <button
               onClick={reservar}
               disabled={reservando || !fechaSel}
-              className="mt-4 w-full rounded-lg bg-primario px-4 py-2.5 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+              className="mt-4 w-full rounded-lg bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
             >
-              {reservando ? 'Procesando…' : `Reservar — ${formatPrecio(
-                cuponValido?.valido
-                  ? actividad.precio * (1 - cuponValido.descuento / 100)
-                  : actividad.precio
-              )}`}
+              {reservando ? 'Reservando…' : 'Reservar ahora'}
             </button>
-            {!isSignedIn && (
-              <p className="mt-2 text-center text-xs text-texto-secundario">Iniciá sesión para reservar</p>
-            )}
-          </div>
 
-          {/* Reseñas */}
-          <div className="rounded-xl bg-superficie p-6 shadow-sm">
-            <h2 className="flex items-center gap-2 font-titulos text-lg font-semibold text-texto">
-              <Star className="h-4 w-4 text-yellow-500" /> Reseñas
-            </h2>
-            <div className="mt-4 space-y-4">
-              {resenas.length === 0 ? (
-                <p className="text-sm text-texto-secundario">No hay reseñas todavía. ¡Sé el primero!</p>
-              ) : (
-                resenas.map((r) => (
-                  <div key={r.id} className="border-b pb-3 last:border-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm">{r.perfiles?.nombre}</span>
-                      <span className="text-yellow-500 text-xs">{'★'.repeat(r.puntuacion)}</span>
-                    </div>
-                    <p className="mt-1 text-sm text-texto-secundario">{r.comentario}</p>
-                  </div>
-                ))
-              )}
-
-              {isSignedIn && (
-                <div className="mt-4 border-t pt-4">
-                  <h3 className="font-titulos text-base font-semibold text-texto">Dejá tu reseña</h3>
-                  <div className="mt-2 flex gap-1">
-                    {[1, 2, 3, 4, 5].map((n) => (
-                      <button
-                        key={n}
-                        onClick={() => setPuntuacion(n)}
-                        className={`text-xl transition ${n <= puntuacion ? 'text-yellow-500' : 'text-gray-300'}`}
-                      >
-                        ★
-                      </button>
-                    ))}
-                  </div>
-                  <textarea
-                    value={comentario}
-                    onChange={(e) => setComentario(e.target.value)}
-                    placeholder="Contá tu experiencia…"
-                    rows={3}
-                    className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                  />
-                  <button
-                    onClick={enviarResena}
-                    disabled={enviandoResena || puntuacion === 0}
-                    className="mt-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
-                  >
-                    {enviandoResena ? 'Enviando…' : 'Publicar reseña'}
-                  </button>
-                </div>
-              )}
-            </div>
+            <p className="mt-3 text-center text-xs text-texto-secundario">
+              No se te cobrará hasta confirmar la actividad
+            </p>
           </div>
         </div>
       </div>
