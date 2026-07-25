@@ -8,19 +8,19 @@ const VIDEOS = [
     id: 'intro',
     titulo: '¿Qué es Inmersivapp?',
     desc: 'Conocé la plataforma que conecta personas con experiencias auténticas y multisensoriales en tu ciudad. Talleres, naturaleza, gastronomía y más.',
-    url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    url: 'https://www.youtube.com/embed/jNQXAC9IVRw', // 🔁 REEMPLAZAR: video de introducción
   },
   {
     id: 'reservar',
     titulo: 'Cómo reservar una experiencia',
     desc: 'Encontrá la actividad que más te guste, seleccioná fecha y reservá al instante. El pago es seguro con MercadoPago.',
-    url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    url: 'https://www.youtube.com/embed/9bZkp7q19f0', // 🔁 REEMPLAZAR: tutorial de reserva
   },
   {
     id: 'anfitrion',
     titulo: 'Convertite en anfitrión',
     desc: 'Creá tu propia experiencia, recibí reservas y empezá a generar ingresos compartiendo lo que sabés hacer.',
-    url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    url: 'https://www.youtube.com/embed/kJQP7kiw5Fk', // 🔁 REEMPLAZAR: tutorial de anfitrión
   },
 ]
 
