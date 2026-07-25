@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield } from 'lucide-react'
+import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'resumen' | 'actividades' | 'usuarios' | 'reservas' | 'resenas'
@@ -28,6 +28,15 @@ export default function AdminPage() {
   const [totalUsuarios, setTotalUsuarios] = useState(0)
   const [totalReservas, setTotalReservas] = useState(0)
   const [totalResenas, setTotalResenas] = useState(0)
+
+  // Recaudación
+  const [totalBruto, setTotalBruto] = useState(0)
+  const [comisionTotal, setComisionTotal] = useState(0)
+  const [totalAnfitriones, setTotalAnfitriones] = useState(0)
+  const [comisionPorcentaje, setComisionPorcentaje] = useState(0.1)
+  const [pagosPendientes, setPagosPendientes] = useState(0)
+  const [comisionesPendientes, setComisionesPendientes] = useState(0)
+  const [cantidadReservasPagadas, setCantidadReservasPagadas] = useState(0)
 
   // Listas
   const [actividades, setActividades] = useState<any[]>([])
@@ -57,6 +66,13 @@ export default function AdminPage() {
         setTotalUsuarios(data.totalUsuarios)
         setTotalReservas(data.totalReservas)
         setTotalResenas(data.totalResenas)
+        setTotalBruto(data.totalBruto || 0)
+        setComisionTotal(data.comisionTotal || 0)
+        setTotalAnfitriones(data.totalAnfitriones || 0)
+        setComisionPorcentaje(data.comisionPorcentaje || 0.1)
+        setPagosPendientes(data.pagosPendientes || 0)
+        setComisionesPendientes(data.comisionesPendientes || 0)
+        setCantidadReservasPagadas(data.cantidadReservasPagadas || 0)
       } else if (tab === 'actividades') setActividades(data)
       else if (tab === 'usuarios') setUsuarios(data)
       else if (tab === 'reservas') setReservas(data)
@@ -106,24 +122,61 @@ export default function AdminPage() {
 
       {/* Resumen */}
       {tab === 'resumen' && (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="rounded-xl bg-superficie p-5 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Actividades</p>
-            <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalActividades}</p>
+        <>
+          {/* Métricas generales */}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="rounded-xl bg-superficie p-5 shadow-sm">
+              <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Actividades</p>
+              <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalActividades}</p>
+            </div>
+            <div className="rounded-xl bg-superficie p-5 shadow-sm">
+              <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Usuarios</p>
+              <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalUsuarios}</p>
+            </div>
+            <div className="rounded-xl bg-superficie p-5 shadow-sm">
+              <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Reservas</p>
+              <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalReservas}</p>
+            </div>
+            <div className="rounded-xl bg-superficie p-5 shadow-sm">
+              <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Reseñas</p>
+              <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalResenas}</p>
+            </div>
           </div>
-          <div className="rounded-xl bg-superficie p-5 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Usuarios</p>
-            <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalUsuarios}</p>
+
+          {/* Recaudación */}
+          <div className="mt-6">
+            <h2 className="mb-3 flex items-center gap-2 font-titulos text-lg font-semibold text-texto">
+              <DollarSign className="h-5 w-5 text-primario" />
+              Recaudación
+            </h2>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="rounded-xl bg-gradient-to-br from-green-50 to-green-100 p-5 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-green-600" />
+                  <p className="text-xs font-medium uppercase tracking-wider text-green-700">Total Bruto</p>
+                </div>
+                <p className="mt-2 font-titulos text-2xl font-bold text-green-800">{formatPrecio(totalBruto)}</p>
+                <p className="mt-1 text-xs text-green-600">{cantidadReservasPagadas} reservas pagadas</p>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-5 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <PiggyBank className="h-5 w-5 text-blue-600" />
+                  <p className="text-xs font-medium uppercase tracking-wider text-blue-700">Comisión Plataforma ({Math.round(comisionPorcentaje * 100)}%)</p>
+                </div>
+                <p className="mt-2 font-titulos text-2xl font-bold text-blue-800">{formatPrecio(comisionTotal)}</p>
+                <p className="mt-1 text-xs text-blue-600">{formatPrecio(comisionesPendientes)} pendientes de cobro</p>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 p-5 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-5 w-5 text-purple-600" />
+                  <p className="text-xs font-medium uppercase tracking-wider text-purple-700">Para Anfitriones</p>
+                </div>
+                <p className="mt-2 font-titulos text-2xl font-bold text-purple-800">{formatPrecio(totalAnfitriones)}</p>
+                <p className="mt-1 text-xs text-purple-600">{formatPrecio(pagosPendientes)} pendientes de pago</p>
+              </div>
+            </div>
           </div>
-          <div className="rounded-xl bg-superficie p-5 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Reservas</p>
-            <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalReservas}</p>
-          </div>
-          <div className="rounded-xl bg-superficie p-5 shadow-sm">
-            <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Reseñas</p>
-            <p className="mt-2 font-titulos text-3xl font-bold text-texto">{totalResenas}</p>
-          </div>
-        </div>
+        </>
       )}
 
       {/* Actividades */}
@@ -198,6 +251,7 @@ export default function AdminPage() {
                   </p>
                   <p className="text-xs text-texto-secundario">
                     Usuario: {r.usuario_id?.slice(0, 12)}... · {r.cantidad} cupo{r.cantidad > 1 ? 's' : ''}
+                    {(r.actividades as any)?.precio && ` · ${formatPrecio((r.actividades as any).precio)}`}
                   </p>
                 </div>
                 <span className={`rounded-full px-3 py-1 text-xs font-medium ${

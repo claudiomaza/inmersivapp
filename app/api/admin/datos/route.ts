@@ -8,7 +8,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
-  // Verificar admin usando roles (array)
   const { data: perfil } = await supabaseAdmin
     .from('perfiles')
     .select('roles')
@@ -23,6 +22,7 @@ export async function GET(req: NextRequest) {
   const tipo = searchParams.get('tipo') || 'resumen'
 
   if (tipo === 'resumen') {
+    // Totales generales
     const [actividadesRes, usuariosRes, reservasRes, resenasRes] = await Promise.all([
       supabaseAdmin.from('actividades').select('*', { count: 'exact', head: true }),
       supabaseAdmin.from('perfiles').select('*', { count: 'exact', head: true }),
@@ -30,11 +30,46 @@ export async function GET(req: NextRequest) {
       supabaseAdmin.from('resenas').select('*', { count: 'exact', head: true }),
     ])
 
+    // Recaudación: reservas confirmadas/completadas con precio
+    const { data: reservasConPago } = await supabaseAdmin
+      .from('reservas')
+      .select('actividad_id, actividades!inner(precio, anfitrion_id)')
+      .in('estado', ['confirmada', 'completada'])
+
+    const totalBruto = (reservasConPago || []).reduce(
+      (sum, r: any) => sum + (r.actividades?.precio || 0), 0
+    )
+
+    const comisionPorcentaje = 0.10 // 10% para la plataforma
+    const comisionTotal = totalBruto * comisionPorcentaje
+    const totalAnfitriones = totalBruto - comisionTotal
+
+    // Ingresos de pagos_anfitrion
+    const { data: pagosHechos } = await supabaseAdmin
+      .from('pagos_anfitrion')
+      .select('monto, comision, estado')
+
+    const pagosPendientes = (pagosHechos || [])
+      .filter((p: any) => p.estado === 'pendiente')
+      .reduce((sum: number, p: any) => sum + Number(p.monto), 0)
+
+    const comisionesPendientes = (pagosHechos || [])
+      .filter((p: any) => p.estado === 'pendiente')
+      .reduce((sum: number, p: any) => sum + Number(p.comision), 0)
+
     return NextResponse.json({
       totalActividades: actividadesRes.count || 0,
       totalUsuarios: usuariosRes.count || 0,
       totalReservas: reservasRes.count || 0,
       totalResenas: resenasRes.count || 0,
+      // Recaudación
+      totalBruto,
+      comisionTotal,
+      totalAnfitriones,
+      comisionPorcentaje,
+      pagosPendientes,
+      comisionesPendientes,
+      cantidadReservasPagadas: (reservasConPago || []).length,
     })
   }
 
