@@ -137,14 +137,12 @@ ON CONFLICT (id) DO NOTHING;
 
 -- FUNCION: incrementar_usos_cupon
 CREATE OR REPLACE FUNCTION incrementar_usos_cupon(p_codigo TEXT)
-RETURNS BOOLEAN AS $$
+RETURNS void AS $$
 BEGIN
   UPDATE cupones
   SET usos_actuales = usos_actuales + 1
   WHERE codigo = p_codigo
-    AND activo = TRUE
     AND usos_actuales < usos_maximos;
-  RETURN FOUND;
 END;
 $$ LANGUAGE plpgsql;
 
