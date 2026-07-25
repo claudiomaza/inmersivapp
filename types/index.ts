@@ -16,11 +16,16 @@ export interface Perfil {
 
 export type Categoria =
   | 'Arte'
+  | 'Aventura'
+  | 'Bienestar'
+  | 'Cultura'
+  | 'Gastronomía'
+  | 'Inmersión'
+  | 'Música'
+  | 'Naturaleza'
   | 'Tecnología'
   | 'Deportes'
   | 'Cocina'
-  | 'Naturaleza'
-  | 'Música'
   | 'Fotografía'
 
 export interface Actividad {
@@ -29,12 +34,17 @@ export interface Actividad {
   descripcion: string
   precio: number
   categoria: Categoria
-  fotos: string[]
-  ubicacion: Ubicacion
   anfitrion_id: string
-  horarios: HorarioSemanal
-  fechas: string[] // ISO dates
-  activa: boolean
+  fecha?: string
+  hora?: string
+  lugar?: string
+  capacidad_max?: number
+  imagen_url?: string
+  activa?: boolean
+  fotos?: string[]
+  ubicacion?: Ubicacion
+  horarios?: HorarioSemanal
+  fechas?: string[]
   created_at: string
   perfiles?: {
     nombre: string
