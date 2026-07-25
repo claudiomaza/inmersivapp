@@ -225,7 +225,7 @@ export default function PerfilPage() {
             </button>
           </div>
         </form>
-      ) : (
+      ) : (<>
         <div className="mt-6 rounded-xl bg-superficie p-6 shadow-sm">
           <div className="space-y-3">
             <p><span className="font-medium text-texto-secundario">Nombre:</span> {form.nombre} {form.apellido}</p>
@@ -273,6 +273,7 @@ export default function PerfilPage() {
             </div>
           </div>
         )}
+        </>
       )}
     </div>
   )
