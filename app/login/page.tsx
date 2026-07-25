@@ -34,6 +34,8 @@ export default function LoginPage() {
           },
         }}
         signUpUrl="/registro"
+        afterSignInUrl="/"
+        afterSignUpUrl="/perfil/completar"
       />
     </div>
   )
