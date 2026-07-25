@@ -1,13 +1,13 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
 import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { Save, ArrowLeft, UserPlus, Shield } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
 
 const CATEGORIAS = [
   'Arte', 'Tecnología', 'Deportes', 'Cocina',
