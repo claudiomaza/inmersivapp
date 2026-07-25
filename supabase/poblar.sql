@@ -106,7 +106,7 @@ Te organizamos en equipos de 5 personas. Cada equipo recibe un mapa del circuito
    'La familia Fernández vive en Godoy Cruz desde hace tres generaciones. Todos los domingos preparan empanadas con la receta de la abuela Hortensia, que llegó de Galicia en 1952 y nunca volvió. El almuerzo no es una clase de cocina: es una invitación a la mesa familiar. Acá no hay turistas, hay invitados.
 
 Llegás a la casa de Lucía a las 18:00. Te recibimos con un aperitivo (vino de la casa o jugo de uva) mientras conocés a la familia. Después pasás a la cocina donde ayudás a preparar las empanadas: cortar la masa, hacer el repulgue, probar el relleno. La cena se sirve en la mesa del patio con toda la familia: empanadas, ensalada, vino y postre casero. Durante la comida, cada persona cuenta una historia de su familia. La experiencia dura aproximadamente 3 horas. Te llevás las recetas escritas a mano por Lucía y la foto familiar del día.',
-   'Cultura', 6500, '2026-08-30', '18:00', 'Godoy Cruz', 12,
+   'Cultura', 6500, '2026-08-30', '18:00', 'Casa de los Fernández, Lavalle 1234, Godoy Cruz', 12,
    'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800'),
 
   ('a0000000-0000-0000-0000-000000000016', 'user_anfitrion_3',
@@ -181,7 +181,7 @@ Día 1: llegada a las 9:00, instalación en las cabañas, yoga de apertura, cami
    'En una sala del centro de Mendoza, 20 personas se sientan en círculo sin conocerse. Sobre la mesa hay bombos, cajones peruanos, djembe africanos, shakers, campanas y palos de lluvia. Martín, percusionista con 15 años de experiencia, da una consigna simple: nadie dirige, todos escuchan y responden. El círculo se convierte en una conversación rítmica donde cada persona propone y el grupo acompaña.
 
 La experiencia empieza con una ronda de presentación rítmica: cada persona dice su nombre con un golpe en el tambor. Después Martín enseña 3 ritmos básicos (tuntún, marcha, swing) y los practicamos en conjunto. La parte central es libre: Martín lanza consignas al círculo (silencio, solo percusión menor, duelo de tambores, crescendo colectivo) y el grupo responde. La actividad dura 2 horas y no requiere experiencia musical previa. Todos los instrumentos están incluidos. Al final se hace una grabación de 3 minutos de lo que tocaron entre todos.',
-   'Música', 3500, '2026-08-16', '20:00', 'Ciudad', 20,
+   'Música', 3500, '2026-08-16', '20:00', 'Sala El Taller, Av. Colón 345, Ciudad', 20,
    'https://images.unsplash.com/photo-1547153760-18fc86324498?w=800'),
 
   ('a0000000-0000-0000-0000-000000000021', 'user_anfitrion_6',
@@ -207,7 +207,7 @@ La experiencia empieza con un mate y una charla sobre la cosmovisión mapuche y 
    'Una inteligencia artificial llamada ARGOS se descontroló en un servidor de Godoy Cruz y encerró todos los datos de la ciudad tras un cifrado de 4 niveles. Cada nivel es un acertijo que se resuelve con lógica y código: un mensaje cifrado en binario, una puerta que se abre con el resultado de una función matemática, un laberinto que se resuelve con un algoritmo de búsqueda, y un candado final que necesita coordinación en equipo.
 
 No necesitás saber programar. Fernando te guía paso a paso: cada acertijo viene con una explicación y un ejemplo. Los equipos de hasta 4 personas tienen 90 minutos para resolver los 4 niveles y liberar los datos. Hay laptops con el entorno de desarrollo ya configurado (VS Code con Python y Node.js). Si un equipo se traba, hay 3 pistas disponibles que pueden canjear. La actividad dura 2 horas incluyendo la explicación inicial. Al final, el equipo que libera los datos recibe un certificado de "Hacker Ético de Inmersivapp" y un código de descuento para la próxima actividad.',
-   'Tecnología', 5000, '2026-08-18', '10:00', 'Godoy Cruz', 20,
+   'Tecnología', 5000, '2026-08-18', '10:00', 'Lab Cowork, Av. San Martín 850, Godoy Cruz', 20,
    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800')
 ON CONFLICT (id) DO NOTHING;
 
