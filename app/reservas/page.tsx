@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { supabase } from '@/lib/supabase'
 import { formatPrecio } from '@/lib/utils'
 import Link from 'next/link'
 
@@ -12,18 +11,19 @@ export default function MisReservasPage() {
   const [cargando, setCargando] = useState(true)
 
   const cargarReservas = async (userId: string) => {
-    const { data } = await supabase
-      .from('reservas')
-      .select('*, actividades(*)')
-      .eq('usuario_id', userId)
-      .order('created_at', { ascending: false })
+    const res = await fetch('/api/reservas')
+    const { reservas: data } = await res.json()
     setReservas(data || [])
     setCargando(false)
   }
 
   const cancelar = async (id: string) => {
-    await supabase.from('reservas').update({ estado: 'cancelada' }).eq('id', id)
-    if (user) cargarReservas(user.id)
+    const res = await fetch('/api/reservas', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reserva_id: id, estado: 'cancelada' }),
+    })
+    if (res.ok && user) cargarReservas(user.id)
   }
 
   useEffect(() => {
@@ -52,25 +52,28 @@ export default function MisReservasPage() {
   }
 
   return (
-    <div>
+    <div className="mx-auto max-w-3xl">
       <h1 className="font-titulos text-2xl font-bold text-texto">Mis reservas</h1>
 
       {reservas.length === 0 ? (
         <div className="mt-8 text-center">
           <p className="text-texto-secundario">No tenés reservas activas.</p>
-          <Link href="/actividades" className="mt-2 inline-block text-primario hover:underline">
+          <Link
+            href="/actividades"
+            className="mt-4 inline-block rounded-lg bg-primario px-4 py-2 font-semibold text-white"
+          >
             Explorar actividades
           </Link>
         </div>
       ) : (
         <div className="mt-6 space-y-4">
-          {reservas.map((r) => (
-            <div key={r.id} className="rounded-xl bg-superficie p-6 shadow-sm">
+          {reservas.map((r: any) => (
+            <div key={r.id} className="rounded-xl border border-gray-200 p-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="font-titulos text-lg font-semibold text-texto">
+                  <h2 className="font-titulos font-semibold text-texto">
                     {r.actividades?.titulo || 'Actividad'}
-                  </h3>
+                  </h2>
                   <p className="mt-1 text-sm text-texto-secundario">
                     {new Date(r.fecha).toLocaleDateString('es-AR', {
                       weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
