@@ -39,7 +39,7 @@ export default function DetalleActividadPage() {
 
   useEffect(() => {
     Promise.all([
-      supabase.from('actividades').select('*').eq('id', id).single(),
+      supabase.from('actividades').select('*, perfiles(id, nombre, avatar_url)').eq('id', id).single(),
       cargarResenas(),
     ]).then(([act]) => {
       setActividad(act.data)
@@ -180,7 +180,7 @@ export default function DetalleActividadPage() {
           <div className="rounded-xl bg-superficie p-6 shadow-sm">
             <h2 className="font-titulos text-lg font-semibold text-texto">Detalles</h2>
             <div className="mt-4 space-y-3 text-sm">
-              <p><span className="font-medium text-texto-secundario">Anfitrión:</span> {actividad.anfitrion_id}</p>
+              <p><span className="font-medium text-texto-secundario">Anfitrión:</span> {actividad.perfiles?.nombre || actividad.anfitrion_id}</p>
               <p><span className="font-medium text-texto-secundario">Precio:</span> <span className="font-semibold text-primario">{formatPrecio(actividad.precio)}</span></p>
               <p><span className="font-medium text-texto-secundario">Ubicación:</span> {actividad.lugar}</p>
             </div>
