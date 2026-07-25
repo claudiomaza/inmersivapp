@@ -125,7 +125,7 @@ export interface Notificacion {
   id: string
   usuario_id: string
   titulo: string
-  cuerpo?: string
+  mensaje?: string
   leido: boolean
   tipo?: string
   referencia_id?: string
