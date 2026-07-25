@@ -261,7 +261,7 @@ export default function AnfitrionPage() {
             </div>
           )}
         </div>
-      {/* Ingresos */}
+          )}
       {tab === 'ingresos' && (
         <div>
           <div className="mb-6 grid gap-4 sm:grid-cols-3">
