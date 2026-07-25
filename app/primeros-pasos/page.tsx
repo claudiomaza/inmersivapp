@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
-import { Play, ArrowLeft } from 'lucide-react'
+import { Play } from 'lucide-react'
 
 const VIDEOS = [
   {
@@ -30,17 +29,10 @@ export default function PrimerosPasosPage() {
 
   return (
     <div className="mx-auto max-w-4xl">
-      {/* Volver */}
-      <Link
-        href="/"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Volver al inicio
-      </Link>
-
-      <h1 className="font-titulos text-3xl font-bold text-texto">Primeros pasos</h1>
-      <p className="mt-2 text-texto-secundario">
+      <h1 className="font-titulos text-3xl font-bold text-texto sm:text-4xl">
+        Primeros pasos
+      </h1>
+      <p className="mt-1.5 text-base text-texto-secundario">
         Todo lo que necesitás saber para empezar a usar Inmersivapp.
       </p>
 

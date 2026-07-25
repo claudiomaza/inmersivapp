@@ -83,6 +83,12 @@ export default function Navbar() {
           >
             Explorar
           </Link>
+          <Link
+            href="/primeros-pasos"
+            className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
+          >
+            Primeros pasos
+          </Link>
 
           {/* Theme toggle */}
           <button
@@ -162,6 +168,13 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
             >
               Explorar
+            </Link>
+            <Link
+              href="/primeros-pasos"
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+              onClick={() => setMenuOpen(false)}
+            >
+              Primeros pasos
             </Link>
 
             {/* Theme toggle mobile */}

@@ -12,11 +12,8 @@ interface Props {
 
 export default function ActividadesClient({ actividades }: Props) {
   const {
-    filtros, actualizar, toggleDia, limpiarFiltros, activos, filtradas,
+    filtros, actualizar, limpiarFiltros, activos, filtradas, lugares,
   } = useActividadesFiltros(actividades)
-
-  const provincias = [...new Set(actividades.map((a) => a.ubicacion?.provincia).filter(Boolean))] as string[]
-  const departamentos = [...new Set(actividades.map((a) => a.ubicacion?.departamento).filter(Boolean))] as string[]
 
   const [abierto, setAbierto] = useState(false)
 
@@ -34,11 +31,9 @@ export default function ActividadesClient({ actividades }: Props) {
       <FiltrosBar
         filtros={filtros}
         actualizar={actualizar}
-        toggleDia={toggleDia}
         limpiarFiltros={limpiarFiltros}
         activos={activos}
-        provincias={provincias}
-        departamentos={departamentos}
+        lugares={lugares}
         abierto={abierto}
         setAbierto={setAbierto}
       />

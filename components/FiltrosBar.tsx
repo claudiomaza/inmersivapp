@@ -5,22 +5,17 @@ import { cn } from '@/lib/utils'
 import type { FiltrosActividades } from '@/hooks/useActividadesFiltros'
 
 const CATEGORIAS = [
-  'Arte', 'Tecnología', 'Deportes', 'Cocina',
-  'Naturaleza', 'Música', 'Fotografía', 'Manualidades',
-  'Yoga', 'Meditación', 'Teatro', 'Educación',
+  'Arte', 'Naturaleza', 'Gastronomía', 'Música',
+  'Fotografía', 'Yoga', 'Meditación', 'Tecnología',
+  'Deportes', 'Manualidades', 'Teatro', 'Educación',
 ]
-
-const DIAS_DEFAULT = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
-const HORAS = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`)
 
 interface Props {
   filtros: FiltrosActividades
   actualizar: (campo: keyof FiltrosActividades, valor: any) => void
-  toggleDia: (dia: string) => void
   limpiarFiltros: () => void
   activos: number
-  provincias: string[]
-  departamentos: string[]
+  lugares: string[]
   abierto: boolean
   setAbierto: (v: boolean) => void
 }
@@ -28,16 +23,12 @@ interface Props {
 export default function FiltrosBar({
   filtros,
   actualizar,
-  toggleDia,
   limpiarFiltros,
   activos,
-  provincias,
-  departamentos,
+  lugares,
   abierto,
   setAbierto,
 }: Props) {
-  const dias = DIAS_DEFAULT
-
   return (
     <div>
       {/* Search + toggle */}
@@ -92,41 +83,36 @@ export default function FiltrosBar({
               </select>
             </div>
 
-            {/* Provincia */}
+            {/* Zona */}
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
-                Provincia
+                Zona / Departamento
               </label>
               <select
-                value={filtros.provincia}
-                onChange={(e) => actualizar('provincia', e.target.value)}
+                value={filtros.lugar}
+                onChange={(e) => actualizar('lugar', e.target.value)}
                 className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
               >
                 <option value="">Todas</option>
-                {provincias.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Departamento */}
-            <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
-                Departamento
-              </label>
-              <select
-                value={filtros.departamento}
-                onChange={(e) => actualizar('departamento', e.target.value)}
-                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
-              >
-                <option value="">Todos</option>
-                {departamentos.map((d) => (
-                  <option key={d} value={d}>{d}</option>
+                {lugares.map((l) => (
+                  <option key={l} value={l}>{l}</option>
                 ))}
               </select>
             </div>
 
             {/* Precio */}
+            <div>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
+                Precio mínimo
+              </label>
+              <input
+                type="number"
+                placeholder="Ej: 1000"
+                value={filtros.precioMin || ''}
+                onChange={(e) => actualizar('precioMin', e.target.value ? e.target.value : '')}
+                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
+              />
+            </div>
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
                 Precio máximo
@@ -135,66 +121,9 @@ export default function FiltrosBar({
                 type="number"
                 placeholder="Ej: 5000"
                 value={filtros.precioMax || ''}
-                onChange={(e) => actualizar('precioMax', e.target.value ? Number(e.target.value) : null)}
+                onChange={(e) => actualizar('precioMax', e.target.value ? e.target.value : '')}
                 className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
               />
-            </div>
-          </div>
-
-          {/* Horarios */}
-          <div className="mt-5 grid gap-5 sm:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
-                Desde hora
-              </label>
-              <select
-                value={filtros.horaInicio}
-                onChange={(e) => actualizar('horaInicio', e.target.value)}
-                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
-              >
-                <option value="">Cualquier hora</option>
-                {HORAS.map((h) => (
-                  <option key={h} value={h}>{h}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
-                Hasta hora
-              </label>
-              <select
-                value={filtros.horaFin}
-                onChange={(e) => actualizar('horaFin', e.target.value)}
-                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
-              >
-                <option value="">Cualquier hora</option>
-                {HORAS.map((h) => (
-                  <option key={h} value={h}>{h}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Días */}
-          <div className="mt-5">
-            <label className="mb-2.5 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
-              Días de la semana
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {dias.map((dia) => (
-                <button
-                  key={dia}
-                  onClick={() => toggleDia(dia)}
-                  className={cn(
-                    'rounded-full px-3.5 py-1.5 text-sm font-medium transition',
-                    filtros.dias.includes(dia)
-                      ? 'bg-primario text-white shadow-sm'
-                      : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
-                  )}
-                >
-                  {dia}
-                </button>
-              ))}
             </div>
           </div>
 

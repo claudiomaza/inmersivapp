@@ -7,7 +7,6 @@ export default async function ActividadesPage() {
   const { data: actividades } = await supabaseAdmin
     .from('actividades')
     .select('*')
-    .eq('activa', true)
     .order('created_at', { ascending: false })
 
   return <ActividadesClient actividades={actividades || []} />

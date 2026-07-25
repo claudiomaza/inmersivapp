@@ -1,52 +1,44 @@
-// ─── Tipos compartidos de Inmersivapp ───
+// ─── Tipos compartidos de Inmersivapp (v2 — schema nuevo) ───
 
 export type Rol = 'participante' | 'anfitrion' | 'admin'
 
 export interface Perfil {
   id: string
-  username: string
+  email: string
   nombre: string
-  apellido: string
   telefono: string
   avatar_url?: string
-  intereses: string[]
-  roles: Rol[]
+  rol: Rol
   created_at: string
 }
 
 export type Categoria =
   | 'Arte'
-  | 'Tecnología'
-  | 'Deportes'
-  | 'Cocina'
   | 'Naturaleza'
+  | 'Gastronomía'
   | 'Música'
   | 'Fotografía'
+  | 'Yoga'
+  | 'Meditación'
+  | 'Tecnología'
+  | 'Deportes'
+  | 'Manualidades'
+  | 'Teatro'
+  | 'Educación'
 
 export interface Actividad {
   id: string
+  anfitrion_id: string
   titulo: string
   descripcion: string
-  precio: number
   categoria: Categoria
-  fotos: string[]
-  ubicacion: Ubicacion
-  anfitrion_id: string
-  anfitrion_nombre: string
-  horarios: HorarioSemanal
-  fechas: string[]
-  activa: boolean
+  fecha: string
+  hora: string
+  lugar: string
+  precio: number
+  capacidad_max: number
+  imagen_url: string
   created_at: string
-}
-
-export interface Ubicacion {
-  provincia: string
-  departamento: string
-  direccion: string
-}
-
-export interface HorarioSemanal {
-  [dia: string]: { activo: boolean; inicio: string; fin: string }
 }
 
 export type EstadoReserva = 'pendiente' | 'confirmada' | 'cancelada' | 'completada'
@@ -55,9 +47,8 @@ export interface Reserva {
   id: string
   usuario_id: string
   actividad_id: string
-  fecha: string
+  cantidad: number
   estado: EstadoReserva
-  codigo_confirmacion?: string
   created_at: string
 }
 
@@ -65,10 +56,10 @@ export type EstadoPago = 'pendiente' | 'aprobado' | 'rechazado' | 'reembolsado'
 
 export interface Pago {
   id: string
+  usuario_id: string
   reserva_id: string
   monto: number
-  moneda: string
-  metodo: string
+  metodo_pago: string
   estado: EstadoPago
   mp_preference_id?: string
   mp_payment_id?: string
@@ -110,11 +101,10 @@ export interface Cupon {
 export interface Notificacion {
   id: string
   usuario_id: string
+  tipo: string
   titulo: string
-  cuerpo?: string
+  mensaje?: string
   leido: boolean
-  tipo?: string
-  referencia_id?: string
   created_at: string
 }
 
@@ -122,7 +112,6 @@ export interface Mensaje {
   id: string
   emisor_id: string
   receptor_id: string
-  actividad_id?: string
   contenido: string
   leido: boolean
   created_at: string

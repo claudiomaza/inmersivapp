@@ -2,7 +2,6 @@ import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 import CardActividad from '@/components/CardActividad'
-import { Play } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,19 +21,8 @@ export default async function Home() {
 
   const todas = actividades || []
 
-  let perfil = null
-  if (userId) {
-    const { data } = await supabaseAdmin
-      .from('perfiles')
-      .select('intereses')
-      .eq('id', userId)
-      .single()
-    perfil = data
-  }
-
-  const recomendadas = perfil?.intereses?.length
-    ? todas.filter((a) => perfil.intereses.includes(a.categoria)).slice(0, 6)
-    : todas.slice(0, 6)
+  // No tenemos intereses en el nuevo schema, mostramos las primeras 6
+  const recomendadas = todas.slice(0, 6)
 
   return (
     <div>
@@ -48,31 +36,20 @@ export default async function Home() {
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-texto-secundario">
             Conectá con experiencias auténticas y multisensoriales cerca tuyo.
-            Talleres, aventuras, sabores y más.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/actividades"
-              className="inline-flex h-12 items-center gap-2 rounded-xl bg-primario px-8 font-semibold text-white transition hover:bg-primario-dark active:scale-[0.98]"
+              className="rounded-xl bg-primario px-8 py-3.5 font-semibold text-white shadow-lg transition hover:bg-primario-dark"
             >
               Explorar actividades
-              <span>→</span>
             </Link>
             <Link
               href="/primeros-pasos"
-              className="inline-flex h-12 items-center gap-2 rounded-xl border border-primario/20 bg-superficie px-8 font-semibold text-primario transition hover:bg-primario/5 active:scale-[0.98]"
+              className="rounded-xl border border-gray-300 bg-white/80 px-8 py-3.5 font-semibold text-texto shadow-sm backdrop-blur transition hover:bg-white"
             >
-              <Play className="h-4 w-4" />
               Primeros pasos
             </Link>
-            {!userId && (
-              <Link
-                href="/registro"
-                className="inline-flex h-12 items-center gap-2 rounded-xl border border-primario/20 bg-superficie px-8 font-semibold text-primario transition hover:bg-primario/5 active:scale-[0.98]"
-              >
-                Crear cuenta gratis
-              </Link>
-            )}
           </div>
         </div>
       </section>
@@ -82,11 +59,11 @@ export default async function Home() {
         <section className="mt-16">
           <div className="flex items-center justify-between">
             <h2 className="font-titulos text-2xl font-bold text-texto">
-              {userId ? 'Recomendadas para vos' : 'Actividades destacadas'}
+              Recomendadas
             </h2>
             <Link
               href="/actividades"
-              className="text-sm font-medium text-primario-light transition hover:text-primario"
+              className="text-sm font-medium text-primario transition hover:underline"
             >
               Ver todas →
             </Link>
