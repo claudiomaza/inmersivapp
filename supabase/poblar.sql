@@ -217,29 +217,29 @@ ON CONFLICT (id) DO NOTHING;
 -- ════════════════════════════════════════════════════════════
 
 INSERT INTO cupones (codigo, comercio_id, descuento_tipo, descuento_valor, condiciones, usos_maximos, usos_actuales, activo) VALUES
-  ('ACUARELA10', 'c0000000-0000-0000-0000-000000000001', 'porcentaje', 10,
-   '10% off en el taller de acuarela presentando ticket de compra del Mercado de la Plaza', 50, 3, true),
+  ('SOFIA12', 'c0000000-0000-0000-0000-000000000001', 'porcentaje', 12,
+   '12% off en el taller de acuarela presentando ticket de compra del Mercado de la Plaza', 50, 12, true),
 
-  ('LIBROS50', 'c0000000-0000-0000-0000-000000000002', 'porcentaje', 50,
-   '50% off en actividades culturales comprando 3 libros de arte en García Santos', 30, 1, true),
+  ('SOFIA12B', 'c0000000-0000-0000-0000-000000000002', 'porcentaje', 12,
+   '12% off en actividades culturales comprando 3 libros de arte en García Santos', 50, 12, true),
 
-  ('MOCHILA500', 'c0000000-0000-0000-0000-000000000003', 'fijo', 500,
-   '$500 de descuento en excursiones con la compra de mochila o botella en Andes Outdoor', 100, 12, true),
+  ('PABLO12', 'c0000000-0000-0000-0000-000000000003', 'porcentaje', 12,
+   '12% de descuento en excursiones con la compra de mochila o botella en Andes Outdoor', 50, 12, true),
 
-  ('VINOS3', 'c0000000-0000-0000-0000-000000000004', 'fijo', 0,
-   'Degustación gratuita de 3 vinos en Viñedos Don Tomás para participantes de clases de cocina', 200, 5, true),
+  ('LUCIA12', 'c0000000-0000-0000-0000-000000000004', 'porcentaje', 12,
+   '12% off en degustación de vinos en Viñedos Don Tomás para participantes de clases de cocina', 50, 12, true),
 
-  ('FOTO10', 'c0000000-0000-0000-0000-000000000005', 'porcentaje', 10,
-   '10% off en impresión y revelado en FotoLab Mendoza', 80, 0, true),
+  ('ANDRES12', 'c0000000-0000-0000-0000-000000000005', 'porcentaje', 12,
+   '12% off en impresión y revelado en FotoLab Mendoza', 50, 12, true),
 
-  ('BIENESTAR15', 'c0000000-0000-0000-0000-000000000006', 'porcentaje', 15,
-   '15% off en productos de bienestar en Alma Natural', 60, 8, true),
+  ('CAROLINA12', 'c0000000-0000-0000-0000-000000000006', 'porcentaje', 12,
+   '12% off en productos de bienestar en Alma Natural', 50, 12, true),
 
-  ('CEVE2X1', 'c0000000-0000-0000-0000-000000000007', 'fijo', 0,
-   '2x1 en cerveza artesanal en Cervecería Andina presentando código de reserva', 150, 22, true),
+  ('PABLO12B', 'c0000000-0000-0000-0000-000000000007', 'porcentaje', 12,
+   '12% off en cerveza artesanal en Cervecería Andina presentando código de reserva', 50, 12, true),
 
-  ('PENA', 'c0000000-0000-0000-0000-000000000008', 'fijo', 0,
-   'Entrada gratuita a peñas de los jueves en Casa de la Cultura', 100, 4, true)
+  ('MARTIN12', 'c0000000-0000-0000-0000-000000000008', 'porcentaje', 12,
+   '12% off en entrada a peñas de los jueves en Casa de la Cultura', 50, 12, true)
 ON CONFLICT (codigo) DO NOTHING;
 
 -- ════════════════════════════════════════════════════════════
