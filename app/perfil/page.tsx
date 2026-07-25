@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { Save, ArrowLeft, UserPlus, Shield } from 'lucide-react'
 
@@ -35,12 +34,9 @@ export default function PerfilPage() {
     if (!isSignedIn) return
     if (!user) return
 
-    supabase
-      .from('perfiles')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-      .then(({ data: perfil }) => {
+    fetch('/api/perfiles')
+      .then((r) => r.json())
+      .then(({ perfil }) => {
         if (perfil) {
           setForm({
             nombre: perfil.nombre || '',
@@ -53,6 +49,7 @@ export default function PerfilPage() {
         }
         setCargando(false)
       })
+      .catch(() => setCargando(false))
   }, [isSignedIn, user])
 
   const toggleInteres = (cat: string) =>
@@ -68,22 +65,22 @@ export default function PerfilPage() {
     if (!user) return
     setGuardando(true)
 
-    const { error } = await supabase
-      .from('perfiles')
-      .upsert({
-        id: user.id,
+    const res = await fetch('/api/perfiles', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         nombre: form.nombre,
         apellido: form.apellido,
         username: form.username,
         telefono: form.telefono,
         intereses: form.intereses,
-        email: user.primaryEmailAddress?.emailAddress || '',
-      })
-      .eq('id', user.id)
+      }),
+    })
 
     setGuardando(false)
-    if (error) {
-      toast.error('Error al guardar: ' + error.message)
+    if (!res.ok) {
+      const { error } = await res.json()
+      toast.error('Error al guardar: ' + error)
       return
     }
     toast.success('Perfil actualizado ✅')
@@ -94,13 +91,17 @@ export default function PerfilPage() {
     if (!user) return
     setActivando(true)
     const nuevosRoles = [...roles, 'anfitrion']
-    const { error } = await supabase
-      .from('perfiles')
-      .update({ roles: nuevosRoles })
-      .eq('id', user.id)
+
+    const res = await fetch('/api/perfiles', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ roles: nuevosRoles }),
+    })
+
     setActivando(false)
-    if (error) {
-      toast.error('Error al activar: ' + error.message)
+    if (!res.ok) {
+      const { error } = await res.json()
+      toast.error('Error al activar: ' + error)
       return
     }
     setRoles(nuevosRoles)
@@ -168,40 +169,39 @@ export default function PerfilPage() {
                 value={form.apellido}
                 onChange={(e) => setForm({ ...form, apellido: e.target.value })}
                 className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-                required
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-texto">Username</label>
+              <input
+                type="text"
+                value={form.username}
+                onChange={(e) => setForm({ ...form, username: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-texto">Teléfono</label>
+              <input
+                type="tel"
+                value={form.telefono}
+                onChange={(e) => setForm({ ...form, telefono: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Username</label>
-            <input
-              type="text"
-              value={form.username}
-              onChange={(e) => setForm({ ...form, username: e.target.value })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Teléfono</label>
-            <input
-              type="tel"
-              value={form.telefono}
-              onChange={(e) => setForm({ ...form, telefono: e.target.value })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Intereses</label>
+            <label className="mb-2 block text-sm font-medium text-texto">Intereses</label>
             <div className="flex flex-wrap gap-2">
               {CATEGORIAS.map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => toggleInteres(cat)}
-                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
+                  className={`rounded-full px-3 py-1 text-sm transition ${
                     form.intereses.includes(cat)
                       ? 'bg-primario text-white'
-                      : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   {cat}
@@ -213,68 +213,88 @@ export default function PerfilPage() {
             <button
               type="button"
               onClick={() => setEditando(false)}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 font-medium transition hover:bg-gray-50"
+              className="flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium transition hover:bg-gray-50"
             >
+              <ArrowLeft className="h-4 w-4" />
               Cancelar
             </button>
             <button
               type="submit"
               disabled={guardando}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primario px-4 py-2.5 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+              className="flex items-center gap-2 rounded-lg bg-primario px-4 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
             >
               <Save className="h-4 w-4" />
               {guardando ? 'Guardando…' : 'Guardar cambios'}
             </button>
           </div>
         </form>
-      ) : (<>
-        <div className="mt-6 rounded-xl bg-superficie p-6 shadow-sm">
-          <div className="space-y-3">
-            <p><span className="font-medium text-texto-secundario">Nombre:</span> {form.nombre} {form.apellido}</p>
-            <p><span className="font-medium text-texto-secundario">Username:</span> {form.username || '—'}</p>
-            <p><span className="font-medium text-texto-secundario">Email:</span> {user?.primaryEmailAddress?.emailAddress}</p>
-            <p><span className="font-medium text-texto-secundario">Teléfono:</span> {form.telefono || '—'}</p>
-            <p><span className="font-medium text-texto-secundario">Intereses:</span>{' '}
-              {form.intereses?.length > 0 ? form.intereses.join(', ') : '—'}
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="font-medium text-texto-secundario">Rol:</span>
-              {roles.map((r) => (
-                <span
-                  key={r}
-                  className="rounded-full bg-primario/10 px-3 py-0.5 text-xs font-medium text-primario"
-                >
-                  {r === 'anfitrion' ? 'Anfitrión' : r === 'participante' ? 'Participante' : r}
-                </span>
-              ))}
-            </p>
-          </div>
-        </div>
-
-        {/* Activar rol de anfitrión */}
-        {!roles.includes('anfitrion') && (
-          <div className="mt-6 rounded-xl border border-dashed border-primario/30 bg-primario/5 p-6">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primario/10">
-                <UserPlus className="h-5 w-5 text-primario" />
+      ) : (
+        <>
+          <div className="mt-8 space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-texto-secundario">Nombre</p>
+                <p className="mt-1 font-medium text-texto">{form.nombre || '—'}</p>
               </div>
-              <div className="flex-1">
-                <h3 className="font-titulos font-semibold text-texto">¿Querés crear experiencias?</h3>
-                <p className="mt-1 text-sm text-texto-secundario">
-                  Activá el rol de anfitrión para publicar tus propias actividades y recibir reservas.
-                </p>
-                <button
-                  onClick={activarAnfitrion}
-                  disabled={activando}
-                  className="mt-3 flex items-center gap-2 rounded-lg bg-primario px-4 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
-                >
-                  <Shield className="h-4 w-4" />
-                  {activando ? 'Activando…' : 'Activar modo anfitrión'}
-                </button>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-texto-secundario">Apellido</p>
+                <p className="mt-1 font-medium text-texto">{form.apellido || '—'}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-texto-secundario">Username</p>
+                <p className="mt-1 font-medium text-texto">{form.username || '—'}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-texto-secundario">Teléfono</p>
+                <p className="mt-1 font-medium text-texto">{form.telefono || '—'}</p>
               </div>
             </div>
+            {form.intereses.length > 0 && (
+              <div>
+                <p className="text-xs uppercase tracking-wide text-texto-secundario">Intereses</p>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {form.intereses.map((i) => (
+                    <span key={i} className="rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">{i}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {roles.length > 0 && (
+              <div>
+                <p className="text-xs uppercase tracking-wide text-texto-secundario">Roles</p>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {roles.map((r) => (
+                    <span key={r} className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+                      {r === 'anfitrion' ? 'Anfitrión' : r === 'participante' ? 'Participante' : r}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+          {!roles.includes('anfitrion') && (
+            <div className="mt-6 rounded-xl border border-dashed border-primario/30 bg-primario/5 p-6">
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primario/10">
+                  <UserPlus className="h-5 w-5 text-primario" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-titulos font-semibold text-texto">¿Querés crear experiencias?</h3>
+                  <p className="mt-1 text-sm text-texto-secundario">
+                    Activá el rol de anfitrión para publicar tus propias actividades y recibir reservas.
+                  </p>
+                  <button
+                    onClick={activarAnfitrion}
+                    disabled={activando}
+                    className="mt-3 flex items-center gap-2 rounded-lg bg-primario px-4 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+                  >
+                    <Shield className="h-4 w-4" />
+                    {activando ? 'Activando…' : 'Activar modo anfitrión'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
