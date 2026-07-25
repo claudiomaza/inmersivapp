@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   // Verificar que sea anfitrión
   const { data: perfil } = await supabaseAdmin
     .from('perfiles')
-    .select('roles')
+    .select('rol')
     .eq('id', userId)
     .single()
 
