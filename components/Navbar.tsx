@@ -113,6 +113,12 @@ export default function Navbar() {
                 )}
               </Link>
 
+              <Link
+                href="/participante"
+                className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+              >
+                Panel Participante
+              </Link>
               {esAnfitrion && (
                 <Link
                   href="/anfitrion"
@@ -129,19 +135,6 @@ export default function Navbar() {
                   Panel Admin
                 </Link>
               )}
-
-              <Link
-                href="/reservas"
-                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
-              >
-                Mis reservas
-              </Link>
-              <Link
-                href="/mensajes"
-                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
-              >
-                Mensajes
-              </Link>
 
               <Link
                 href="/perfil"
@@ -223,19 +216,11 @@ export default function Navbar() {
                   {user?.fullName || 'Perfil'}
                 </Link>
                 <Link
-                  href="/reservas"
-                  className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+                  href="/participante"
+                  className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Mis reservas
-                </Link>
-                <Link
-                  href="/mensajes"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <MessageSquare className="h-5 w-5" />
-                  Mensajes
+                  Panel Participante
                 </Link>
                 {esAnfitrion && (
                   <Link
