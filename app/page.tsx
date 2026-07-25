@@ -2,7 +2,6 @@ import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 import CardActividad from '@/components/CardActividad'
-import CarruselAnuncios from '@/components/CarruselAnuncios'
 import PrimerosPasosModal from '@/components/PrimerosPasosModal'
 
 export const dynamic = 'force-dynamic'
@@ -16,22 +15,13 @@ const CATEGORIAS_PORTFOLIO = [
 export default async function Home() {
   const { userId } = await auth()
 
-  const [actividadesRes, anunciosRes] = await Promise.all([
-    supabaseAdmin
-      .from('actividades')
-      .select('*')
-      .eq('activa', true)
-      .order('created_at', { ascending: false }),
-    supabaseAdmin
-      .from('anuncios')
-      .select('*')
-      .eq('activo', true)
-      .order('created_at', { ascending: false })
-      .limit(5),
-  ])
+  const { data: actividades } = await supabaseAdmin
+    .from('actividades')
+    .select('*')
+    .eq('activa', true)
+    .order('created_at', { ascending: false })
 
-  const anuncios = anunciosRes.data || []
-  const todas = actividadesRes.data || []
+  const todas = actividades || []
 
   let perfil = null
   if (userId) {
@@ -50,57 +40,50 @@ export default async function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="hero-glow -mx-4 -mt-6 flex min-h-[65vh] flex-col items-center justify-center rounded-b-3xl px-4 text-center sm:-mx-6 lg:-mx-8">
-        <div className="max-w-2xl">
-          <span className="inline-block rounded-full bg-primario/10 px-4 py-1.5 text-xs font-medium text-primario">
-            Descubrí experiencias únicas
-          </span>
-          <h1 className="mt-6 font-titulos text-4xl font-extrabold tracking-tight text-texto sm:text-5xl lg:text-6xl">
-            Viví momentos que
-            <span className="text-primario"> transforman</span>
+      <section className="hero-glow relative -mx-4 -mt-6 overflow-hidden px-4 pb-24 pt-16 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
+          <h1 className="font-titulos text-4xl font-extrabold leading-tight tracking-tight text-texto sm:text-5xl lg:text-6xl">
+            Viví experiencias
+            <br />
+            <span className="text-primario">que transforman</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-texto-secundario">
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-texto-secundario">
             Conectá con experiencias auténticas y multisensoriales cerca tuyo.
-            Talleres, naturaleza, gastronomía y más.
+            Talleres, aventuras, sabores y más.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/actividades"
-              className="card-lift inline-flex items-center gap-2 rounded-xl bg-primario px-6 py-3 font-semibold text-white transition hover:bg-primario-dark"
+              className="inline-flex h-12 items-center gap-2 rounded-xl bg-primario px-8 font-semibold text-white transition hover:bg-primario-dark active:scale-[0.98]"
             >
               Explorar actividades
-              <span className="text-lg">→</span>
+              <span>→</span>
             </Link>
             {!userId && (
               <Link
                 href="/registro"
-                className="card-lift inline-flex items-center gap-2 rounded-xl border-2 border-primario px-6 py-3 font-semibold text-primario transition hover:bg-primario hover:text-white"
+                className="inline-flex h-12 items-center gap-2 rounded-xl border border-primario/20 bg-superficie px-8 font-semibold text-primario transition hover:bg-primario/5 active:scale-[0.98]"
               >
-                Crear cuenta
+                Crear cuenta gratis
               </Link>
             )}
-            <PrimerosPasosModal />
           </div>
         </div>
       </section>
 
-      {/* Anuncios patrocinados */}
-      {anuncios.length > 0 && (
-        <section className="mt-16">
-          <CarruselAnuncios anuncios={anuncios} />
-        </section>
-      )}
+      {/* Primeros pasos para nuevos usuarios */}
+      <PrimerosPasosModal />
 
       {/* Recomendadas */}
       {recomendadas.length > 0 && (
-        <section className="mt-16 mb-8">
+        <section className="mt-16">
           <div className="flex items-center justify-between">
             <h2 className="font-titulos text-2xl font-bold text-texto">
-              {perfil?.intereses?.length ? 'Recomendadas para vos' : 'Actividades destacadas'}
+              {userId ? 'Recomendadas para vos' : 'Actividades destacadas'}
             </h2>
             <Link
               href="/actividades"
-              className="text-sm font-medium text-primario transition hover:text-primario-light"
+              className="text-sm font-medium text-primario-light transition hover:text-primario"
             >
               Ver todas →
             </Link>
@@ -122,7 +105,7 @@ export default async function Home() {
           {CATEGORIAS_PORTFOLIO.map((cat) => (
             <Link
               key={cat.titulo}
-              href={`/actividades?categoria=${cat.titulo}`}
+              href={'/actividades?categoria=' + encodeURIComponent(cat.titulo)}
               className="card-lift group relative rounded-2xl bg-superficie p-6"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primario/10 text-2xl">
