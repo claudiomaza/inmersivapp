@@ -9,7 +9,7 @@ export default function SignUpPage() {
         Creá tu cuenta
       </div>
       <p className="mb-6 text-center text-texto-secundario">
-        Unite a la comunidad de experiencias únicas
+        Unite a la comunidad de experiencias unicas
       </p>
       <SignUp
         appearance={{
@@ -18,6 +18,8 @@ export default function SignUpPage() {
             dividerRow: { display: 'none' },
           },
         }}
+        afterSignInUrl="/"
+        afterSignUpUrl="/perfil/completar"
       />
     </div>
   )
