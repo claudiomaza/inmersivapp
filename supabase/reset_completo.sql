@@ -35,7 +35,7 @@ END $$;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 DROP FUNCTION IF EXISTS crear_perfil_nuevo();
-DROP FUNCTION IF EXISTS incrementar_usos_cupon();
+DROP FUNCTION IF EXISTS incrementar_usos_cupon(text);
 
 -- ════════════════════════════════════════════════════════════
 -- 2. CREATE TABLAS
@@ -372,3 +372,4 @@ BEGIN
     AND usos_actuales < usos_maximos;
 END;
 $$ LANGUAGE plpgsql;
+
