@@ -56,8 +56,6 @@ export default function NuevaActividadPage() {
       return
     }
 
-    })
-
     // Parse fechas
     const fechasArray = form.fechas
       ? form.fechas.split(',').map((f) => f.trim()).filter(Boolean)
