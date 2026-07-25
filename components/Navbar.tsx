@@ -5,8 +5,7 @@ import { useUser, useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { cn } from '@/lib/utils'
-import { Bell, Menu, X, UserCircle } from 'lucide-react'
+import { Bell, Menu, X, UserCircle, Sun, Moon } from 'lucide-react'
 
 export default function Navbar() {
   const { isSignedIn, user } = useUser()
@@ -16,6 +15,22 @@ export default function Navbar() {
   const [esAnfitrion, setEsAnfitrion] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [noLeidos, setNoLeidos] = useState(0)
+  const [oscuro, setOscuro] = useState(false)
+
+  useEffect(() => {
+    // Inicializar desde localStorage
+    const guardado = localStorage.getItem('tema')
+    const prefiereOscuro = guardado === 'oscuro' || (!guardado && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    setOscuro(prefiereOscuro)
+    document.documentElement.setAttribute('data-theme', prefiereOscuro ? 'oscuro' : 'claro')
+  }, [])
+
+  const toggleTema = () => {
+    const nuevo = !oscuro
+    setOscuro(nuevo)
+    document.documentElement.setAttribute('data-theme', nuevo ? 'oscuro' : 'claro')
+    localStorage.setItem('tema', nuevo ? 'oscuro' : 'claro')
+  }
 
   useEffect(() => {
     if (!isSignedIn || !user) {
@@ -50,22 +65,40 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-superficie/80 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
-          <span className="font-titulos text-xl font-bold text-texto">Inmersivapp</span>
+        <Link href="/" className="flex items-center gap-2">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primario text-sm font-bold text-white">
+            I
+          </span>
+          <span className="font-titulos text-lg font-bold text-texto">Inmersivapp</span>
         </Link>
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-4 md:flex">
-          <Link href="/actividades" className="text-sm font-medium text-texto/70 transition hover:text-texto">
+          <Link
+            href="/actividades"
+            className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
+          >
             Explorar
           </Link>
 
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTema}
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-texto-secundario transition hover:bg-gray-100"
+            aria-label="Cambiar tema"
+          >
+            {oscuro ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+
           {isSignedIn ? (
             <>
-              <Link href="/notificaciones" className="relative p-2 text-texto/70 transition hover:text-texto">
+              <Link
+                href="/notificaciones"
+                className="relative p-2 text-texto-secundario transition hover:text-texto"
+              >
                 <Bell className="h-5 w-5" />
                 {noLeidos > 0 && (
                   <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-error px-1 text-[9px] font-bold leading-none text-white">
@@ -74,102 +107,99 @@ export default function Navbar() {
                 )}
               </Link>
 
-              <Link
-                href="/perfil"
-                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-gray-100 hover:text-texto"
-              >
-                <UserCircle className="h-5 w-5" />
-                {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || 'Perfil'}
-              </Link>
-
+              {esAnfitrion && (
+                <Link
+                  href="/anfitrion"
+                  className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+                >
+                  Panel Anfitrión
+                </Link>
+              )}
               {esAdmin && (
                 <Link
                   href="/admin"
                   className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
                 >
-                  Admin
+                  Panel Admin
                 </Link>
               )}
 
-              <button
-                onClick={cerrarSesion}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-error transition hover:bg-error/10"
+              <Link
+                href="/perfil"
+                className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
               >
-                Salir
-              </button>
+                <UserCircle className="h-5 w-5" />
+                {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || 'Perfil'}
+              </Link>
             </>
           ) : (
             <Link
               href="/login"
-              className="rounded-lg bg-primario px-4 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark"
+              className="rounded-lg bg-primario px-5 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark"
             >
               Ingresar
             </Link>
           )}
         </div>
 
-        {/* Mobile toggle */}
+        {/* Mobile hamburger */}
         <button
-          className="rounded-lg p-2 text-texto transition hover:bg-gray-100 md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
+          className="flex items-center p-2 md:hidden"
+          aria-label="Menú"
         >
-          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="border-t border-gray-100 bg-white px-4 pb-4 pt-2 md:hidden">
-          <div className="flex flex-col gap-1">
+        <div className="border-t border-gray-200 bg-superficie md:hidden">
+          <div className="space-y-1 px-4 py-4">
             <Link
               href="/actividades"
-              className="rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
               onClick={() => setMenuOpen(false)}
             >
               Explorar
             </Link>
 
+            {/* Theme toggle mobile */}
+            <button
+              onClick={() => { toggleTema(); setMenuOpen(false) }}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+            >
+              {oscuro ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {oscuro ? 'Modo claro' : 'Modo oscuro'}
+            </button>
+
             {isSignedIn ? (
               <>
                 <Link
-                  href="/perfil"
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <UserCircle className="h-4 w-4" />
-                  Perfil
-                </Link>
-                <Link
-                  href="/reservas"
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Mis reservas
-                </Link>
-                <Link
-                  href="/mensajes"
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Mensajes
-                </Link>
-                <Link
                   href="/notificaciones"
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-texto/70 transition hover:bg-black/5"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
                   onClick={() => setMenuOpen(false)}
                 >
-                  <Bell className="h-4 w-4" />
+                  <Bell className="h-5 w-5" />
                   Notificaciones
                   {noLeidos > 0 && (
-                    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-error px-1.5 text-[10px] font-bold leading-none text-white">
-                      {noLeidos > 99 ? '99+' : noLeidos}
+                    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-error px-1.5 text-xs font-bold text-white">
+                      {noLeidos}
                     </span>
                   )}
+                </Link>
+                <Link
+                  href="/perfil"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <UserCircle className="h-5 w-5" />
+                  {user?.fullName || 'Perfil'}
                 </Link>
                 {esAnfitrion && (
                   <Link
                     href="/anfitrion"
-                    className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+                    className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                     onClick={() => setMenuOpen(false)}
                   >
                     Panel Anfitrión
@@ -178,7 +208,7 @@ export default function Navbar() {
                 {esAdmin && (
                   <Link
                     href="/admin"
-                    className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+                    className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                     onClick={() => setMenuOpen(false)}
                   >
                     Panel Admin
@@ -189,7 +219,7 @@ export default function Navbar() {
                     setMenuOpen(false)
                     cerrarSesion()
                   }}
-                  className="rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error/10"
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error/10"
                 >
                   Cerrar sesión
                 </button>
@@ -197,7 +227,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="rounded-lg bg-primario px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-primario-dark"
+                className="block rounded-lg bg-primario px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-primario-dark"
                 onClick={() => setMenuOpen(false)}
               >
                 Ingresar

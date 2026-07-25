@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     const { data: cupon, error } = await supabaseAdmin
       .from('cupones')
-      .select('*')
+      .select('*, comercios!inner(nombre, rubro)')
       .eq('codigo', codigo.toUpperCase())
       .eq('activo', true)
       .single()
@@ -21,18 +21,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ valido: false, descuento: 0, mensaje: 'Cupón no encontrado' })
     }
 
-    if (cupon.vence && new Date(cupon.vence) < new Date()) {
-      return NextResponse.json({ valido: false, descuento: 0, mensaje: 'Cupón vencido' })
-    }
-
+    // Verificar límite de usos
     if (cupon.usos_actuales >= cupon.usos_maximos) {
       return NextResponse.json({ valido: false, descuento: 0, mensaje: 'Cupón agotado' })
     }
 
+    // Calcular descuento
+    let descuentoMostrar = 0
+    let mensaje = ''
+
+    if (cupon.descuento_tipo === 'porcentaje') {
+      descuentoMostrar = cupon.descuento_valor
+      mensaje = `¡Cupón válido! ${cupon.descuento_valor}% OFF en ${cupon.comercios?.nombre || 'el comercio'}`
+    } else {
+      descuentoMostrar = cupon.descuento_valor
+      mensaje = `¡Cupón válido! $${cupon.descuento_valor} de descuento en ${cupon.comercios?.nombre || 'el comercio'}`
+    }
+
+    // Agregar condiciones si existen
+    if (cupon.condiciones) {
+      mensaje += `. ${cupon.condiciones}`
+    }
+
     return NextResponse.json({
       valido: true,
-      descuento: cupon.descuento_porcentaje,
-      mensaje: `¡Cupón válido! ${cupon.descuento_porcentaje}% OFF`,
+      descuento: descuentoMostrar,
+      tipo: cupon.descuento_tipo,
+      mensaje,
     })
   } catch {
     return NextResponse.json({ valido: false, descuento: 0, mensaje: 'Error al validar' })

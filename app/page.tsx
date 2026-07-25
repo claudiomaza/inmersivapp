@@ -51,7 +51,7 @@ export default async function Home() {
             Conectá con experiencias auténticas y multisensoriales cerca tuyo.
             Talleres, aventuras, sabores y más.
           </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/actividades"
               className="inline-flex h-12 items-center gap-2 rounded-xl bg-primario px-8 font-semibold text-white transition hover:bg-primario-dark active:scale-[0.98]"
@@ -59,6 +59,7 @@ export default async function Home() {
               Explorar actividades
               <span>→</span>
             </Link>
+            <PrimerosPasosModal />
             {!userId && (
               <Link
                 href="/registro"
@@ -70,9 +71,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Primeros pasos para nuevos usuarios */}
-      <PrimerosPasosModal />
 
       {/* Recomendadas */}
       {recomendadas.length > 0 && (

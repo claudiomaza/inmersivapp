@@ -18,6 +18,21 @@
   --font-cuerpo: "DM Sans", sans-serif;
 }
 
+/* Dark theme */
+[data-theme="oscuro"] {
+  --color-fondo: #0f0e0c;
+  --color-superficie: #1a1816;
+  --color-superficie-alt: #242220;
+  --color-primario: #d97757;
+  --color-primario-light: #e8997e;
+  --color-primario-dark: #b85a3a;
+  --color-secundario: #7ca898;
+  --color-secundario-light: #9bc0b2;
+  --color-acento: #d4a017;
+  --color-texto: #f5f5f4;
+  --color-texto-secundario: #a8a29e;
+}
+
 /* Base resets */
 @layer base {
   *, ::after, ::before {
