@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank, CheckCircle } from 'lucide-react'
+import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank, CheckCircle, MessageSquare, Send } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
-type Tab = 'resumen' | 'actividades' | 'usuarios' | 'reservas' | 'resenas' | 'liquidaciones'
+type Tab = 'resumen' | 'actividades' | 'usuarios' | 'reservas' | 'resenas' | 'liquidaciones' | 'mensajes'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
   { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
@@ -16,6 +16,7 @@ const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
   { key: 'reservas', label: 'Reservas', icon: <Ticket className="h-4 w-4" /> },
   { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
   { key: 'liquidaciones', label: 'Liquidaciones', icon: <DollarSign className="h-4 w-4" /> },
+  { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
 ]
 
 export default function AdminPage() {
@@ -51,6 +52,13 @@ export default function AdminPage() {
   const [liquidacionesHistorial, setLiquidacionesHistorial] = useState<any[]>([])
   const [liquidando, setLiquidando] = useState(false)
 
+  // Mensajes (reclamos/consultas de usuarios)
+  const [mensajesAdmin, setMensajesAdmin] = useState<any[]>([])
+  const [chatAdminAbierto, setChatAdminAbierto] = useState<string | null>(null)
+  const [chatAdminMensajes, setChatAdminMensajes] = useState<any[]>([])
+  const [textoAdminEnvio, setTextoAdminEnvio] = useState('')
+  const [enviandoAdmin, setEnviandoAdmin] = useState(false)
+
   useEffect(() => {
     if (!isSignedIn) return
 
@@ -60,6 +68,8 @@ export default function AdminPage() {
 
       const url = tab === 'liquidaciones'
         ? '/api/admin/liquidar'
+        : tab === 'mensajes'
+        ? '/api/admin/mensajes'
         : `/api/admin/datos?tipo=${tab}`
 
       const res = await fetch(url)
@@ -91,6 +101,8 @@ export default function AdminPage() {
       else if (tab === 'liquidaciones') {
         setLiquidacionesPendientes(data.pendientes || [])
         setLiquidacionesHistorial(data.historial || [])
+      } else if (tab === 'mensajes') {
+        setMensajesAdmin(data.conversaciones || [])
       }
 
       setCargando(false)
@@ -118,6 +130,8 @@ export default function AdminPage() {
     const cargar = async () => {
       const url = tab === 'liquidaciones'
         ? '/api/admin/liquidar'
+        : tab === 'mensajes'
+        ? '/api/admin/mensajes'
         : `/api/admin/datos?tipo=${tab}`
       const res = await fetch(url)
       if (!res.ok) return
@@ -126,6 +140,36 @@ export default function AdminPage() {
       setLiquidacionesHistorial(data.historial || [])
     }
     cargar()
+  }
+
+  const abrirChatAdmin = async (usuarioId: string) => {
+    setChatAdminAbierto(usuarioId)
+    const res = await fetch(`/api/admin/mensajes/${usuarioId}`)
+    if (!res.ok) return
+    const data = await res.json()
+    setChatAdminMensajes(data.mensajes || [])
+  }
+
+  const enviarMensajeAdmin = async () => {
+    if (!textoAdminEnvio.trim() || !chatAdminAbierto || !user) return
+    setEnviandoAdmin(true)
+    const res = await fetch('/api/mensajes/enviar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ receptor_id: chatAdminAbierto, contenido: textoAdminEnvio.trim() }),
+    })
+    setEnviandoAdmin(false)
+    if (!res.ok) { toast.error('Error al enviar'); return }
+    setTextoAdminEnvio('')
+    setChatAdminMensajes(prev => [...prev, {
+      id: 'temp-' + Date.now(),
+      emisor_id: user.id,
+      contenido: textoAdminEnvio.trim(),
+      leido: false,
+      created_at: new Date().toISOString(),
+    }])
+    const r = await fetch('/api/admin/mensajes')
+    if (r.ok) setMensajesAdmin((await r.json()).conversaciones || [])
   }
 
   return (
@@ -383,6 +427,101 @@ export default function AdminPage() {
                 ))}
               </div>
             </>
+          )}
+        </div>
+      )}
+
+      {/* Mensajes — reclamos/consultas */}
+      {tab === 'mensajes' && (
+        <div>
+          {chatAdminAbierto ? (
+            <div>
+              <button
+                onClick={() => setChatAdminAbierto(null)}
+                className="mb-4 flex items-center gap-2 text-sm text-primario hover:underline"
+              >
+                ← Volver a conversaciones
+              </button>
+              <div className="rounded-xl bg-superficie p-4 shadow-sm">
+                <div className="mb-4 max-h-80 space-y-3 overflow-y-auto">
+                  {chatAdminMensajes.length === 0 ? (
+                    <p className="text-center text-sm text-texto-secundario">Sin mensajes</p>
+                  ) : (
+                    chatAdminMensajes.map((m: any) => (
+                      <div
+                        key={m.id}
+                        className={`rounded-lg px-3 py-2 text-sm ${
+                          m.emisor_id === user?.id
+                            ? 'ml-8 bg-primario text-white'
+                            : 'mr-8 bg-gray-100 text-texto'
+                        }`}
+                      >
+                        <p>{m.contenido}</p>
+                        <p className="mt-1 text-right text-[10px] opacity-70">
+                          {new Date(m.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      </div>
+                    ))
+                  )}
+                </div>
+                <div className="flex gap-2 border-t pt-3">
+                  <input
+                    type="text"
+                    value={textoAdminEnvio}
+                    onChange={(e) => setTextoAdminEnvio(e.target.value)}
+                    placeholder="Escribí tu respuesta…"
+                    className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                    onKeyDown={(e) => e.key === 'Enter' && enviarMensajeAdmin()}
+                  />
+                  <button
+                    onClick={enviarMensajeAdmin}
+                    disabled={enviandoAdmin || !textoAdminEnvio.trim()}
+                    className="rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <p className="mb-4 text-sm text-texto-secundario">
+                {mensajesAdmin.length} conversación(es) — usuarios que te escribieron
+              </p>
+              {mensajesAdmin.length === 0 ? (
+                <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">
+                  No hay mensajes de usuarios todavía.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {mensajesAdmin.map((conv: any) => (
+                    <button
+                      key={conv.otroUsuarioId}
+                      onClick={() => abrirChatAdmin(conv.otroUsuarioId)}
+                      className="flex w-full items-center gap-3 rounded-xl bg-superficie p-4 text-left shadow-sm transition hover:bg-primario/5"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
+                        {conv.otroNombre?.charAt(0)?.toUpperCase() || '?'}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-texto truncate">
+                          {conv.otroNombre} {conv.otroApellido}
+                          {conv.noLeidos > 0 && (
+                            <span className="ml-2 rounded-full bg-error px-2 py-0.5 text-[10px] font-bold text-white">
+                              {conv.noLeidos}
+                            </span>
+                          )}
+                        </p>
+                        <p className="mt-0.5 truncate text-sm text-texto-secundario">{conv.ultimoMensaje}</p>
+                      </div>
+                      <p className="shrink-0 text-xs text-texto-secundario">
+                        {new Date(conv.ultimaFecha).toLocaleDateString('es-AR')}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}
