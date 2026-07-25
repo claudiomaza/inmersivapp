@@ -18,15 +18,20 @@ export type Categoria =
   | 'Arte'
   | 'Aventura'
   | 'Bienestar'
+  | 'Cocina'
   | 'Cultura'
+  | 'Deportes'
+  | 'Educación'
+  | 'Fotografía'
   | 'Gastronomía'
   | 'Inmersión'
+  | 'Manualidades'
+  | 'Meditación'
   | 'Música'
   | 'Naturaleza'
+  | 'Teatro'
   | 'Tecnología'
-  | 'Deportes'
-  | 'Cocina'
-  | 'Fotografía'
+  | 'Yoga'
 
 export interface Actividad {
   id: string
