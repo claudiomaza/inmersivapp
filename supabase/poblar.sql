@@ -1,7 +1,7 @@
 -- ============================================================
 -- INMERSIVAPP — Poblar base de datos
 -- Sello: cm2labs · 2026-07-25
--- 27 actividades (12 categorías) · 2+ reseñas c/u · Cupones AnfitriónN
+-- 32 actividades (17 categorías) · 2+ reseñas c/u · Cupones AnfitriónN
 -- IDEMPOTENTE (ON CONFLICT)
 -- ============================================================
 -- EJECUTAR DESPUÉS de reset_completo.sql (esquema)
