@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { User, Star } from 'lucide-react'
 
@@ -31,17 +30,15 @@ export default function CompletarPerfilPage() {
     if (!user) return
     setCargando(true)
 
-    const { error } = await supabase
-      .from('perfiles')
-      .update({
-        intereses,
-        roles: [rol],
-      })
-      .eq('id', user.id)
+    const res = await fetch('/api/perfiles', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ intereses, roles: [rol] }),
+    })
 
     setCargando(false)
 
-    if (error) {
+    if (!res.ok) {
       toast.error('Error al guardar')
       return
     }
@@ -67,7 +64,6 @@ export default function CompletarPerfilPage() {
       </div>
 
       <form onSubmit={guardar} className="mt-8">
-        {/* Selección de rol */}
         <label className="mb-3 block text-sm font-medium text-texto">
           ¿Qué rol querés tener?
         </label>
@@ -81,11 +77,9 @@ export default function CompletarPerfilPage() {
                 : 'border-gray-200 text-texto-secundario hover:border-gray-300'
             }`}
           >
-            <User className={`h-8 w-8 ${rol === 'participante' ? 'text-primario' : ''}`} />
-            <div>
-              <p className="font-semibold text-sm">Participante</p>
-              <p className="text-xs mt-0.5 opacity-70">Reservar y vivir experiencias</p>
-            </div>
+            <User className="h-6 w-6" />
+            <span className="font-semibold">Participante</span>
+            <span className="text-xs">Reservar y vivir experiencias</span>
           </button>
           <button
             type="button"
@@ -96,18 +90,16 @@ export default function CompletarPerfilPage() {
                 : 'border-gray-200 text-texto-secundario hover:border-gray-300'
             }`}
           >
-            <Star className={`h-8 w-8 ${rol === 'anfitrion' ? 'text-primario' : ''}`} />
-            <div>
-              <p className="font-semibold text-sm">Anfitrión</p>
-              <p className="text-xs mt-0.5 opacity-70">Crear y publicar experiencias</p>
-            </div>
+            <Star className="h-6 w-6" />
+            <span className="font-semibold">Anfitrión</span>
+            <span className="text-xs">Crear y publicar experiencias</span>
           </button>
         </div>
 
         <label className="mb-3 block text-sm font-medium text-texto">
           Seleccioná tus intereses
         </label>
-        <div className="flex flex-wrap gap-2">
+        <div className="mb-8 flex flex-wrap gap-2">
           {CATEGORIAS.map((cat) => (
             <button
               key={cat}
@@ -126,8 +118,8 @@ export default function CompletarPerfilPage() {
 
         <button
           type="submit"
-          disabled={cargando || intereses.length === 0}
-          className="mt-8 w-full rounded-xl bg-primario px-4 py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+          disabled={cargando}
+          className="w-full rounded-xl bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
         >
           {cargando ? 'Guardando…' : 'Comenzá a explorar'}
         </button>
