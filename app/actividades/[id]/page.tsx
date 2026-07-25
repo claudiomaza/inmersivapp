@@ -3,8 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
-import { supabase } from '@/lib/supabase'
-import { formatPrecio, generarCodigoConfirmacion } from '@/lib/utils'
+import { formatPrecio } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Star, MessageCircle, Ticket } from 'lucide-react'
 
@@ -27,17 +26,15 @@ export default function DetalleActividadPage() {
   const [verificandoCupon, setVerificandoCupon] = useState(false)
 
   const cargarResenas = useCallback(async () => {
-    const { data } = await supabase
-      .from('resenas')
-      .select('*, perfiles!resenas_usuario_id_fkey(nombre, avatar_url)')
-      .eq('actividad_id', id)
-      .order('created_at', { ascending: false })
+    const res = await fetch(`/api/resenas?actividad_id=${id}`)
+    if (!res.ok) return
+    const { resenas: data } = await res.json()
     setResenas(data || [])
   }, [id])
 
   useEffect(() => {
     Promise.all([
-      supabase.from('actividades').select('*').eq('id', id).single().then(({ data }) => setActividad(data)),
+      fetch(`/api/actividades?id=${id}`).then(r => r.json()).then(d => setActividad(d.actividad)),
       cargarResenas(),
     ]).finally(() => setCargando(false))
   }, [id, cargarResenas])
