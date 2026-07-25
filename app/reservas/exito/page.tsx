@@ -11,9 +11,12 @@ function ExitoContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [codigo, setCodigo] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
     const prefId = searchParams.get('preference_id')
+    const resId = searchParams.get('reserva_id')
+
     if (prefId) {
       supabase.from('pagos').select('reserva_id').eq('mp_preference_id', prefId).single()
         .then(async ({ data }) => {
@@ -26,16 +29,28 @@ function ExitoContent() {
             setCodigo(reserva?.codigo_confirmacion || '')
           }
         })
+    } else if (resId) {
+      supabase.from('reservas').select('codigo_confirmacion').eq('id', resId).single()
+        .then(({ data }) => {
+          if (data) setCodigo(data.codigo_confirmacion || '')
+        })
     } else {
-      toast.error('No se recibieron datos del pago')
+      setErrorMsg('No se recibieron datos del pago')
     }
   }, [searchParams])
 
   return (
     <div className="mt-16 text-center">
       <CheckCircle className="mx-auto h-16 w-16 text-exito" />
-      <h1 className="mt-4 font-titulos text-3xl font-bold text-texto">!Pago exitoso! 🎉</h1>
-      <p className="mt-2 text-texto-secundario">Tu reserva esta confirmada.</p>
+      <h1 className="mt-4 font-titulos text-3xl font-bold text-texto">
+        {errorMsg ? '¡Reserva creada! 🎉' : '¡Pago exitoso! 🎉'}
+      </h1>
+      <p className="mt-2 text-texto-secundario">
+        {errorMsg ? 'Tu reserva fue registrada correctamente.' : 'Tu reserva está confirmada.'}
+      </p>
+      {errorMsg && (
+        <p className="mt-3 text-sm text-yellow-600">{errorMsg}</p>
+      )}
       {codigo && (
         <p className="mt-4 text-sm text-texto-secundario">
           Codigo de confirmacion: <span className="font-mono text-lg font-bold text-primario">{codigo}</span>

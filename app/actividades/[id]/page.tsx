@@ -54,14 +54,39 @@ export default function DetalleActividadPage() {
       }),
     })
 
+    const data = await res.json()
     setReservando(false)
     if (!res.ok) {
-      const { error } = await res.json()
-      toast.error('Error al crear la reserva: ' + error)
+      toast.error('Error al crear la reserva: ' + (data.error || 'Error desconocido'))
       return
     }
+
+    // Si hay MercadoPago configurado, redirigir a pago
+    try {
+      const pagoRes = await fetch('/api/pagos/crear', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          actividad_id: id,
+          reserva_id: data.reserva.id,
+          titulo: actividad.titulo,
+          monto: actividad.precio,
+          usuario_id: user?.id,
+        }),
+      })
+      if (pagoRes.ok) {
+        const { init_point } = await pagoRes.json()
+        if (init_point) {
+          window.location.href = init_point
+          return
+        }
+      }
+    } catch {
+      // Si falla MP, igual mostrar éxito
+    }
+
     toast.success('Reserva confirmada 🎉')
-    router.push('/reservas/exito')
+    router.push(`/reservas/exito?reserva_id=${data.reserva.id}`)
   }
 
   const verificarCupon = async () => {

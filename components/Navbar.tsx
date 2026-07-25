@@ -5,7 +5,7 @@ import { useUser, useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Bell, Menu, X, UserCircle, Sun, Moon } from 'lucide-react'
+import { Bell, Menu, X, UserCircle, Sun, Moon, MessageSquare } from 'lucide-react'
 
 export default function Navbar() {
   const { isSignedIn, user } = useUser()
@@ -131,6 +131,19 @@ export default function Navbar() {
               )}
 
               <Link
+                href="/reservas"
+                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
+              >
+                Mis reservas
+              </Link>
+              <Link
+                href="/mensajes"
+                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
+              >
+                Mensajes
+              </Link>
+
+              <Link
                 href="/perfil"
                 className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
               >
@@ -208,6 +221,21 @@ export default function Navbar() {
                 >
                   <UserCircle className="h-5 w-5" />
                   {user?.fullName || 'Perfil'}
+                </Link>
+                <Link
+                  href="/reservas"
+                  className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Mis reservas
+                </Link>
+                <Link
+                  href="/mensajes"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <MessageSquare className="h-5 w-5" />
+                  Mensajes
                 </Link>
                 {esAnfitrion && (
                   <Link
