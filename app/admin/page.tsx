@@ -391,6 +391,10 @@ export default function AdminPage() {
                     <div>
                       <p className="font-semibold text-texto">{g.anfitrion_nombre} {g.anfitrion_apellido}</p>
                       <p className="text-xs text-texto-secundario">{g.anfitrion_email}</p>
+                      <div className="mt-1 flex items-center gap-3 text-xs">
+                        <span className="text-texto-secundario">CUIL: <strong className="text-texto">{g.anfitrion_cuil}</strong></span>
+                        <span className="text-texto-secundario">Alias MP: <strong className="text-primario">{g.anfitrion_alias}</strong></span>
+                      </div>
                       <p className="mt-2 font-titulos text-2xl font-bold text-primario">{formatPrecio(g.total)}</p>
                       <p className="text-xs text-texto-secundario">
                         Comisión plataforma: {formatPrecio(g.comision)} · {g.pagos.length} pago(s)

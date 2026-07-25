@@ -58,13 +58,15 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { nombre, apellido, username, telefono, intereses, roles } = body
+  const { nombre, apellido, username, telefono, cuil, alias_mp, intereses, roles } = body
 
   const updates: Record<string, any> = {}
   if (nombre !== undefined) updates.nombre = nombre
   if (apellido !== undefined) updates.apellido = apellido
   if (username !== undefined) updates.username = username
   if (telefono !== undefined) updates.telefono = telefono
+  if (cuil !== undefined) updates.cuil = cuil
+  if (alias_mp !== undefined) updates.alias_mp = alias_mp
   if (intereses !== undefined) updates.intereses = intereses
   if (roles !== undefined) updates.roles = roles
   // Si se actualiza roles, también sincronizar rol singular

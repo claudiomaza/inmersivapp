@@ -18,6 +18,8 @@ export default function CompletarPerfilPage() {
   const [cargando, setCargando] = useState(false)
   const [intereses, setIntereses] = useState<string[]>([])
   const [rol, setRol] = useState<'participante' | 'anfitrion'>('participante')
+  const [cuil, setCuil] = useState('')
+  const [aliasMp, setAliasMp] = useState('')
 
   const toggleInteres = (cat: string) => {
     setIntereses((prev) =>
@@ -28,12 +30,30 @@ export default function CompletarPerfilPage() {
   const guardar = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user) return
+
+    if (rol === 'anfitrion') {
+      if (!cuil.trim()) {
+        toast.error('El CUIL es obligatorio para ser anfitrión')
+        return
+      }
+      if (!aliasMp.trim()) {
+        toast.error('El alias de Mercado Pago es obligatorio para ser anfitrión')
+        return
+      }
+    }
+
     setCargando(true)
+
+    const body: Record<string, any> = { intereses, roles: [rol] }
+    if (rol === 'anfitrion') {
+      body.cuil = cuil.trim()
+      body.alias_mp = aliasMp.trim()
+    }
 
     const res = await fetch('/api/perfiles', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ intereses, roles: [rol] }),
+      body: JSON.stringify(body),
     })
 
     setCargando(false)
@@ -115,6 +135,39 @@ export default function CompletarPerfilPage() {
             </button>
           ))}
         </div>
+
+        {rol === 'anfitrion' && (
+          <div className="mb-8 rounded-xl border border-primario/20 bg-primario/5 p-4">
+            <h3 className="font-titulos font-semibold text-texto">Datos de cobro</h3>
+            <p className="mb-3 text-xs text-texto-secundario">
+              El alias de Mercado Pago debe pertenecer al mismo titular que el CUIL registrado.
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-texto">CUIL</label>
+                <input
+                  type="text"
+                  value={cuil}
+                  onChange={(e) => setCuil(e.target.value)}
+                  placeholder="20-12345678-9"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+                  required
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-texto">Alias de Mercado Pago</label>
+                <input
+                  type="text"
+                  value={aliasMp}
+                  onChange={(e) => setAliasMp(e.target.value)}
+                  placeholder="alias.mp"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         <button
           type="submit"

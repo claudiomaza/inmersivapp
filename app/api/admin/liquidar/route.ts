@@ -21,14 +21,14 @@ export async function GET() {
   // Todos los pagos pendientes a anfitriones, agrupados por anfitrión
   const { data: pendientes } = await supabaseAdmin
     .from('pagos_anfitrion')
-    .select('*, perfiles!anfitrion_id(nombre, apellido, email)')
+    .select('*, perfiles!anfitrion_id(nombre, apellido, email, cuil, alias_mp)')
     .eq('estado', 'pendiente')
     .order('created_at', { ascending: false })
 
   // Historial de pagos ya liquidados
   const { data: pagados } = await supabaseAdmin
     .from('pagos_anfitrion')
-    .select('*, perfiles!anfitrion_id(nombre, apellido, email)')
+    .select('*, perfiles!anfitrion_id(nombre, apellido, email, cuil, alias_mp)')
     .eq('estado', 'pagado')
     .order('pagado_en', { ascending: false })
 
@@ -42,6 +42,8 @@ export async function GET() {
         anfitrion_nombre: p.perfiles?.nombre || 'Desconocido',
         anfitrion_apellido: p.perfiles?.apellido || '',
         anfitrion_email: p.perfiles?.email || '',
+        anfitrion_cuil: p.perfiles?.cuil || '—',
+        anfitrion_alias: p.perfiles?.alias_mp || '—',
         total: 0,
         comision: 0,
         pagos: [],
