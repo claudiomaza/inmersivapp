@@ -88,9 +88,9 @@ export default function NotificacionesPage() {
                 <p className={cn('text-sm', !n.leido && 'font-semibold')}>
                   {n.titulo}
                 </p>
-                {n.mensaje && (
+                {n.cuerpo && (
                   <p className="mt-1 text-xs text-texto-secundario line-clamp-2">
-                    {n.mensaje}
+                    {n.cuerpo}
                   </p>
                 )}
                 <p className="mt-1 text-[10px] text-gray-400">
