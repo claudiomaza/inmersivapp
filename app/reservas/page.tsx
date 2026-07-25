@@ -99,7 +99,7 @@ export default function MisReservasPage() {
                   )}
                 </div>
               </div>
-              {r.estado === 'pendiente' && (
+              {r.estado === 'confirmada' && (
                 <button
                   onClick={() => cancelar(r.id)}
                   className="mt-4 rounded-lg bg-error px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
