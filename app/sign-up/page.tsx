@@ -14,8 +14,8 @@ export default function SignUpPage() {
       <SignUp
         appearance={{
           elements: {
-            socialButtons: 'hidden',
-            dividerRow: 'hidden',
+            socialButtons: { display: 'none' },
+            dividerRow: { display: 'none' },
           },
         }}
       />
