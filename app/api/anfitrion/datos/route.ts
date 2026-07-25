@@ -121,5 +121,39 @@ export async function GET(req: NextRequest) {
     })
   }
 
+  if (tipo === 'mensajes') {
+    if (ids.length === 0) return NextResponse.json([])
+    // Mensajes de personas que reservaron mis actividades (o sobre mis actividades)
+    // Buscar usuarios que hayan reservado mis actividades
+    const { data: reservasConUsuarios } = await supabaseAdmin
+      .from('reservas')
+      .select('usuario_id, actividad_id, actividades!inner(titulo)')
+      .in('actividad_id', ids)
+      .in('estado', ['confirmada', 'completada', 'pendiente'])
+
+    if (!reservasConUsuarios || reservasConUsuarios.length === 0) {
+      return NextResponse.json([])
+    }
+
+    const participantesIds = [...new Set(reservasConUsuarios.map((r: any) => r.usuario_id))]
+
+    const { data: mensajes } = await supabaseAdmin
+      .from('mensajes')
+      .select('*, perfiles!emisor_id(nombre, apellido), perfiles!receptor_id(nombre, apellido)')
+      .or(`and(emisor_id.eq.${userId},receptor_id.in.(${participantesIds.join(',')})),and(emisor_id.in.(${participantesIds.join(',')}),receptor_id.eq.${userId})`)
+      .order('created_at', { ascending: false })
+
+    const { data: perfilesParticipantes } = await supabaseAdmin
+      .from('perfiles')
+      .select('id, nombre, apellido')
+      .in('id', participantesIds)
+
+    return NextResponse.json({
+      mensajes: mensajes || [],
+      participantes: perfilesParticipantes || [],
+      actividades: reservasConUsuarios,
+    })
+  }
+
   return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 })
 }

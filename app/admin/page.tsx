@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank } from 'lucide-react'
+import { toast } from 'sonner'
+import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank, CheckCircle } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
-type Tab = 'resumen' | 'actividades' | 'usuarios' | 'reservas' | 'resenas'
+type Tab = 'resumen' | 'actividades' | 'usuarios' | 'reservas' | 'resenas' | 'liquidaciones'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
   { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
@@ -14,6 +15,7 @@ const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
   { key: 'usuarios', label: 'Usuarios', icon: <Users className="h-4 w-4" /> },
   { key: 'reservas', label: 'Reservas', icon: <Ticket className="h-4 w-4" /> },
   { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
+  { key: 'liquidaciones', label: 'Liquidaciones', icon: <DollarSign className="h-4 w-4" /> },
 ]
 
 export default function AdminPage() {
@@ -44,6 +46,11 @@ export default function AdminPage() {
   const [reservas, setReservas] = useState<any[]>([])
   const [resenas, setResenas] = useState<any[]>([])
 
+  // Liquidaciones
+  const [liquidacionesPendientes, setLiquidacionesPendientes] = useState<any[]>([])
+  const [liquidacionesHistorial, setLiquidacionesHistorial] = useState<any[]>([])
+  const [liquidando, setLiquidando] = useState(false)
+
   useEffect(() => {
     if (!isSignedIn) return
 
@@ -51,7 +58,11 @@ export default function AdminPage() {
       setCargando(true)
       setError('')
 
-      const res = await fetch(`/api/admin/datos?tipo=${tab}`)
+      const url = tab === 'liquidaciones'
+        ? '/api/admin/liquidar'
+        : `/api/admin/datos?tipo=${tab}`
+
+      const res = await fetch(url)
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
         setError(data.error || 'Error al cargar datos')
@@ -77,6 +88,10 @@ export default function AdminPage() {
       else if (tab === 'usuarios') setUsuarios(data)
       else if (tab === 'reservas') setReservas(data)
       else if (tab === 'resenas') setResenas(data)
+      else if (tab === 'liquidaciones') {
+        setLiquidacionesPendientes(data.pendientes || [])
+        setLiquidacionesHistorial(data.historial || [])
+      }
 
       setCargando(false)
     }
@@ -85,6 +100,33 @@ export default function AdminPage() {
   }, [isSignedIn, tab])
 
   if (!isSignedIn) return null
+
+  const liquidarAnfitrion = async (anfitrionId: string, pagoIds: string[]) => {
+    setLiquidando(true)
+    const res = await fetch('/api/admin/liquidar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ anfitrion_id: anfitrionId, pago_ids: pagoIds }),
+    })
+    setLiquidando(false)
+    if (!res.ok) {
+      toast.error('Error al liquidar')
+      return
+    }
+    toast.success('Liquidación registrada ✅')
+    // Recargar datos
+    const cargar = async () => {
+      const url = tab === 'liquidaciones'
+        ? '/api/admin/liquidar'
+        : `/api/admin/datos?tipo=${tab}`
+      const res = await fetch(url)
+      if (!res.ok) return
+      const data = await res.json()
+      setLiquidacionesPendientes(data.pendientes || [])
+      setLiquidacionesHistorial(data.historial || [])
+    }
+    cargar()
+  }
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -285,6 +327,62 @@ export default function AdminPage() {
                 <p className="mt-1 text-sm text-texto-secundario">{r.comentario}</p>
               </div>
             ))
+          )}
+        </div>
+      )}
+
+      {/* Liquidaciones */}
+      {tab === 'liquidaciones' && (
+        <div>
+          <h2 className="mb-4 font-titulos text-xl font-bold text-texto">Pagos pendientes a anfitriones</h2>
+          {liquidacionesPendientes.length === 0 ? (
+            <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">
+              No hay pagos pendientes a anfitriones.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {liquidacionesPendientes.map((g: any) => (
+                <div key={g.anfitrion_id} className="rounded-xl bg-superficie p-5 shadow-sm">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="font-semibold text-texto">{g.anfitrion_nombre} {g.anfitrion_apellido}</p>
+                      <p className="text-xs text-texto-secundario">{g.anfitrion_email}</p>
+                      <p className="mt-2 font-titulos text-2xl font-bold text-primario">{formatPrecio(g.total)}</p>
+                      <p className="text-xs text-texto-secundario">
+                        Comisión plataforma: {formatPrecio(g.comision)} · {g.pagos.length} pago(s)
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => liquidarAnfitrion(g.anfitrion_id, g.pagos.map((p: any) => p.id))}
+                      disabled={liquidando}
+                      className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-700 disabled:opacity-50"
+                    >
+                      <CheckCircle className="h-4 w-4" />
+                      {liquidando ? 'Liquidando…' : 'Marcar como pagado'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {liquidacionesHistorial.length > 0 && (
+            <>
+              <h2 className="mb-4 mt-8 font-titulos text-xl font-bold text-texto">Historial de liquidaciones</h2>
+              <div className="space-y-2">
+                {liquidacionesHistorial.map((p: any) => (
+                  <div key={p.id} className="flex items-center justify-between rounded-xl bg-superficie p-4 shadow-sm">
+                    <div>
+                      <p className="font-medium text-texto">{formatPrecio(p.monto)}</p>
+                      <p className="text-xs text-texto-secundario">
+                        {p.perfiles?.nombre} {p.perfiles?.apellido} · {p.pagado_en ? new Date(p.pagado_en).toLocaleDateString('es-AR') : '—'}
+                      </p>
+                    </div>
+                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">Pagado</span>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       )}

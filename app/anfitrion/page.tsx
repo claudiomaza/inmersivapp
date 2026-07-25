@@ -4,17 +4,19 @@ import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import Link from 'next/link'
 import {
-  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare,
+  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send,
 } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
-type Tab = 'resumen' | 'actividades' | 'reservas' | 'resenas' | 'ingresos'
+type Tab = 'resumen' | 'actividades' | 'reservas' | 'resenas' | 'ingresos' | 'mensajes'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
   { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
   { key: 'actividades', label: 'Mis Experiencias', icon: <CalendarDays className="h-4 w-4" /> },
   { key: 'reservas', label: 'Reservas', icon: <MessageSquare className="h-4 w-4" /> },
+  { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
   { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
   { key: 'ingresos', label: 'Ingresos', icon: <DollarSign className="h-4 w-4" /> },
 ]
@@ -37,6 +39,12 @@ export default function AnfitrionPage() {
   const [resenas, setResenas] = useState<any[]>([])
   const [pagosPendientes, setPagosPendientes] = useState<any[]>([])
   const [totalPagado, setTotalPagado] = useState(0)
+  const [mensajesConv, setMensajesConv] = useState<any[]>([])
+  const [participantes, setParticipantes] = useState<any[]>([])
+  const [chatAbierto, setChatAbierto] = useState<string | null>(null)
+  const [chatMensajes, setChatMensajes] = useState<any[]>([])
+  const [textoEnvio, setTextoEnvio] = useState('')
+  const [enviando, setEnviando] = useState(false)
 
   const cargarResumen = async () => {
     const res = await fetch('/api/anfitrion/datos?tipo=resumen')
@@ -74,6 +82,43 @@ export default function AnfitrionPage() {
     setTotalPagado(data.totalPagado || 0)
   }
 
+  const cargarMensajes = async () => {
+    const res = await fetch('/api/anfitrion/datos?tipo=mensajes')
+    if (!res.ok) return
+    const data = await res.json()
+    setMensajesConv(data.mensajes || [])
+    setParticipantes(data.participantes || [])
+  }
+
+  const abrirChat = async (usuarioId: string) => {
+    setChatAbierto(usuarioId)
+    setChatMensajes(mensajesConv.filter((m: any) =>
+      (m.emisor_id === usuarioId && m.receptor_id === user?.id) ||
+      (m.emisor_id === user?.id && m.receptor_id === usuarioId)
+    ))
+  }
+
+  const enviarMensaje = async () => {
+    if (!textoEnvio.trim() || !chatAbierto || !user) return
+    setEnviando(true)
+    const res = await fetch('/api/mensajes/enviar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ receptor_id: chatAbierto, contenido: textoEnvio.trim() }),
+    })
+    setEnviando(false)
+    if (!res.ok) { toast.error('Error al enviar'); return }
+    setTextoEnvio('')
+    setChatMensajes(prev => [...prev, {
+      id: 'temp-' + Date.now(),
+      emisor_id: user.id,
+      contenido: textoEnvio.trim(),
+      leido: false,
+      created_at: new Date().toISOString(),
+    }])
+    cargarMensajes()
+  }
+
   useEffect(() => {
     if (!isSignedIn) {
       router.push('/login')
@@ -86,6 +131,7 @@ export default function AnfitrionPage() {
       cargarReservas(),
       cargarResenas(),
       cargarIngresos(),
+      cargarMensajes(),
     ]).finally(() => setCargando(false))
   }, [isSignedIn])
 
@@ -303,6 +349,93 @@ export default function AnfitrionPage() {
                   </span>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Mensajes como anfitrión */}
+      {tab === 'mensajes' && (
+        <div>
+          {chatAbierto ? (
+            <div>
+              <button
+                onClick={() => setChatAbierto(null)}
+                className="mb-4 flex items-center gap-2 text-sm text-primario hover:underline"
+              >
+                ← Volver a conversaciones
+              </button>
+              <div className="rounded-xl bg-superficie p-4 shadow-sm">
+                <div className="mb-4 max-h-80 space-y-3 overflow-y-auto">
+                  {chatMensajes.length === 0 ? (
+                    <p className="text-center text-sm text-texto-secundario">Sin mensajes aún</p>
+                  ) : (
+                    chatMensajes.map((m) => (
+                      <div key={m.id} className={`flex ${m.emisor_id === user?.id ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-[75%] rounded-xl px-4 py-2 text-sm ${
+                          m.emisor_id === user?.id
+                            ? 'bg-primario text-white'
+                            : 'bg-gray-100 text-texto'
+                        }`}>
+                          <p>{m.contenido}</p>
+                          <p className="mt-1 text-xs opacity-70">
+                            {new Date(m.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+                <div className="flex gap-2 border-t pt-3">
+                  <input
+                    type="text"
+                    value={textoEnvio}
+                    onChange={(e) => setTextoEnvio(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()}
+                    placeholder="Escribí un mensaje…"
+                    className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                  />
+                  <button
+                    onClick={enviarMensaje}
+                    disabled={enviando || !textoEnvio.trim()}
+                    className="flex items-center gap-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <p className="mb-4 text-sm text-texto-secundario">
+                {participantes.length} participante(s) de tus experiencias
+              </p>
+              {participantes.length === 0 ? (
+                <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">
+                  Cuando alguien reserve tu experiencia, podrás chatear con ellos acá.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {participantes.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => abrirChat(p.id)}
+                      className="flex w-full items-center gap-3 rounded-xl bg-superficie p-4 shadow-sm transition hover:bg-gray-100"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
+                        {(p.nombre || 'U')[0].toUpperCase()}
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="font-medium text-texto">{p.nombre} {p.apellido}</p>
+                        <p className="text-xs text-texto-secundario">
+                          {mensajesConv.filter((m: any) => m.emisor_id === p.id || m.receptor_id === p.id).length} mensajes
+                        </p>
+                      </div>
+                      <MessageSquare className="h-4 w-4 text-primario" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

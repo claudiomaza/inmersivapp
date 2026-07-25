@@ -176,34 +176,6 @@ export default function DetalleActividadPage() {
             )}
           </div>
 
-          {/* Cupón */}
-          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
-            <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
-              <Ticket className="h-4 w-4" /> ¿Tenés un cupón?
-            </h3>
-            <div className="mt-2 flex gap-2">
-              <input
-                type="text"
-                value={cuponCodigo}
-                onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
-                placeholder="Código"
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-              />
-              <button
-                onClick={verificarCupon}
-                disabled={verificandoCupon || !cuponCodigo.trim()}
-                className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium transition hover:bg-gray-200 disabled:opacity-50"
-              >
-                {verificandoCupon ? '...' : 'Verificar'}
-              </button>
-            </div>
-            {cuponValido && (
-              <p className={`mt-2 text-sm ${cuponValido.valido ? 'text-green-600' : 'text-red-600'}`}>
-                {cuponValido.mensaje}
-              </p>
-            )}
-          </div>
-
           {/* Reseñas */}
           <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
             <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
@@ -255,6 +227,34 @@ export default function DetalleActividadPage() {
                   {enviandoResena ? 'Enviando…' : 'Publicar reseña'}
                 </button>
               </div>
+            )}
+          </div>
+
+          {/* Cupón — después de reseñas, antes de sidebar */}
+          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
+            <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
+              <Ticket className="h-4 w-4" /> ¿Tenés un cupón?
+            </h3>
+            <div className="mt-2 flex gap-2">
+              <input
+                type="text"
+                value={cuponCodigo}
+                onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
+                placeholder="Código"
+                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+              />
+              <button
+                onClick={verificarCupon}
+                disabled={verificandoCupon || !cuponCodigo.trim()}
+                className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium transition hover:bg-gray-200 disabled:opacity-50"
+              >
+                {verificandoCupon ? '...' : 'Verificar'}
+              </button>
+            </div>
+            {cuponValido && (
+              <p className={`mt-2 text-sm ${cuponValido.valido ? 'text-green-600' : 'text-red-600'}`}>
+                {cuponValido.mensaje}
+              </p>
             )}
           </div>
         </div>
