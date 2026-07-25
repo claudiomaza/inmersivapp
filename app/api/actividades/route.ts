@@ -2,13 +2,36 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get('id')
+
+  if (id) {
+    const { data: actividad, error } = await supabaseAdmin
+      .from('actividades')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error) return NextResponse.json({ error: 'No encontrada' }, { status: 404 })
+    return NextResponse.json({ actividad })
+  }
+
+  const { data: actividades, error } = await supabaseAdmin
+    .from('actividades')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) return NextResponse.json({ error: 'Error al obtener actividades' }, { status: 500 })
+  return NextResponse.json({ actividades })
+}
+
 export async function POST(req: NextRequest) {
   const { userId } = await auth()
   if (!userId) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
-  // Verificar que sea anfitrión
   const { data: perfil } = await supabaseAdmin
     .from('perfiles')
     .select('roles')
@@ -63,7 +86,6 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: 'ID requerido' }, { status: 400 })
   }
 
-  // Verificar propiedad
   const { data: existente } = await supabaseAdmin
     .from('actividades')
     .select('anfitrion_id')
