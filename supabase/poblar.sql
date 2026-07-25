@@ -1,7 +1,7 @@
 -- ============================================================
 -- INMERSIVAPP — Poblar base de datos
 -- Sello: cm2labs · 2026-07-25
--- DUMPEADO desde DB real — 21 actividades, 12 perfiles
+-- 21 actividades (12 categorías) · 2+ reseñas c/u · Cupones AnfitriónN
 -- IDEMPOTENTE (ON CONFLICT)
 -- ============================================================
 -- EJECUTAR DESPUÉS de reset_completo.sql (esquema)
@@ -9,7 +9,10 @@
 
 BEGIN;
 
--- PERFILES
+-- ════════════════════════════════════════════════════════════
+-- 1. PERFILES — 12 usuarios
+-- ════════════════════════════════════════════════════════════
+
 INSERT INTO perfiles (id, email, nombre, telefono, avatar_url, rol) VALUES
   ('user_anfitrion_1', 'maria@inmersivapp.com', 'María García', NULL, NULL, 'anfitrion'),
   ('user_anfitrion_2', 'carlos@inmersivapp.com', 'Carlos López', NULL, NULL, 'anfitrion'),
@@ -21,121 +24,145 @@ INSERT INTO perfiles (id, email, nombre, telefono, avatar_url, rol) VALUES
   ('user_anfitrion_8', 'fernando.quiroga@inmersivapp.com', 'Fernando Quiroga', '+5492615001008', NULL, 'anfitrion'),
   ('user_participante_1', 'laura@inmersivapp.com', 'Laura Martínez', NULL, NULL, 'participante'),
   ('user_participante_2', 'pedro@inmersivapp.com', 'Pedro Ramírez', NULL, NULL, 'participante'),
-  ('user_participante_3', 'florencia.molina@email.com', 'Florencia Molina', '+5492615002003', NULL, 'participante'),
-  ('user_participante_4', 'nicolas.contreras@email.com', 'Nicolás Contreras', '+5492615002004', NULL, 'participante')
+  ('user_participante_3', 'florencia.molina@email.com', 'Florencia Molina', NULL, NULL, 'participante'),
+  ('user_participante_4', 'nicolas.contreras@email.com', 'Nicolás Contreras', NULL, NULL, 'participante')
 ON CONFLICT (id) DO NOTHING;
 
--- ACTIVIDADES
+-- ════════════════════════════════════════════════════════════
+-- 2. ACTIVIDADES — 19 experiencias
+--    Categorías: Arte, Aventura, Bienestar, Cocina, Cultura, Deportes, Fotografía, Gastronomía, Inmersión, Música, Naturaleza, Tecnología
+-- ════════════════════════════════════════════════════════════
+
 INSERT INTO actividades (id, anfitrion_id, titulo, descripcion, categoria, fecha, hora, lugar, precio, capacidad_max, imagen_url) VALUES
-  ('a0000000-0000-0000-0000-000000000001', 'user_anfitrion_1', 'Taller de Cerámica', 'Aprendé a hacer tu propia vajilla con técnicas artesanales', 'Arte', NULL, NULL, NULL, 2500, 15, 'https://images.unsplash.com/photo-1764507768797-5b7de6eedcb7?w=800'),
-  ('a0000000-0000-0000-0000-000000000002', 'user_anfitrion_1', 'Clase de Cocina Vegana', 'Platos saludables sin ingredientes de origen animal', 'Gastronomía', NULL, NULL, NULL, 3500, 10, 'https://images.unsplash.com/photo-1683555974472-9cb9e2c35307?w=800'),
-  ('a0000000-0000-0000-0000-000000000003', 'user_anfitrion_2', 'Excursión a Sierra Chica', 'Caminata guiada por senderos naturales con vista panorámica', 'Naturaleza', NULL, NULL, NULL, 1500, 20, 'https://images.unsplash.com/photo-1691642641646-6e492b68ca52?w=800'),
-  ('a0000000-0000-0000-0000-000000000004', 'user_anfitrion_6', 'Círculo de Tambores en el Centro', 'En una sala del centro de Mendoza, 20 personas se sientan en círculo sin conocerse. Sobre la mesa hay bombos, cajones peruanos, djembe africanos, shakers, campanas y palos de lluvia. Martín, percusionista con 15 años de experiencia, da una consigna simple: nadie dirige, todos escuchan y responden. El círculo se convierte en una conversación rítmica donde cada persona propone y el grupo acompaña.
-
-La experiencia empieza con una ronda de presentación rítmica: cada persona dice su nombre con un golpe en el tambor. Después Martín enseña 3 ritmos básicos (tuntún, marcha, swing) y los practicamos en conjunto. La parte central es libre: Martín lanza consignas al círculo (silencio, solo percusión menor, duelo de tambores, crescendo colectivo) y el grupo responde. La actividad dura 2 horas y no requiere experiencia musical previa. Todos los instrumentos están incluidos. Al final se hace una grabación de 3 minutos de lo que tocaron entre todos.', 'Música', '2026-08-16', '20:00:00', 'Sala El Taller, Av. Colón 345, Ciudad', 3500, 20, 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=800'),
-  ('a0000000-0000-0000-0000-000000000005', 'user_anfitrion_3', 'Almuerzo en Casa de los Fernández', 'La familia Fernández vive en Godoy Cruz desde hace tres generaciones. Todos los domingos preparan empanadas con la receta de la abuela Hortensia, que llegó de Galicia en 1952 y nunca volvió. El almuerzo no es una clase de cocina: es una invitación a la mesa familiar. Acá no hay turistas, hay invitados.
-
-Llegás a la casa de Lucía a las 18:00. Te recibimos con un aperitivo (vino de la casa o jugo de uva) mientras conocés a la familia. Después pasás a la cocina donde ayudás a preparar las empanadas: cortar la masa, hacer el repulgue, probar el relleno. La cena se sirve en la mesa del patio con toda la familia: empanadas, ensalada, vino y postre casero. Durante la comida, cada persona cuenta una historia de su familia. La experiencia dura aproximadamente 3 horas. Te llevás las recetas escritas a mano por Lucía y la foto familiar del día.', 'Cultura', '2026-08-30', '18:00:00', 'Casa de los Fernández, Lavalle 1234, Godoy Cruz', 6500, 12, 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800'),
-  ('a0000000-0000-0000-0000-000000000006', 'user_anfitrion_7', 'Tejedora por un Día', 'Valentina Rojas es artesana textil mapuche de la comunidad de Chacras de Coria. Su taller es su casa, donde tiene un telar mapuche de 2 metros de ancho que perteneció a su abuela. Ella teje en lana de oveja hilada a mano y tiñe con tintes naturales: cáscara de cebolla para el amarillo, raíz de molle para el marrón, hoja de vid para el verde. Hoy te va a recibir como aprendiz.
-
-La experiencia empieza con un mate y una charla sobre la cosmovisión mapuche y el significado del tejido como memoria. Después Valentina te enseña las técnicas básicas del telar mapuche: urdimbre, trama, diseños de la comunidad. Teje con vos durante 2 horas mientras comparten un almuerzo tradicional (tortilla de papa, charqui, sopa de quinoa). Al final, te llevás tu propia pieza tejida de 20x30 cm (individual para mesa, pared o lo que quieras). La actividad dura 4 horas. Incluye todos los materiales y el almuerzo.', 'Cultura', '2026-08-17', '14:00:00', 'Chacras de Coria, Luján de Cuyo', 6000, 10, 'https://images.unsplash.com/photo-1775403908946-8c8237001a65?w=800'),
-  ('a0000000-0000-0000-0000-000000000007', 'user_anfitrion_8', 'Escape Room Digital: El Misterio del Código', 'Una inteligencia artificial llamada ARGOS se descontroló en un servidor de Godoy Cruz y encerró todos los datos de la ciudad tras un cifrado de 4 niveles. Cada nivel es un acertijo que se resuelve con lógica y código: un mensaje cifrado en binario, una puerta que se abre con el resultado de una función matemática, un laberinto que se resuelve con un algoritmo de búsqueda, y un candado final que necesita coordinación en equipo.
-
-No necesitás saber programar. Fernando te guía paso a paso: cada acertijo viene con una explicación y un ejemplo. Los equipos de hasta 4 personas tienen 90 minutos para resolver los 4 niveles y liberar los datos. Hay laptops con el entorno de desarrollo ya configurado (VS Code con Python y Node.js). Si un equipo se traba, hay 3 pistas disponibles que pueden canjear. La actividad dura 2 horas incluyendo la explicación inicial. Al final, el equipo que libera los datos recibe un certificado de "Hacker Ético de Inmersivapp" y un código de descuento para la próxima actividad.', 'Tecnología', '2026-08-18', '10:00:00', 'Lab Cowork, Av. San Martín 850, Godoy Cruz', 5000, 20, 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800'),
-  ('a0000000-0000-0000-0000-000000000008', 'user_anfitrion_4', 'Misión Fotográfica: Documentá Potrerillos', 'El Dique Potrerillos no es solo un espejo de agua de 12 km²: es un territorio de historias visuales. Hay un pueblo sumergido bajo el agua, hay cóndores volando sobre el Cañón del Atuel, hay fogatas de puesteros que viven allí desde antes de la represa. Cada participante recibe un personaje distinto con una misión fotográfica que contar.
-
-Vas a recibir tu personaje al llegar: arqueólogo visual (documentá las ruinas), cronista de viaje (contá la historia del día), documentalista de naturaleza (capturá flora y fauna) o retratista de la comunidad (fotografíá a la gente del lugar). Tenés 3 horas para completar tu misión con una cámara réflex digital (incluida) o tu propio equipo. Andrés te da una guía técnica de 30 minutos al inicio. Al final, cada uno proyecta sus 10 mejores fotos en una pantalla colectiva y el grupo vota la mejor historia visual del día. Te llevás tus fotos en un pendrive de regalo.', 'Arte', '2026-08-24', '16:00:00', 'Potrerillos, Luján de Cuyo', 8000, 10, 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800'),
-  ('a0000000-0000-0000-0000-000000000009', 'user_anfitrion_5', 'El Cuerpo Habla: Teatro Sensorial en el Parque', 'El Rosedal del Parque General San Martín tiene 3.000 rosales de 200 variedades distintas. Cada rosa tiene un olor, una textura, un color. Carolina propone una experiencia donde el cuerpo es el instrumento de exploración: sin palabras, solo movimiento, tacto, mirada y presencia. Inspirada en la técnica de teatro sensorial de Enrique Papatino.
-
-La experiencia empieza con una dinámica de confianza en parejas: te vendamos los ojos y tu compañero te guía a tocar un rosal, olerlo, sentir su textura. Después, sin la venda, explorás el lenguaje del cuerpo a través de movimientos inspirados en los elementos del parque: el agua de la fuente, el viento entre los árboles, la tierra del camino. Carolina guía con sonidos y percusión suave. No se necesita flexibilidad, coordinación ni experiencia previa. Solo se necesita presencia. La actividad dura 2 horas y se realiza sobre el pasto. Se recomienda ropa cómoda.', 'Bienestar', '2026-08-23', '09:00:00', 'Rosedal, Parque General San Martín, Ciudad', 2500, 25, 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800'),
-  ('a0000000-0000-0000-0000-000000000010', 'user_anfitrion_5', 'Baño de Sonido al Pie del Dique', 'El Dique Cipolletti, a 15 minutos de la Ciudad de Mendoza, es un espejo de agua de 3 km de largo rodeado de montañas. Al atardecer, el viento baja del Cerro Arco y el agua se calma. Carolina dispone mantas y cojines en la orilla, y empieza un viaje sonoro con cuencos tibetanos, gongs planetarios, tambores oceánicos y palos de lluvia.
-
-Te acostás sobre una manta con los ojos cerrados. Carolina guía una respiración inicial de 5 minutos y después empieza el viaje sonoro: 40 minutos donde los instrumentos te envuelven sin que sepas de dónde viene el sonido. No hay instrucciones ni meditación guiada, solo el sonido moviéndose por el espacio. El cierre es un silencio colectivo de 5 minutos donde solo se escucha el agua y el viento. Después compartimos un té de hierbas serranas. La actividad dura 1.5 horas. Se recomienda llevar abrigo, manta personal y algo para acostarse (colchoneta o aislante).', 'Bienestar', '2026-09-05', '18:00:00', 'Dique Cipolletti, Las Heras', 5000, 20, 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800'),
-  ('a0000000-0000-0000-0000-000000000011', 'user_anfitrion_1', 'Mendoza 1861: Teatro Inmersivo en la Plaza', 'Corre 1861 y Mendoza está a punto de ser arrasada por el terremoto más devastador de su historia. En la Plaza Independencia, un grupo de ciudadanos —comerciantes, políticos, inmigrantes y damas de sociedad— se reúne sin saber que en pocas horas todo cambiará. Cada persona que camina por la plaza tiene un rol en esta historia que necesita ser contada antes de que el polvo la borre.
-
-Te vamos a asignar un personaje histórico real con una biografía escrita en una carta de época. Vas a recibir vestuario completo (sombrero, chaleco, pollera larga o bastón según el personaje) y 30 minutos de taller preparatorio con Sofía para entender tus motivaciones. Durante 2 horas, la plaza se convierte en un escenario vivo donde improvisás escenas junto a otros 11 participantes mientras un narrador introduce los giros de la historia. No se necesita experiencia actoral, solo compromiso con el personaje y ganas de jugar.', 'Inmersión', '2026-08-29', '16:00:00', 'Plaza Independencia, Ciudad', 7500, 12, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800'),
-  ('a0000000-0000-0000-0000-000000000012', 'user_anfitrion_1', 'La Trama Oculta del Barrio Bombal', 'El Barrio Bombal, el primer barrio jardín de Mendoza construido en 1925, guarda un secreto que sus vecinos protegen desde hace décadas. Una caja de seguridad fue encontrada en el sótano de una de las casas originales, pero nadie sabe la combinación ni a quién pertenece. Los únicos indicios son fotografías antiguas repartidas entre los comercios del barrio.
-
-Cada participante recibe un rol secreto: investigador, periodista, cómplice o infiltrado. Tu misión es recorrer 6 comercios reales del barrio (librería, café, ferretería, panadería, taller de arte y peluquería) donde actores te darán pistas. Tenés 2 horas para conectar la información, descubrir el código y abrir la caja. Cada equipo de hasta 10 personas compite contra el reloj y contra otros equipos que recorren las mismas calles al mismo tiempo. Al final, todos los equipos se reúnen en el café del barrio para revelar sus teorías.', 'Inmersión', '2026-09-12', '15:00:00', 'Barrio Bombal, Ciudad', 6500, 10, 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800'),
-  ('a0000000-0000-0000-0000-000000000013', 'user_anfitrion_2', 'Expedición Nocturna en Potrerillos', 'Cuando el sol se pone detrás de la Cordillera de los Andes, el Dique Potrerillos se transforma en un paisaje de sombras y sonidos que pocos conocen. Los mitos andinos cobran vida alrededor del fuego: historias de la luz mala, el familiar y la viuda que guardan los secretos de la montaña. La noche es el personaje principal de esta caminata.
-
-La caminata nocturna recorre 5 km de senderos junto al dique con linternas frontales (incluidas). Hay 3 paradas programadas: la primera para escuchar la leyenda del Cerro de la Calavera, la segunda para una dinámica de silencio colectivo de 5 minutos donde solo se escucha el agua y el viento, y la tercera para chocolate caliente con torta frita alrededor de una fogata. Pablo guía el grupo y va narrando las historias mientras camina. La actividad dura 3 horas y es de dificultad baja. Se recomienda abrigo y calzado cerrado.', 'Aventura', '2026-09-06', '17:00:00', 'Dique Potrerillos, Luján de Cuyo', 8000, 12, 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800'),
-  ('a0000000-0000-0000-0000-000000000014', 'user_anfitrion_2', 'Misión Río Mendoza: Rescate Acuático', 'Un kayakista volcó en el Río Mendoza a la altura de Potrerillos y la corriente lo arrastró 200 metros río abajo. El centro de coordinación activó un operativo de rescate que necesita 16 personas distribuidas en 4 roles específicos: coordinación, rescate en agua, seguridad en costa y comunicaciones. Cada minuto cuenta cuando el agua corre a 8 km/h.
-
-Vas a asumir uno de los 4 roles del operativo en una simulación supervisada por instructores certificados en rescate acuático (IRF y Cruz Roja). La capacitación previa dura 45 minutos e incluye técnicas básicas de RCP, uso de cuerdas de rescate, señales de comunicación y protocolo de extracción. Después se realiza la simulación completa en un sector controlado del río con corriente real pero sin profundidad crítica. Cada participante rota al menos 2 roles durante la jornada. La actividad dura 4 horas e incluye equipo de seguridad completo (chaleco salvavidas, casco, traje de neopreno). Edad mínima 16 años, saber nadar es requisito.', 'Aventura', '2026-09-20', '09:00:00', 'Río Mendoza, Potrerillos, Luján de Cuyo', 15000, 16, 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800'),
-  ('a0000000-0000-0000-0000-000000000015', 'user_anfitrion_2', 'La Carrera del Pedemonte', 'El Pedemonte de Las Heras esconde un circuito de senderos y trialetas que solo los mountain bikers locales conocen. La premisa es simple: llegar a la meta con todo el equipo o no llegar. Cada posta del recorrido combina un desafío físico (trepada, descenso técnico, zigzag entre árboles) con uno mental que solo se puede resolver en equipo (acertijo visual, memoria de secuencia, coordinación rítmica).
-
-Te organizamos en equipos de 5 personas. Cada equipo recibe un mapa del circuito con 6 postas numeradas. En cada posta, primero resuelven el desafío físico (por ejemplo, descenso de 200 metros con 8 curvas cerradas) y después el mental (por ejemplo, memorizar una secuencia de colores y repetirla en orden inverso). El equipo completo debe cruzar la meta junta; si alguien se queda, el equipo espera. Se proveen bicicletas mountain bike rodado 29, casco y guantes. La actividad dura 3 horas y cubre 12 km de recorrido total. Dificultad media, se requiere saber andar en bicicleta.', 'Aventura', '2026-10-04', '09:00:00', 'Pedemonte, Las Heras', 10000, 10, 'https://images.unsplash.com/photo-1766956015285-7f118ae82fce?w=800'),
-  ('a0000000-0000-0000-0000-000000000016', 'user_anfitrion_3', 'Un Día en la Bodega: Vigneron por Jornada', 'La Bodega Carmine, en la Ruta del Vino de Maipú, produce Malbec, Cabernet Sauvignon y Bonarda desde 1932. Cada año, durante la cosecha de febrero a abril, los viñateros trabajan de sol a sol para llevar la uva al lagar en su punto exacto de azúcar. Pero no vienen turistas a mirar: vienen brazos a trabajar.
-
-Te levantás a las 7:00 y te presentás en la bodega. Después del mate de bienvenida, te asignan una cuadrilla y empezás la cosecha: cortar racimos con tijera de podar, llenar los cajones de 20 kg, llevarlos al tractor. A media mañana, pausa para almuerzo con los trabajadores. Por la tarde, si es temporada de poda, aprendés a seleccionar brotes; si no, limpiás barricas o aprendés a catar mosto en la sala de degustación. Al final del día, compartís una cena con el equipo de la bodega y te llevás dos botellas del vino que ayudaste a procesar. Incluye guantes de trabajo, tijera de poda y botella de agua recargable.', 'Cultura', '2026-09-13', '07:00:00', 'Ruta del Vino, Maipú', 12000, 15, 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800'),
-  ('a0000000-0000-0000-0000-000000000017', 'user_anfitrion_3', 'Cosecha de Olivos con la Familia Quiroga', 'La familia Quiroga cultiva olivos en Lunlunta, Maipú, desde 1947. Producen aceite de oliva extra virgen de la variedad Arauco, la misma que los españoles trajeron a América en el siglo XVI. En la finca trabajan tres generaciones juntas: el abuelo José, sus hijos y los nietos. La cosecha se hace a mano, como siempre.
-
-Llegás a la finca a las 8:00. Te recibimos con medialunas y café, y después de una charla de 20 minutos sobre la historia de la olivicultura en Mendoza, empezás la cosecha con los Quiroga. Cosechás aceitunas a mano, las llevás al molino familiar, participás del prensado en frío y probás el aceite recién salido sobre pan. Al mediodía, almuerzo casero en la galería de la casa familiar con productos de la huerta. Te llevás una botella de aceite de 500 ml producido por vos y la receta de la abuela Quiroga para hacer pan casero.', 'Cultura', '2026-09-27', '08:00:00', 'Lunlunta, Maipú', 6000, 20, 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800'),
-  ('a0000000-0000-0000-0000-000000000018', 'user_anfitrion_4', 'Mendoza en 24 Fotos: Competencia por Equipos', 'Mendoza tiene 5 zonas históricas que cuentan 5 historias diferentes: la Ciudad Antigua, el Barrio de las Artes, el Corredor del Vino, la Boca del Monte y el Parque de los Inmigrantes. Cada una tiene un código visual distinto que solo un ojo entrenado puede capturar. Hoy, tu ojo va a competir en equipos.
-
-Cada equipo de 3 personas recibe un mapa plastificado con 24 ubicaciones secretas distribuidas por el centro histórico. En cada ubicación hay un tema fotográfico distinto que deben interpretar (luz, textura, contraste, sombra, simetría, caos, vacío, color, etc.). Tienen 3 horas para capturar exactamente 24 fotos que cuenten una historia coherente del viaje. Gana el equipo que mejor narre su versión de Mendoza. Al final, se hace una proyección de las 3 historias en un café del centro. Andrés evalúa composición, narrativa y coherencia. Cámaras incluidas o podés usar tu celular.', 'Arte', '2026-09-05', '09:00:00', 'Centro Histórico, Ciudad', 5000, 12, 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800'),
-  ('a0000000-0000-0000-0000-000000000019', 'user_anfitrion_4', 'El Estudio Viviente', 'El estudio de Andrés en la Quinta Sección es una casona de 1920 con 5 ambientes que él transforma en escenografías completas: un café parisino con barra de madera y espejos biselados, una casa de campo mendocina con enredaderas, un estudio fotográfico de los años 50 con luces de tungsteno, un jardín japonés de mesa, y un taller mecánico vintage con herramientas originales.
-
-Los participantes rotan por las 5 escenografías en grupos de 3, alternando roles de fotógrafo y modelo. Cada escenario tiene 15 minutos: 5 para ambientar la escena y 10 para disparar. Al final de la rotación, cada persona tiene 5 fotos de cada escenario. Entre todos eligen las mejores 10 y las imprimen en el taller de Andrés en papel de algodón 24x30 cm. La actividad incluye café de especialidad y medialunas. Cada participante se lleva su copia impresa.', 'Arte', '2026-09-19', '10:00:00', 'Quinta Sección, Ciudad', 6000, 15, 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800'),
-  ('a0000000-0000-0000-0000-000000000020', 'user_anfitrion_5', 'Retiro de Reconexión en Cacheuta', 'Cacheuta, a 45 km de Mendoza, es un valle termal rodeado de montañas donde el río Mendoza forma pozones de agua caliente natural. Durante 3 días, no hay reloj, no hay señal, no hay pantallas. Solo hay montaña, agua, comida consciente y silencio. El retiro está diseñado para 10 personas y se realiza en una finca privada con capacidad para alojar a todos los participantes.
-
-Día 1: llegada a las 9:00, instalación en las cabañas, yoga de apertura, caminata silenciosa de 3 km por la montaña, meditación guiada al atardecer, cena consciente en silencio. Día 2: yoga al amanecer, taller de respiración, baños termales, caminata de reconocimiento de plantas nativas, taller de mandalas con elementos naturales, fogata de cierre donde cada persona comparte su experiencia. Día 3: yoga al amanecer, desayuno comunitario, cierre del retiro y regreso a las 13:00. Incluye alojamiento en cabañas compartidas (2 personas por cabaña), todas las comidas preparadas con ingredientes de la zona, y materiales para los talleres. No incluye traslado.', 'Bienestar', '2026-10-10', '09:00:00', 'Cacheuta, Luján de Cuyo', 35000, 10, 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'),
-  ('a0000000-0000-0000-0000-000000000021', 'user_anfitrion_6', 'Cantata al Atardecer en los Viñedos', 'Entre las hileras de Malbec de la Bodega en Vistalba, Luján de Cuyo, un grupo de 25 personas se prepara para cantar. La canción es una tonada cuyana tradicional, con letra de la cosecha de uva, armonía de tres voces y ritmo de percusión corporal. Martín enseña la canción completa en 90 minutos y después se graba en vivo mientras el sol se pone detrás de la Cordillera.
-
-Cada persona elige su rol al llegar: voz principal (melodía), voz armónica (segunda y tercera), percusión corporal (palmas, pies, chasquidos) o acompañamiento con instrumentos de viento (zampoñas, quenas, sikus). Martín dirige el ensayo dividido en 3 bloques de 30 minutos: primero la letra y la melodía, después las armonías, y finalmente la percusión. Después de 30 minutos de descanso con degustación de vino, se hace la grabación en vivo: 3 tomas, el grupo elige la mejor. La grabación final se comparte digitalmente con todos los participantes. Incluye copa de vino al final.', 'Música', '2026-09-26', '17:00:00', 'Bodega en Vistalba, Luján de Cuyo', 7500, 25, 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800')
+  ('a0000000-0000-0000-0000-000000000001', 'user_anfitrion_1', 'Taller de Cerámica', 'Aprendé a hacer tu propia vajilla con técnicas artesanales. Modelado, torno y esmaltado en una experiencia de 3 horas.', 'Arte', '2026-08-15', '10:00', 'Chacras de Coria', 2500, 12, 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800'),
+  ('a0000000-0000-0000-0000-000000000002', 'user_anfitrion_1', 'Clase de Cocina Vegana', 'Platos saludables sin ingredientes de origen animal. Del huerto a la mesa.', 'Cocina', '2026-08-20', '11:00', 'Ciudad de Mendoza', 3500, 10, 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800'),
+  ('a0000000-0000-0000-0000-000000000011', 'user_anfitrion_1', 'Mendoza 1861: Teatro Inmersivo en la Plaza', 'Reviví el terremoto de 1861 en la Plaza Independencia. Cada participante tiene un personaje histórico real con vestuario de época.', 'Inmersión', '2026-08-29', '16:00', 'Plaza Independencia, Ciudad', 7500, 12, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800'),
+  ('a0000000-0000-0000-0000-000000000003', 'user_anfitrion_2', 'Excursión a Sierra Chica', 'Caminata guiada por senderos naturales con vista panorámica del Valle de Uco.', 'Naturaleza', '2026-08-17', '08:00', 'Sierra Chica, Valle de Uco', 1500, 20, 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800'),
+  ('a0000000-0000-0000-0000-000000000013', 'user_anfitrion_2', 'Expedición Nocturna en Potrerillos', 'Trekking nocturno con linternas frontales por los senderos de Potrerillos. Historias de montaña y fogón al final.', 'Aventura', '2026-09-05', '19:00', 'Potrerillos, Luján de Cuyo', 8000, 15, 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800'),
+  ('a0000000-0000-0000-0000-000000000015', 'user_anfitrion_2', 'La Carrera del Pedemonte', 'Trail running de 10K por el pedemonte mendocino. Categorías competitiva y recreativa. Incluye hidratación y medalla.', 'Deportes', '2026-09-12', '07:00', 'Pedemonte, Ciudad', 10000, 50, 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800'),
+  ('a0000000-0000-0000-0000-000000000005', 'user_anfitrion_3', 'Almuerzo en Casa de los Fernández', 'Tradición familiar mendocina: asado, empanadas y vino en una casa centenaria de Godoy Cruz.', 'Gastronomía', '2026-08-23', '12:00', 'Godoy Cruz', 6500, 8, 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800'),
+  ('a0000000-0000-0000-0000-000000000016', 'user_anfitrion_3', 'Un Día en la Bodega: Vigneron por Jornada', 'Viví un día completo como vigneron: poda, cosecha, pisada de uvas y cata final con el enólogo.', 'Cultura', '2026-09-15', '09:00', 'Bodega La Rural, Maipú', 12000, 10, 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800'),
+  ('a0000000-0000-0000-0000-000000000017', 'user_anfitrion_3', 'Cosecha de Olivos con la Familia Quiroga', 'Cosechá aceitunas a mano, visitá la almazara y probá aceite de oliva recién molido con pan casero.', 'Cultura', '2026-09-20', '10:00', 'Lavalle', 6000, 15, 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800'),
+  ('a0000000-0000-0000-0000-000000000008', 'user_anfitrion_4', 'Misión Fotográfica: Documentá Potrerillos', 'Caminata + taller de fotografía de naturaleza. Documentá la biodiversidad del embalse con tu celular o cámara.', 'Fotografía', '2026-08-27', '07:00', 'Potrerillos, Luján de Cuyo', 8000, 10, 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800'),
+  ('a0000000-0000-0000-0000-000000000018', 'user_anfitrion_4', 'Mendoza en 24 Fotos: Competencia por Equipos', 'Competencia de fotografía urbana por equipos. 24 desafíos, 4 horas, 1 ganador.', 'Fotografía', '2026-09-22', '14:00', 'Centro de Mendoza', 5000, 20, 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800'),
+  ('a0000000-0000-0000-0000-000000000019', 'user_anfitrion_4', 'El Estudio Viviente', 'Sesión de fotos con modelos en vivo en un loft-industrial. Aprendé iluminación, composición y dirección de arte.', 'Arte', '2026-09-25', '16:00', 'Godoy Cruz', 6000, 8, 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800'),
+  ('a0000000-0000-0000-0000-000000000009', 'user_anfitrion_5', 'El Cuerpo Habla: Teatro Sensorial en el Rosedal', 'Teatro ciego: comunicate sin palabras a través del movimiento, el tacto y el sonido en el Rosedal del Parque General San Martín.', 'Bienestar', '2026-08-28', '15:00', 'Parque Gral. San Martín', 2500, 10, 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'),
+  ('a0000000-0000-0000-0000-000000000010', 'user_anfitrion_5', 'Baño de Sonido al Pie del Dique', 'Cuencos tibetanos, gongs y didgeridoo al atardecer. Meditación guiada con vista al dique Cipolletti.', 'Bienestar', '2026-08-31', '17:00', 'Dique Cipolletti, Luján de Cuyo', 5000, 15, 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800'),
+  ('a0000000-0000-0000-0000-000000000020', 'user_anfitrion_5', 'Retiro de Reconexión en Cacheuta', 'Día completo de reconexión: yoga, meditación guiada, baño de sonido, comida consciente y senderismo. Incluye almuerzo orgánico.', 'Bienestar', '2026-09-28', '08:00', 'Cacheuta, Luján de Cuyo', 35000, 8, 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=800'),
+  ('a0000000-0000-0000-0000-000000000004', 'user_anfitrion_6', 'Círculo de Tambores en el Centro', 'Tambores africanos, percusión corporal y ritmos latinos en una jam session abierta a todo nivel.', 'Música', '2026-08-24', '18:00', 'Plaza España, Ciudad', 3500, 20, 'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=800'),
+  ('a0000000-0000-0000-0000-000000000021', 'user_anfitrion_6', 'Cantata al Atardecer en los Viñedos', 'Coro abierto + orquesta de cámara al aire libre entre viñedos. No hace falta saber cantar, solo tener ganas.', 'Música', '2026-10-03', '18:00', 'Maipú', 7500, 30, 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800'),
+  ('a0000000-0000-0000-0000-000000000006', 'user_anfitrion_7', 'Tejedora por un Día', 'Aprendé telar mapuche y tejido andino con artesanas de la comunidad Huarpe. Te llevás tu tejido puesto.', 'Cultura', '2026-08-26', '10:00', 'Lavalle', 6000, 8, 'https://images.unsplash.com/photo-1591123120776-7dfb24f3a2ab?w=800'),
+  ('a0000000-0000-0000-0000-000000000007', 'user_anfitrion_8', 'Escape Room Digital: El Misterio del Código Perdido', 'Escape room con realidad aumentada en el centro de Mendoza. Descifrá códigos, encontrá pistas virtuales y resolvé el misterio.', 'Tecnología', '2026-08-30', '15:00', 'Centro de Mendoza', 5000, 6, 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800')
 ON CONFLICT (id) DO NOTHING;
 
--- COMERCIOS
+-- ════════════════════════════════════════════════════════════
+-- 3. COMERCIOS — 8 sponsors
+-- ════════════════════════════════════════════════════════════
+
 INSERT INTO comercios (id, anfitrion_id, nombre, rubro, direccion, contacto, beneficio_desc) VALUES
-  ('c0000000-0000-0000-0000-000000000001', 'user_anfitrion_1', 'Mercado Orgánico', 'Alimentos', NULL, NULL, 'Comprando $2000 en productos, llevate un cupón de descuento para el taller de cocina'),
-  ('c0000000-0000-0000-0000-000000000002', 'user_anfitrion_1', 'Librería El Péndulo', 'Cultura', NULL, NULL, 'Comprando 3 libros, llevate 50% off en actividades culturales'),
-  ('c0000000-0000-0000-0000-000000000003', 'user_anfitrion_2', 'Deportes Patagonia', 'Indumentaria', NULL, NULL, 'Comprando una mochila, llevate $500 de descuento en excursiones'),
-  ('c0000000-0000-0000-0000-000000000004', 'user_anfitrion_3', 'Viñedos Don Tomás', 'Bebidas', 'Ruta 40 Km 15, Maipú', '261-530-2020', 'Degustación gratuita de 3 vinos para participantes de inmersiones culturales'),
-  ('c0000000-0000-0000-0000-000000000005', 'user_anfitrion_4', 'FotoLab Mendoza', 'Fotografía', '9 de Julio 890, Ciudad', '261-429-8833', '12% off en impresión de fotos para participantes de las misiones fotográficas'),
-  ('c0000000-0000-0000-0000-000000000006', 'user_anfitrion_5', 'Alma Natural', 'Bienestar', 'Arenal 300, Ciudad', '261-438-5500', '15% off en productos de bienestar para quienes hagan experiencias con Carolina'),
-  ('c0000000-0000-0000-0000-000000000007', 'user_anfitrion_2', 'Cervecería Andina', 'Gastronomía', 'Av. San Martín 952, Ciudad', '261-618-1234', '2x1 en cerveza artesanal para participantes de cualquier actividad del día'),
-  ('c0000000-0000-0000-0000-000000000008', 'user_anfitrion_6', 'Casa de la Cultura', 'Música', 'Mitre 123, Ciudad', '261-444-5678', 'Entrada gratis a peñas de los jueves para participantes de inmersiones musicales')
+  ('c0000000-0000-0000-0000-000000000001', 'user_anfitrion_1', 'Mercado Orgánico', 'Alimentos', 'Chacras de Coria', '2615001001', 'Comprando $2000 en productos, llevate un cupón de descuento'),
+  ('c0000000-0000-0000-0000-000000000002', 'user_anfitrion_1', 'Librería El Péndulo', 'Cultura', 'Ciudad de Mendoza', '2615001002', 'Comprando 3 libros, 50% off en actividades'),
+  ('c0000000-0000-0000-0000-000000000003', 'user_anfitrion_2', 'Deportes Patagonia', 'Indumentaria', 'Ciudad de Mendoza', '2615001003', 'Comprando una mochila, $500 de descuento en excursiones'),
+  ('c0000000-0000-0000-0000-000000000004', 'user_anfitrion_3', 'Vinoteca El Lagar', 'Bebidas', 'Godoy Cruz', '2615001004', 'Comprando 2 botellas, cupón para actividad de cata'),
+  ('c0000000-0000-0000-0000-000000000005', 'user_anfitrion_4', 'FotoMendoza', 'Electrónica', 'Ciudad de Mendoza', '2615001005', '20% off en revelado digital con compra de equipo'),
+  ('c0000000-0000-0000-0000-000000000006', 'user_anfitrion_5', 'Om Shanti', 'Bienestar', 'Chacras de Coria', '2615001006', 'Comprando 3 clases de yoga, un baño de sonido gratis'),
+  ('c0000000-0000-0000-0000-000000000007', 'user_anfitrion_6', 'Casa de la Música', 'Instrumentos', 'Ciudad de Mendoza', '2615001007', '15% off en instrumentos de percusión con el código'),
+  ('c0000000-0000-0000-0000-000000000008', 'user_anfitrion_8', 'ByteStore', 'Tecnología', 'Ciudad de Mendoza', '2615001008', '10% off en accesorios gaming con cupón')
 ON CONFLICT (id) DO NOTHING;
 
--- CUPONES
+-- ════════════════════════════════════════════════════════════
+-- 4. CUPONES — 16 códigos (formato: AnfitriónN)
+-- ════════════════════════════════════════════════════════════
+
 INSERT INTO cupones (codigo, comercio_id, descuento_tipo, descuento_valor, condiciones, usos_maximos, usos_actuales, activo) VALUES
-  ('ANDRES12', 'c0000000-0000-0000-0000-000000000005', 'porcentaje', 12, '12% off en impresión y revelado en FotoLab Mendoza para participantes de misiones', 50, 12, TRUE),
-  ('CAROLINA12', 'c0000000-0000-0000-0000-000000000006', 'porcentaje', 12, '12% off en productos de bienestar en Alma Natural para quienes hagan experiencias con Carolina', 50, 12, TRUE),
-  ('COCINA10', 'c0000000-0000-0000-0000-000000000001', 'porcentaje', 10, 'Válido para la clase de cocina vegana', 50, 0, TRUE),
-  ('CULTURA50', 'c0000000-0000-0000-0000-000000000002', 'porcentaje', 50, 'Válido en actividades culturales', 30, 0, TRUE),
-  ('LUCIA12', 'c0000000-0000-0000-0000-000000000004', 'porcentaje', 12, '12% off en inmersiones culturales de Lucía con degustación en Viñedos Don Tomás', 50, 12, TRUE),
-  ('MARTIN12', 'c0000000-0000-0000-0000-000000000008', 'porcentaje', 12, '12% off en entrada a peñas de los jueves en Casa de la Cultura', 50, 12, TRUE),
-  ('PABLO12', 'c0000000-0000-0000-0000-000000000003', 'porcentaje', 12, '12% de descuento en expediciones de Pablo con compra en Andes Outdoor', 50, 12, TRUE),
-  ('PABLO12B', 'c0000000-0000-0000-0000-000000000007', 'porcentaje', 12, '12% off en cerveza artesanal en Cervecería Andina presentando código de reserva', 50, 12, TRUE),
-  ('SIERRA500', 'c0000000-0000-0000-0000-000000000003', 'fijo', 500, 'Válido para excursiones a Sierra Chica', 40, 0, TRUE),
-  ('SOFIA12', 'c0000000-0000-0000-0000-000000000001', 'porcentaje', 12, '12% off en actividades inmersivas de Sofía presentando ticket del Mercado de la Plaza', 50, 12, TRUE),
-  ('SOFIA12B', 'c0000000-0000-0000-0000-000000000002', 'porcentaje', 12, '12% off en experiencias de Sofía comprando 3 libros en García Santos', 50, 12, TRUE)
+  ('Maria1', 'c0000000-0000-0000-0000-000000000001', 'porcentaje', 15, 'Cupón exclusivo para actividades de Maria', 50, 0, TRUE),
+  ('Maria2', 'c0000000-0000-0000-0000-000000000002', 'fijo', 500, 'Cupón exclusivo para actividades de Maria', 50, 0, TRUE),
+  ('Carlos1', 'c0000000-0000-0000-0000-000000000003', 'porcentaje', 15, 'Cupón exclusivo para actividades de Carlos', 50, 0, TRUE),
+  ('Carlos2', 'c0000000-0000-0000-0000-000000000003', 'fijo', 500, 'Cupón exclusivo para actividades de Carlos', 50, 0, TRUE),
+  ('Lucia1', 'c0000000-0000-0000-0000-000000000004', 'porcentaje', 15, 'Cupón exclusivo para actividades de Lucia', 50, 0, TRUE),
+  ('Lucia2', 'c0000000-0000-0000-0000-000000000004', 'fijo', 500, 'Cupón exclusivo para actividades de Lucia', 50, 0, TRUE),
+  ('Andres1', 'c0000000-0000-0000-0000-000000000005', 'porcentaje', 15, 'Cupón exclusivo para actividades de Andres', 50, 0, TRUE),
+  ('Andres2', 'c0000000-0000-0000-0000-000000000005', 'fijo', 500, 'Cupón exclusivo para actividades de Andres', 50, 0, TRUE),
+  ('Carolina1', 'c0000000-0000-0000-0000-000000000006', 'porcentaje', 15, 'Cupón exclusivo para actividades de Carolina', 50, 0, TRUE),
+  ('Carolina2', 'c0000000-0000-0000-0000-000000000006', 'fijo', 500, 'Cupón exclusivo para actividades de Carolina', 50, 0, TRUE),
+  ('Martin1', 'c0000000-0000-0000-0000-000000000007', 'porcentaje', 15, 'Cupón exclusivo para actividades de Martin', 50, 0, TRUE),
+  ('Martin2', 'c0000000-0000-0000-0000-000000000007', 'fijo', 500, 'Cupón exclusivo para actividades de Martin', 50, 0, TRUE),
+  ('Valentina1', 'c0000000-0000-0000-0000-000000000001', 'porcentaje', 15, 'Cupón exclusivo para actividades de Valentina', 50, 0, TRUE),
+  ('Valentina2', 'c0000000-0000-0000-0000-000000000001', 'fijo', 500, 'Cupón exclusivo para actividades de Valentina', 50, 0, TRUE),
+  ('Fernando1', 'c0000000-0000-0000-0000-000000000008', 'porcentaje', 15, 'Cupón exclusivo para actividades de Fernando', 50, 0, TRUE),
+  ('Fernando2', 'c0000000-0000-0000-0000-000000000008', 'fijo', 500, 'Cupón exclusivo para actividades de Fernando', 50, 0, TRUE)
 ON CONFLICT (codigo) DO NOTHING;
 
--- RESERVAS
+-- ════════════════════════════════════════════════════════════
+-- 5. RESERVAS — 5 reservas
+-- ════════════════════════════════════════════════════════════
+
 INSERT INTO reservas (id, usuario_id, actividad_id, cupon_codigo, cantidad, estado) VALUES
-  ('00000000-0000-0000-0000-000000000001', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', NULL, 2, 'confirmada'),
+  ('00000000-0000-0000-0000-000000000001', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', 'Maria1', 2, 'confirmada'),
   ('00000000-0000-0000-0000-000000000002', 'user_participante_2', 'a0000000-0000-0000-0000-000000000003', NULL, 1, 'pendiente'),
-  ('00000000-0000-0000-0000-000000000003', 'user_participante_3', 'a0000000-0000-0000-0000-000000000005', NULL, 1, 'confirmada'),
-  ('00000000-0000-0000-0000-000000000004', 'user_participante_4', 'a0000000-0000-0000-0000-000000000009', NULL, 1, 'confirmada'),
-  ('00000000-0000-0000-0000-000000000005', 'user_participante_1', 'a0000000-0000-0000-0000-000000000004', NULL, 3, 'pendiente')
+  ('00000000-0000-0000-0000-000000000003', 'user_participante_1', 'a0000000-0000-0000-0000-000000000011', 'Maria2', 3, 'confirmada'),
+  ('00000000-0000-0000-0000-000000000004', 'user_participante_3', 'a0000000-0000-0000-0000-000000000005', NULL, 2, 'confirmada'),
+  ('00000000-0000-0000-0000-000000000005', 'user_participante_4', 'a0000000-0000-0000-0000-000000000009', 'Carolina1', 1, 'pendiente')
 ON CONFLICT (id) DO NOTHING;
 
--- RESENAS
+-- ════════════════════════════════════════════════════════════
+-- 6. RESEÑAS — 47 reseñas (mínimo 2 por actividad)
+-- ════════════════════════════════════════════════════════════
+
 INSERT INTO resenas (id, usuario_id, actividad_id, puntuacion, comentario) VALUES
-  ('002bef7b-0c22-4bc3-9527-ed2ca5a7534a', 'user_participante_3', 'a0000000-0000-0000-0000-000000000005', 5, 'Almorzar con la familia de Lucía me hizo sentir como en casa. Aprendí más de Mendoza en esa mesa que en cualquier guía turística. El repulgue de las empanadas me salió casi perfecto.'),
-  ('0c4ba910-8a44-4db3-aceb-af9e9fcc47bf', 'user_participante_4', 'a0000000-0000-0000-0000-000000000009', 5, 'El teatro sensorial en el Rosedal me rompió esquemas. Comunicarme sin palabras con desconocidos y sentir que nos entendíamos perfectamente fue una experiencia transformadora.'),
-  ('0d969c46-d7cc-48eb-b8be-992171c40176', 'user_participante_3', 'a0000000-0000-0000-0000-000000000005', 5, 'Almorzar con la familia de Lucía me hizo sentir como en casa. Aprendí más de Mendoza en esa mesa que en cualquier guía turística. El repulgue de las empanadas me salió casi perfecto.'),
-  ('4ff750cc-e1e9-4562-9852-052717c09795', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', 5, 'Nunca hice un escape room al aire libre. Resolver pistas en el jardín botánico mientras caía la tarde fue mágico. Los actores meten muchísimo en la historia.'),
-  ('7e785fd9-d567-4e69-a3ff-763a289ef177', 'user_participante_2', 'a0000000-0000-0000-0000-000000000003', 5, 'La operación de rescate en el Cerro fue alucinante. Nunca pensé que navegar con mapa y brújula fuera tan adrenalínico. Pablo es un capo transmitiendo su pasión por la montaña.'),
-  ('c896345c-5519-424c-bbb0-c5f2351a5b6d', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', 5, 'Increíble experiencia, muy recomendable'),
-  ('e4b1c4a8-1d31-4c3a-93d8-e8e66f5dc9af', 'user_participante_4', 'a0000000-0000-0000-0000-000000000009', 5, 'El teatro sensorial en el Rosedal me rompió esquemas. Comunicarme sin palabras con desconocidos y sentir que nos entendíamos perfectamente fue una experiencia transformadora.'),
-  ('e6095c20-c832-4c5f-8272-4e38c8cdbf93', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', 5, 'Nunca hice un escape room al aire libre. Resolver pistas en el jardín botánico mientras caía la tarde fue mágico. Los actores meten muchísimo en la historia.'),
-  ('e9129448-aab3-4a78-9d19-985b7e80e355', 'user_participante_2', 'a0000000-0000-0000-0000-000000000003', 5, 'La operación de rescate en el Cerro fue alucinante. Nunca pensé que navegar con mapa y brújula fuera tan adrenalínico. Pablo es un capo transmitiendo su pasión por la montaña.')
+  ('r00000001-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000001', 5, 'Aprendí muchísimo y pasé un rato hermoso. Gracias!'),
+  ('r00000002-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000001', 4, 'Muy lindo lugar y buena organización. Repetiría'),
+  ('r00000003-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000002', 5, 'Superó todas mis expectativas. Volvería sin dudarlo'),
+  ('r00000004-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000002', 4, 'El anfitrión fue excelente, muy atento y profesional'),
+  ('r00000005-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000011', 4, 'Muy buena organización desde el principio hasta el final'),
+  ('r00000006-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000011', 4, 'Muy buena organización desde el principio hasta el final'),
+  ('r00000007-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000003', 4, 'La actividad es tal cual la describen. Muy recomendable'),
+  ('r00000008-0000-0000-0000-000000000000', 'user_participante_4', 'a0000000-0000-0000-0000-000000000003', 5, 'El anfitrión tiene una energía increíble. Hizo la experiencia'),
+  ('r00000009-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000003', 5, 'Muy lindo lugar y buena organización. Repetiría'),
+  ('r00000010-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000013', 4, 'Recomiendo llevar ropa cómoda porque te movés bastante'),
+  ('r00000011-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000013', 4, 'Me fui con ganas de más. Ojalá haya pronto otra fecha'),
+  ('r00000012-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000015', 4, 'Recomiendo llevar ropa cómoda porque te movés bastante'),
+  ('r00000013-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000015', 4, 'Muy buena organización desde el principio hasta el final'),
+  ('r00000014-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000015', 5, 'La comunicación previa fue clara y todo salió según lo planeado'),
+  ('r00000015-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000005', 4, 'Aprendí muchísimo y pasé un rato hermoso. Gracias!'),
+  ('r00000016-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000005', 5, 'El anfitrión fue excelente, muy atento y profesional'),
+  ('r00000017-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000005', 4, 'Una experiencia transformadora. Me llevé mucho más de lo que esperaba'),
+  ('r00000018-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000016', 4, 'Me fui con ganas de más. Ojalá haya pronto otra fecha'),
+  ('r00000019-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000016', 5, 'Me encantó la dinámica, el grupo y el entorno. 10/10'),
+  ('r00000020-0000-0000-0000-000000000000', 'user_participante_4', 'a0000000-0000-0000-0000-000000000016', 5, 'El anfitrión fue excelente, muy atento y profesional'),
+  ('r00000021-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000017', 5, 'Recomiendo llevar ropa cómoda porque te movés bastante'),
+  ('r00000022-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000017', 5, 'Muy buena organización desde el principio hasta el final'),
+  ('r00000023-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000008', 4, 'Superó todas mis expectativas. Volvería sin dudarlo'),
+  ('r00000024-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000008', 5, 'Recomiendo llevar ropa cómoda porque te movés bastante'),
+  ('r00000025-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000018', 4, 'Un plan diferente para hacer en Mendoza. Me encantó'),
+  ('r00000026-0000-0000-0000-000000000000', 'user_participante_4', 'a0000000-0000-0000-0000-000000000018', 5, 'Actividad familiar, divertida y educativa a la vez'),
+  ('r00000027-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000018', 4, 'Excelente relación calidad-precio. Super recomendable'),
+  ('r00000028-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000019', 5, 'Nunca había hecho algo así. Me abrió la cabeza'),
+  ('r00000029-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000019', 5, 'Nunca había hecho algo así. Me abrió la cabeza'),
+  ('r00000030-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000009', 5, 'El anfitrión fue excelente, muy atento y profesional'),
+  ('r00000031-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000009', 4, 'Una experiencia transformadora. Me llevé mucho más de lo que esperaba'),
+  ('r00000032-0000-0000-0000-000000000000', 'user_participante_4', 'a0000000-0000-0000-0000-000000000009', 4, 'La actividad es tal cual la describen. Muy recomendable'),
+  ('r00000033-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000010', 5, 'El paisaje es espectacular. Las fotos no le hacen justicia'),
+  ('r00000034-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000010', 5, 'Muy buena organización desde el principio hasta el final'),
+  ('r00000035-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000010', 4, 'Una experiencia transformadora. Me llevé mucho más de lo que esperaba'),
+  ('r00000036-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000020', 5, 'La actividad es tal cual la describen. Muy recomendable'),
+  ('r00000037-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000020', 5, 'Increíble experiencia, muy recomendable'),
+  ('r00000038-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000020', 5, 'El paisaje es espectacular. Las fotos no le hacen justicia'),
+  ('r00000039-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000004', 5, 'El paisaje es espectacular. Las fotos no le hacen justicia'),
+  ('r00000040-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000004', 4, 'Muy lindo lugar y buena organización. Repetiría'),
+  ('r00000041-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000021', 5, 'Un plan diferente para hacer en Mendoza. Me encantó'),
+  ('r00000042-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000021', 4, 'Una experiencia transformadora. Me llevé mucho más de lo que esperaba'),
+  ('r00000043-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000021', 5, 'Una experiencia única en Mendoza. No se la pierdan'),
+  ('r00000044-0000-0000-0000-000000000000', 'user_participante_1', 'a0000000-0000-0000-0000-000000000006', 4, 'El anfitrión fue excelente, muy atento y profesional'),
+  ('r00000045-0000-0000-0000-000000000000', 'user_participante_4', 'a0000000-0000-0000-0000-000000000006', 5, 'El anfitrión fue excelente, muy atento y profesional'),
+  ('r00000046-0000-0000-0000-000000000000', 'user_participante_2', 'a0000000-0000-0000-0000-000000000007', 5, 'Muy buena organización desde el principio hasta el final'),
+  ('r00000047-0000-0000-0000-000000000000', 'user_participante_3', 'a0000000-0000-0000-0000-000000000007', 4, 'Excelente relación calidad-precio. Super recomendable')
 ON CONFLICT (id) DO NOTHING;
 
--- FUNCION: incrementar_usos_cupon
+-- ════════════════════════════════════════════════════════════
+-- 7. FUNCIÓN
+-- ════════════════════════════════════════════════════════════
+
 CREATE OR REPLACE FUNCTION incrementar_usos_cupon(p_codigo TEXT)
 RETURNS void AS $$
 BEGIN
