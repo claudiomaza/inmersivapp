@@ -10,15 +10,15 @@ import {
 } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
-type Tab = 'resumen' | 'actividades' | 'reservas' | 'resenas' | 'ingresos' | 'mensajes'
+type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'ingresos' | 'resumen'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
-  { key: 'actividades', label: 'Mis Experiencias', icon: <CalendarDays className="h-4 w-4" /> },
-  { key: 'reservas', label: 'Reservas', icon: <MessageSquare className="h-4 w-4" /> },
   { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
+  { key: 'reservas', label: 'Reservas', icon: <MessageSquare className="h-4 w-4" /> },
   { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
+  { key: 'actividades', label: 'Mis Experiencias', icon: <CalendarDays className="h-4 w-4" /> },
   { key: 'ingresos', label: 'Ingresos', icon: <DollarSign className="h-4 w-4" /> },
+  { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
 ]
 
 export default function AnfitrionPage() {

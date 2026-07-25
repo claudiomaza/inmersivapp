@@ -230,8 +230,12 @@ export default function DetalleActividadPage() {
             )}
           </div>
 
-          {/* Cupón — después de reseñas, antes de sidebar */}
-          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
+          </div>
+
+        {/* Sidebar — Cupón + Reserva */}
+        <div className="lg:col-span-2">
+          {/* Cupón — justo arriba del panel de reserva */}
+          <div className="rounded-xl bg-white p-6 shadow-sm">
             <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
               <Ticket className="h-4 w-4" /> ¿Tenés un cupón?
             </h3>
@@ -257,11 +261,9 @@ export default function DetalleActividadPage() {
               </p>
             )}
           </div>
-        </div>
 
-        {/* Sidebar — Reserva */}
-        <div className="lg:col-span-2">
-          <div className="sticky top-6 rounded-xl bg-white p-6 shadow-sm">
+          {/* Reserva */}
+          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
             <p className="font-titulos text-3xl font-bold text-primario">{formatPrecio(actividad.precio)}</p>
             <p className="mt-1 text-sm text-texto-secundario">por persona</p>
 

@@ -7,16 +7,16 @@ import { toast } from 'sonner'
 import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank, CheckCircle, MessageSquare, Send } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
-type Tab = 'resumen' | 'actividades' | 'usuarios' | 'reservas' | 'resenas' | 'liquidaciones' | 'mensajes'
+type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'usuarios' | 'liquidaciones' | 'resumen'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
-  { key: 'actividades', label: 'Actividades', icon: <CalendarDays className="h-4 w-4" /> },
-  { key: 'usuarios', label: 'Usuarios', icon: <Users className="h-4 w-4" /> },
+  { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
   { key: 'reservas', label: 'Reservas', icon: <Ticket className="h-4 w-4" /> },
   { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
+  { key: 'actividades', label: 'Actividades', icon: <CalendarDays className="h-4 w-4" /> },
+  { key: 'usuarios', label: 'Usuarios', icon: <Users className="h-4 w-4" /> },
   { key: 'liquidaciones', label: 'Liquidaciones', icon: <DollarSign className="h-4 w-4" /> },
-  { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
+  { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
 ]
 
 export default function AdminPage() {
