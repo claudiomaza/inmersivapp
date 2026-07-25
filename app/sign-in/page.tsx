@@ -18,6 +18,8 @@ export default function SignInPage() {
             dividerRow: { display: 'none' },
           },
         }}
+        afterSignInUrl="/"
+        afterSignUpUrl="/perfil/completar"
       />
     </div>
   )
