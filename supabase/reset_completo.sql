@@ -220,7 +220,7 @@ CREATE POLICY "Cupones: lectura pública" ON cupones
 BEGIN;
 
 INSERT INTO perfiles (id, email, nombre, apellido, username, telefono, avatar_url, intereses, rol, roles) VALUES
-  ('user_3H0xBWNBlh1Nwas6ul1dqxdcNbg', 'sadmin@inmersivapp.com', 'Super', 'Admin', 'sadmin', NULL, NULL, '{Administración,Gestión}', 'admin', '{admin,anfitrion}'),
+  ('user_3H0xBWNBlh1Nwas6ul1dqxdcNbg', 'm33570855@gmail.com', 'Super', 'Admin', 'sadmin', NULL, NULL, '{Administración,Gestión}', 'admin', '{admin,anfitrion}'),
   ('user_anfitrion_1', 'maria@inmersivapp.com', 'María', 'García', 'maria_garcia', NULL, NULL, '{Arte,Cocina,Inmersión}', 'anfitrion', '{anfitrion}'),
   ('user_anfitrion_2', 'carlos@inmersivapp.com', 'Carlos', 'López', 'carlos_lopez', NULL, NULL, '{Naturaleza,Aventura,Deportes}', 'anfitrion', '{anfitrion}'),
   ('user_anfitrion_3', 'lucia.fernandez@inmersivapp.com', 'Lucía', 'Fernández', 'lucia_fdez', '+5492615001003', NULL, '{Gastronomía,Cultura}', 'anfitrion', '{anfitrion}'),
