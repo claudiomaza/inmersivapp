@@ -14,8 +14,8 @@ export default function SignInPage() {
       <SignIn
         appearance={{
           elements: {
-            socialButtons: { display: 'none' },
-            dividerRow: { display: 'none' },
+            socialButtons: 'hidden',
+            dividerRow: 'hidden',
           },
         }}
         afterSignInUrl="/"
