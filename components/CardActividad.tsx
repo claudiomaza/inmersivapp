@@ -2,8 +2,6 @@ import Link from 'next/link'
 import { formatPrecio } from '@/lib/utils'
 
 export default function CardActividad({ actividad }: { actividad: any }) {
-  const foto = actividad.fotos?.[0]
-
   return (
     <Link
       href={`/actividades/${actividad.id}`}
@@ -11,9 +9,9 @@ export default function CardActividad({ actividad }: { actividad: any }) {
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden">
-        {foto ? (
+        {actividad.imagen_url ? (
           <img
-            src={foto}
+            src={actividad.imagen_url}
             alt={actividad.titulo}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
@@ -43,7 +41,7 @@ export default function CardActividad({ actividad }: { actividad: any }) {
             {formatPrecio(actividad.precio)}
           </span>
           <span className="text-xs text-texto-secundario/70">
-            {actividad.ubicacion?.departamento || actividad.ubicacion?.provincia}
+            {actividad.lugar?.split(',')[0] || ''}
           </span>
         </div>
       </div>

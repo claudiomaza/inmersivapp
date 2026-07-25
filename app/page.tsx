@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 import CardActividad from '@/components/CardActividad'
-import PrimerosPasosModal from '@/components/PrimerosPasosModal'
+import { Play } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,7 +18,6 @@ export default async function Home() {
   const { data: actividades } = await supabaseAdmin
     .from('actividades')
     .select('*')
-    .eq('activa', true)
     .order('created_at', { ascending: false })
 
   const todas = actividades || []
@@ -59,7 +58,13 @@ export default async function Home() {
               Explorar actividades
               <span>→</span>
             </Link>
-            <PrimerosPasosModal />
+            <Link
+              href="/primeros-pasos"
+              className="inline-flex h-12 items-center gap-2 rounded-xl border border-primario/20 bg-superficie px-8 font-semibold text-primario transition hover:bg-primario/5 active:scale-[0.98]"
+            >
+              <Play className="h-4 w-4" />
+              Primeros pasos
+            </Link>
             {!userId && (
               <Link
                 href="/registro"
