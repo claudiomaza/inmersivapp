@@ -55,38 +55,51 @@ export default function DetalleActividadPage() {
     })
 
     const data = await res.json()
-    setReservando(false)
     if (!res.ok) {
+      setReservando(false)
       toast.error('Error al crear la reserva: ' + (data.error || 'Error desconocido'))
       return
     }
 
-    // Si hay MercadoPago configurado, redirigir a pago
-    try {
-      const pagoRes = await fetch('/api/pagos/crear', {
-        method: 'POST',
+    // Crear preferencia de pago en MercadoPago y redirigir
+    const pagoRes = await fetch('/api/pagos/crear', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        actividad_id: id,
+        reserva_id: data.reserva.id,
+        titulo: actividad.titulo,
+        monto: actividad.precio,
+        usuario_id: user?.id,
+      }),
+    })
+
+    if (!pagoRes.ok) {
+      // Si falla MP, cancelar la reserva y avisar
+      await fetch('/api/reservas', {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          actividad_id: id,
-          reserva_id: data.reserva.id,
-          titulo: actividad.titulo,
-          monto: actividad.precio,
-          usuario_id: user?.id,
-        }),
+        body: JSON.stringify({ reserva_id: data.reserva.id, estado: 'cancelada' }),
       })
-      if (pagoRes.ok) {
-        const { init_point } = await pagoRes.json()
-        if (init_point) {
-          window.location.href = init_point
-          return
-        }
-      }
-    } catch {
-      // Si falla MP, igual mostrar éxito
+      setReservando(false)
+      toast.error('Error al conectar con el medio de pago. Intentalo de nuevo.')
+      return
     }
 
-    toast.success('Reserva confirmada 🎉')
-    router.push(`/reservas/exito?reserva_id=${data.reserva.id}`)
+    const { init_point } = await pagoRes.json()
+    if (!init_point) {
+      await fetch('/api/reservas', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reserva_id: data.reserva.id, estado: 'cancelada' }),
+      })
+      setReservando(false)
+      toast.error('Error al generar el pago. Intentalo de nuevo.')
+      return
+    }
+
+    // Redirigir a MercadoPago — el webhook aprueba la reserva
+    window.location.href = init_point
   }
 
   const verificarCupon = async () => {
