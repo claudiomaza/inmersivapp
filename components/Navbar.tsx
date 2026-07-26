@@ -143,6 +143,13 @@ export default function Navbar() {
                 <UserCircle className="h-5 w-5" />
                 {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || 'Perfil'}
               </Link>
+
+              <button
+                onClick={cerrarSesion}
+                className="rounded-lg px-3 py-2 text-sm font-medium text-error transition hover:bg-error/10"
+              >
+                Cerrar sesión
+              </button>
             </>
           ) : (
             <Link
