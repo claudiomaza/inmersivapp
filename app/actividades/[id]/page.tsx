@@ -262,6 +262,19 @@ export default function DetalleActividadPage() {
             )}
           </div>
 
+          {/* Contactar anfitrión */}
+          {isSignedIn && actividad.perfiles && actividad.perfiles.id !== user?.id && (
+            <button
+              onClick={() => {
+                const anfitrionId = actividad.perfiles.id
+                router.push(`/participante?contactar=${anfitrionId}`)
+              }}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-primario/10 py-2.5 text-sm font-medium text-primario transition hover:bg-primario/20"
+            >
+              <MessageCircle className="h-4 w-4" /> Contactar al anfitrión
+            </button>
+          )}
+
           {/* Reserva */}
           <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
             <p className="font-titulos text-3xl font-bold text-primario">{formatPrecio(actividad.precio)}</p>

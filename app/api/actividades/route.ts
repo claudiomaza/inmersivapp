@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   if (id) {
     const { data: actividad, error } = await supabaseAdmin
       .from('actividades')
-      .select('*')
+      .select('*, perfiles!anfitrion_id(nombre, apellido, id)')
       .eq('id', id)
       .single()
 

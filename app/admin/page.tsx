@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank, CheckCircle, MessageSquare, Send } from 'lucide-react'
+import { LayoutDashboard, CalendarDays, Users, Ticket, Star, ChevronRight, Shield, DollarSign, TrendingUp, PiggyBank, CheckCircle, MessageSquare, Send, MessageCircle } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'usuarios' | 'liquidaciones' | 'resumen'
@@ -69,7 +69,7 @@ export default function AdminPage() {
       const url = tab === 'liquidaciones'
         ? '/api/admin/liquidar'
         : tab === 'mensajes'
-        ? '/api/admin/mensajes'
+        ? '/api/mensajes/conversaciones'
         : `/api/admin/datos?tipo=${tab}`
 
       const res = await fetch(url)
@@ -131,7 +131,7 @@ export default function AdminPage() {
       const url = tab === 'liquidaciones'
         ? '/api/admin/liquidar'
         : tab === 'mensajes'
-        ? '/api/admin/mensajes'
+        ? '/api/mensajes/conversaciones'
         : `/api/admin/datos?tipo=${tab}`
       const res = await fetch(url)
       if (!res.ok) return
@@ -144,7 +144,7 @@ export default function AdminPage() {
 
   const abrirChatAdmin = async (usuarioId: string) => {
     setChatAdminAbierto(usuarioId)
-    const res = await fetch(`/api/admin/mensajes/${usuarioId}`)
+    const res = await fetch(`/api/mensajes/conversaciones/${usuarioId}`)
     if (!res.ok) return
     const data = await res.json()
     setChatAdminMensajes(data.mensajes || [])
@@ -168,7 +168,7 @@ export default function AdminPage() {
       leido: false,
       created_at: new Date().toISOString(),
     }])
-    const r = await fetch('/api/admin/mensajes')
+    const r = await fetch('/api/mensajes/conversaciones')
     if (r.ok) setMensajesAdmin((await r.json()).conversaciones || [])
   }
 
@@ -310,12 +310,19 @@ export default function AdminPage() {
                   <p className="font-medium text-texto truncate">{u.nombre} {u.apellido || ''}</p>
                   <p className="text-xs text-texto-secundario truncate">{u.email || 'Sin email'}</p>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-1 items-center">
                   {(u.roles || [u.rol]).map((r: string) => (
                     <span key={r} className="rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">
                       {r}
                     </span>
                   ))}
+                  <button
+                    onClick={() => abrirChatAdmin(u.id)}
+                    className="ml-2 rounded-full bg-primario/10 p-2 text-primario transition hover:bg-primario/20"
+                    title="Contactar"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
             ))

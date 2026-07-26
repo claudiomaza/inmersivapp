@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import {
-  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send,
+  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send, HelpCircle,
 } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
@@ -436,7 +436,24 @@ export default function AnfitrionPage() {
                   ))}
                 </div>
               )}
-            </div>
+              <button
+                onClick={() => {
+                  // Buscar admin y abrir chat
+                  fetch('/api/admin/contacto').then(r => r.json()).then(d => {
+                    if (d.adminId) {
+                      const adminId = d.adminId
+                      setChatAbierto(adminId)
+                      setChatMensajes(mensajesConv.filter((m: any) =>
+                        (m.emisor_id === adminId && m.receptor_id === user?.id) ||
+                        (m.emisor_id === user?.id && m.receptor_id === adminId)
+                      ))
+                    }
+                  })
+                }}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primario/10 p-3 text-sm font-medium text-primario transition hover:bg-primario/20"
+              >
+                <HelpCircle className="h-4 w-4" /> Contactar al administrador
+              </button>
           )}
         </div>
       )}

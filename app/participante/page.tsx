@@ -5,7 +5,7 @@ import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
-import { MessageSquare, Ticket, Star, Send } from 'lucide-react'
+import { MessageSquare, Ticket, Star, Send, MessageCircle, HelpCircle } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'mensajes' | 'reservas' | 'resenas'
@@ -19,8 +19,10 @@ const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
 export default function ParticipantePage() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
+  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
   const [tab, setTab] = useState<Tab>('mensajes')
   const [cargando, setCargando] = useState(true)
+  const [adminId, setAdminId] = useState<string | null>(null)
 
   // Mensajes
   const [conversaciones, setConversaciones] = useState<any[]>([])
@@ -40,13 +42,28 @@ export default function ParticipantePage() {
     cargarConversaciones()
     cargarReservas()
     cargarResenas()
+
+    // Obtener ID del admin
+    fetch('/api/admin/contacto').then(r => r.json()).then(d => {
+      setAdminId(d.adminId)
+    })
+
+    // Si viene de contactar anfitrión, abrir ese chat
+    if (searchParams?.get('contactar')) {
+      const contactoId = searchParams.get('contactar')!
+      setChatAbierto(contactoId)
+      fetch(`/api/mensajes/conversaciones/${contactoId}`).then(r => r.json()).then(d => {
+        setChatMensajes(d.mensajes || [])
+      })
+    }
+
     setCargando(false)
   }, [isSignedIn, user])
 
   // ─── Mensajes ───
 
   const cargarConversaciones = async () => {
-    const res = await fetch('/api/admin/mensajes')
+    const res = await fetch('/api/mensajes/conversaciones')
     if (!res.ok) return
     const data = await res.json()
     setConversaciones(data.conversaciones || [])
@@ -54,7 +71,7 @@ export default function ParticipantePage() {
 
   const abrirChat = async (usuarioId: string) => {
     setChatAbierto(usuarioId)
-    const res = await fetch(`/api/admin/mensajes/${usuarioId}`)
+    const res = await fetch(`/api/mensajes/conversaciones/${usuarioId}`)
     if (!res.ok) return
     const data = await res.json()
     setChatMensajes(data.mensajes || [])
@@ -202,35 +219,45 @@ export default function ParticipantePage() {
               </div>
             </div>
           ) : (
-            <div className="space-y-3">
-              {conversaciones.length === 0 ? (
-                <p className="text-center text-texto-secundario">No tenés mensajes todavía.</p>
-              ) : (
-                conversaciones.map((conv) => (
-                  <button
-                    key={conv.otroUsuarioId}
-                    onClick={() => abrirChat(conv.otroUsuarioId)}
-                    className="flex w-full items-center gap-3 rounded-xl bg-white p-4 text-left shadow-sm transition hover:bg-primario/5"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
-                      {conv.otroNombre?.charAt(0)?.toUpperCase() || '?'}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="truncate font-medium text-texto">
-                        {conv.otroNombre} {conv.otroApellido}
-                        {conv.noLeidos > 0 && (
-                          <span className="ml-2 rounded-full bg-error px-2 py-0.5 text-[10px] font-bold text-white">
-                            {conv.noLeidos}
-                          </span>
-                        )}
+            <div>
+              <div className="space-y-3">
+                {conversaciones.length === 0 ? (
+                  <p className="text-center text-texto-secundario">No tenés mensajes todavía.</p>
+                ) : (
+                  conversaciones.map((conv) => (
+                    <button
+                      key={conv.otroUsuarioId}
+                      onClick={() => abrirChat(conv.otroUsuarioId)}
+                      className="flex w-full items-center gap-3 rounded-xl bg-white p-4 text-left shadow-sm transition hover:bg-primario/5"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
+                        {conv.otroNombre?.charAt(0)?.toUpperCase() || '?'}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="truncate font-medium text-texto">
+                          {conv.otroNombre} {conv.otroApellido}
+                          {conv.noLeidos > 0 && (
+                            <span className="ml-2 rounded-full bg-error px-2 py-0.5 text-[10px] font-bold text-white">
+                              {conv.noLeidos}
+                            </span>
+                          )}
+                        </p>
+                        <p className="mt-0.5 truncate text-sm text-texto-secundario">{conv.ultimoMensaje}</p>
+                      </div>
+                      <p className="shrink-0 text-xs text-texto-secundario">
+                        {new Date(conv.ultimaFecha).toLocaleDateString('es-AR')}
                       </p>
-                      <p className="mt-0.5 truncate text-sm text-texto-secundario">{conv.ultimoMensaje}</p>
-                    </div>
-                    <p className="shrink-0 text-xs text-texto-secundario">
-                      {new Date(conv.ultimaFecha).toLocaleDateString('es-AR')}
-                    </p>
-                  </button>
-                ))
+                    </button>
+                  ))
+                )}
+              </div>
+              {adminId && adminId !== user?.id && (
+                <button
+                  onClick={() => abrirChat(adminId)}
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primario/10 p-3 text-sm font-medium text-primario transition hover:bg-primario/20"
+                >
+                  <HelpCircle className="h-4 w-4" /> Contactar al administrador
+                </button>
               )}
             </div>
           )}
