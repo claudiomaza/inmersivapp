@@ -56,7 +56,7 @@ function expandirHorarios(horarios: any[]): SlotInfo[] {
 
     // Día de la semana
     if (b.dia_semana) {
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < 30; i++) {
         const d = new Date()
         d.setDate(d.getDate() + i)
         const diaSem = d.getDay() === 0 ? 7 : d.getDay() // domingo=7
@@ -72,7 +72,7 @@ function expandirHorarios(horarios: any[]): SlotInfo[] {
     if (b.dia_desde || b.dia_hasta) {
       const desde = b.dia_desde || b.dia_semana || 1
       const hasta = b.dia_hasta || b.dia_desde || b.dia_semana || 7
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < 30; i++) {
         const d = new Date()
         d.setDate(d.getDate() + i)
         const diaSem = d.getDay() === 0 ? 7 : d.getDay()
