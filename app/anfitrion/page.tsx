@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import {
-  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send, HelpCircle, Tag,
+  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send, HelpCircle, Tag, Pencil,
 } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
@@ -36,6 +36,7 @@ export default function AnfitrionPage() {
 
   // Listas
   const [actividades, setActividades] = useState<any[]>([])
+  const [filtroFecha, setFiltroFecha] = useState('')
   const [reservas, setReservas] = useState<any[]>([])
   const [resenas, setResenas] = useState<any[]>([])
   const [pagosPendientes, setPagosPendientes] = useState<any[]>([])
@@ -248,14 +249,30 @@ export default function AnfitrionPage() {
       {/* Mis actividades */}
       {tab === 'actividades' && (
         <div>
-          <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm text-texto-secundario">{actividades.length} experiencia(s)</p>
-            <a
-              href="/actividades/nueva"
-              className="rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark"
-            >
-              + Nueva experiencia
-            </a>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-texto-secundario">{actividades.filter(a => !filtroFecha || a.fechas?.includes(filtroFecha) || a.fecha === filtroFecha).length} experiencia(s)</p>
+            <div className="flex items-center gap-3">
+              <input
+                type="date"
+                value={filtroFecha}
+                onChange={(e) => setFiltroFecha(e.target.value)}
+                className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+              />
+              {filtroFecha && (
+                <button
+                  onClick={() => setFiltroFecha('')}
+                  className="text-xs text-primario hover:underline"
+                >
+                  Limpiar filtro
+                </button>
+              )}
+              <a
+                href="/actividades/nueva"
+                className="rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark"
+              >
+                + Nueva experiencia
+              </a>
+            </div>
           </div>
           {actividades.length === 0 ? (
             <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">
@@ -269,12 +286,15 @@ export default function AnfitrionPage() {
                     <th className="px-4 py-3">Título</th>
                     <th className="px-4 py-3">Categoría</th>
                     <th className="px-4 py-3">Precio</th>
-                    <th className="px-4 py-3">Ubicación</th>
+                    <th className="px-4 py-3">Próximas fechas</th>
                     <th className="px-4 py-3">Estado</th>
+                    <th className="px-4 py-3"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {actividades.map((a) => (
+                  {actividades
+                    .filter(a => !filtroFecha || a.fechas?.includes(filtroFecha) || a.fecha === filtroFecha)
+                    .map((a) => (
                     <tr key={a.id} className="border-b last:border-0 hover:bg-gray-50">
                       <td className="px-4 py-3 font-medium text-texto">
                         <a href={`/actividades/${a.id}`} className="hover:text-primario">
@@ -283,11 +303,25 @@ export default function AnfitrionPage() {
                       </td>
                       <td className="px-4 py-3 text-texto-secundario">{a.categoria}</td>
                       <td className="px-4 py-3 font-semibold text-primario">{formatPrecio(a.precio)}</td>
-                      <td className="px-4 py-3 text-texto-secundario">{a.lugar?.split(",")[0] || a.lugar}</td>
+                      <td className="px-4 py-3 text-xs text-texto-secundario">
+                        {a.fechas && a.fechas.length > 0
+                          ? a.fechas.slice(0, 3).map((f: string) => new Date(f).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })).join(', ') + (a.fechas.length > 3 ? ` +${a.fechas.length - 3}` : '')
+                          : a.fecha
+                            ? new Date(a.fecha).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })
+                            : '—'}
+                      </td>
                       <td className="px-4 py-3">
                         <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
                           Activa
                         </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <a
+                          href={`/actividades/editar/${a.id}`}
+                          className="inline-flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-medium text-texto-secundario transition hover:bg-gray-200 hover:text-texto"
+                        >
+                          <Pencil className="h-3 w-3" /> Editar
+                        </a>
                       </td>
                     </tr>
                   ))}
