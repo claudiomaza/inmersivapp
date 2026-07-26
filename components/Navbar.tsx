@@ -128,7 +128,7 @@ export default function Navbar() {
                 href="/participante"
                 className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
               >
-                Mi Panel
+                Panel Participante
               </Link>
               {esAnfitrion && (
                 <Link
@@ -268,7 +268,7 @@ export default function Navbar() {
                   className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Mi Panel
+                  Panel Participante
                 </Link>
                 {esAnfitrion && (
                   <Link
