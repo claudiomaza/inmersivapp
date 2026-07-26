@@ -261,22 +261,22 @@ export default function DetalleActividadPage() {
                                 : ''}
                           </p>
                         </div>
-                      <div className="text-right">
-                        <p className="text-lg font-bold text-primario">
-                          {formatPrecio(precio)}
-                        </p>
-                        {h.es_grupal && h.personas_grupo && (
-                          <p className="text-xs text-texto-secundario">
-                            hasta {h.personas_grupo} pers.
+                        <div className="text-right">
+                          <p className="text-lg font-bold text-primario">
+                            {formatPrecio(precio)}
                           </p>
-                        )}
+                          {h.es_grupal && h.personas_grupo && (
+                            <p className="text-xs text-texto-secundario">
+                              hasta {h.personas_grupo} pers.
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    {actividad.precio_por_hora && !h.precio && (
-                      <p className="mt-1 text-xs text-texto-secundario">
-                        ${actividad.precio_por_hora.toLocaleString('es-AR')}/hora
-                      </p>
-                    )}
+                      {actividad.precio_por_hora && !h.precio && (
+                        <p className="mt-1 text-xs text-texto-secundario">
+                          ${actividad.precio_por_hora.toLocaleString('es-AR')}/hora
+                        </p>
+                      )}
                     </button>
                   )
                 })}
