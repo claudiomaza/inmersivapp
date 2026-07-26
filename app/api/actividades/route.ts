@@ -43,14 +43,13 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { titulo, descripcion, categoria, fechas, hora, hora_fin, lugar, precio, capacidad_max, imagen_url, dias_semana } = body
+  const { titulo, descripcion, categoria, horarios, lugar, precio, capacidad_max, imagen_url } = body
 
   if (!titulo || !categoria || precio === undefined) {
     return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 })
   }
 
-  // Usar primera fecha como fallback si existe
-  const fechaPrincipal = fechas && fechas.length > 0 ? fechas[0] : null
+  const fechaPrincipal = horarios && horarios.length > 0 ? horarios[0].fecha || null : null
 
   const { data, error } = await supabaseAdmin
     .from('actividades')
@@ -59,11 +58,8 @@ export async function POST(req: NextRequest) {
       titulo,
       descripcion: descripcion || 'Sin descripción',
       categoria,
+      horarios: horarios || [],
       fecha: fechaPrincipal,
-      fechas: fechas || [],
-      dias_semana: dias_semana || [],
-      hora: hora || null,
-      hora_fin: hora_fin || null,
       lugar: lugar || 'A confirmar',
       precio: Number(precio),
       capacidad_max: capacidad_max || 20,
@@ -86,7 +82,7 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { id, titulo, descripcion, categoria, fecha, fechas, hora, hora_fin, lugar, precio, capacidad_max, imagen_url, dias_semana } = body
+  const { id, titulo, descripcion, categoria, horarios, lugar, precio, capacidad_max, imagen_url } = body
 
   if (!id) {
     return NextResponse.json({ error: 'ID requerido' }, { status: 400 })
@@ -106,11 +102,7 @@ export async function PUT(req: NextRequest) {
   if (titulo !== undefined) updates.titulo = titulo
   if (descripcion !== undefined) updates.descripcion = descripcion
   if (categoria !== undefined) updates.categoria = categoria
-  if (fecha !== undefined) updates.fecha = fecha
-  if (fechas !== undefined) updates.fechas = fechas
-  if (dias_semana !== undefined) updates.dias_semana = dias_semana
-  if (hora !== undefined) updates.hora = hora
-  if (hora_fin !== undefined) updates.hora_fin = hora_fin
+  if (horarios !== undefined) updates.horarios = horarios
   if (lugar !== undefined) updates.lugar = lugar
   if (precio !== undefined) updates.precio = Number(precio)
   if (capacidad_max !== undefined) updates.capacidad_max = capacidad_max
