@@ -20,6 +20,7 @@ export default function DetalleActividadPage() {
   const [puntuacion, setPuntuacion] = useState(0)
   const [comentario, setComentario] = useState('')
   const [enviandoResena, setEnviandoResena] = useState(false)
+  const [tieneReservaPagada, setTieneReservaPagada] = useState(false)
 
   const [cuponCodigo, setCuponCodigo] = useState('')
   const [cuponValido, setCuponValido] = useState<{ valido: boolean; descuento: number; mensaje: string } | null>(null)
@@ -36,8 +37,22 @@ export default function DetalleActividadPage() {
     Promise.all([
       fetch(`/api/actividades?id=${id}`).then(r => r.json()).then(d => setActividad(d.actividad)),
       cargarResenas(),
-    ]).finally(() => setCargando(false))
-  }, [id, cargarResenas])
+    ]).finally(() => {
+      // Verificar si el usuario tiene reserva pagada para esta actividad
+      if (isSignedIn && user) {
+        fetch(`/api/reservas?actividad_id=${id}`)
+          .then(r => r.json())
+          .then(d => {
+            const reservas = d.reservas || []
+            setTieneReservaPagada(reservas.some((r: any) =>
+              ['confirmada', 'completada', 'pagada'].includes(r.estado)
+            ))
+          })
+          .catch(() => {})
+      }
+      setCargando(false)
+    })
+  }, [id, isSignedIn, user, cargarResenas])
 
   const reservar = async () => {
     if (!isSignedIn) return router.push('/login')
@@ -198,7 +213,7 @@ export default function DetalleActividadPage() {
               </div>
             )}
 
-            {isSignedIn && (
+            {isSignedIn && tieneReservaPagada && (
               <div className="mt-6 border-t pt-4">
                 <h3 className="font-titulos text-base font-semibold text-texto">Dejá tu reseña</h3>
                 <div className="mt-2 flex gap-1">
@@ -226,6 +241,13 @@ export default function DetalleActividadPage() {
                 >
                   {enviandoResena ? 'Enviando…' : 'Publicar reseña'}
                 </button>
+              </div>
+            )}
+            {isSignedIn && !tieneReservaPagada && (
+              <div className="mt-6 border-t pt-4">
+                <p className="text-sm text-texto-secundario">
+                  Para dejar una reseña necesitás haber reservado y asistido a esta actividad.
+                </p>
               </div>
             )}
           </div>

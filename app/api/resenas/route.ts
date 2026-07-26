@@ -36,6 +36,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Faltan datos requeridos" }, { status: 400 })
   }
 
+  // Verificar que el usuario haya reservado y pagado esta actividad
+  const { data: reserva, error: errReserva } = await supabaseAdmin
+    .from("reservas")
+    .select("id, estado")
+    .eq("usuario_id", userId)
+    .eq("actividad_id", actividad_id)
+    .in("estado", ["confirmada", "completada", "pagada"])
+    .maybeSingle()
+
+  if (errReserva) {
+    return NextResponse.json({ error: "Error al verificar la reserva" }, { status: 500 })
+  }
+
+  if (!reserva) {
+    return NextResponse.json(
+      { error: "Tenés que reservar y asistir a la actividad antes de dejar una reseña" },
+      { status: 403 }
+    )
+  }
+
   const { data: existente } = await supabaseAdmin
     .from("resenas")
     .select("id")
