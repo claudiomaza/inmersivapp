@@ -32,6 +32,7 @@ interface BloqueForm {
   precio_por_hora?: string  // precio por hora especial para este bloque
   es_grupal: boolean
   precio_grupo?: string  // precio fijo grupal
+  personas_grupo?: string  // cuántas personas entran en el grupo
 }
 
 let bloqueIdCounter = 0
@@ -91,6 +92,7 @@ export default function NuevaActividadPage() {
       if (b.duracion_turno > 0) base.duracion_turno = b.duracion_turno
       if (b.precio_por_hora) base.precio_por_hora = Number(b.precio_por_hora)
       if (b.precio_grupo) base.precio_grupo = Number(b.precio_grupo)
+      if (b.personas_grupo) base.personas_grupo = Number(b.personas_grupo)
       if (b.tipo === 'fecha') base.fecha = b.fecha
       else if (b.tipo === 'rango_fechas') {
         base.fecha_desde = b.fecha_desde
@@ -422,8 +424,11 @@ export default function NuevaActividadPage() {
                         min={0}
                         value={b.precio_por_hora || ''}
                         onChange={(e) => actualizarBloque(b.id, { precio_por_hora: e.target.value })}
-                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        className={`w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20 ${
+                          b.es_grupal ? 'cursor-not-allowed bg-gray-100 opacity-50' : ''
+                        }`}
                         placeholder="Vacío = precio base"
+                        disabled={b.es_grupal}
                       />
                     </div>
                     <div className="flex items-end gap-2">
@@ -431,7 +436,13 @@ export default function NuevaActividadPage() {
                         type="checkbox"
                         id={`grupal_${b.id}`}
                         checked={b.es_grupal}
-                        onChange={(e) => actualizarBloque(b.id, { es_grupal: e.target.checked })}
+                        onChange={(e) => {
+                          const checked = e.target.checked
+                          actualizarBloque(b.id, {
+                            es_grupal: checked,
+                            ...(checked ? {} : { precio_grupo: '', personas_grupo: '' }),
+                          })
+                        }}
                         className="h-4 w-4 rounded border-gray-300 text-primario focus:ring-primario"
                       />
                       <label htmlFor={`grupal_${b.id}`} className="text-xs font-medium text-texto">
@@ -441,18 +452,33 @@ export default function NuevaActividadPage() {
                     </div>
                   </div>
                   {b.es_grupal && (
-                    <div className="mt-2">
-                      <label className="mb-1 block text-xs text-texto-secundario">
-                        Precio por grupo ($)
-                      </label>
-                      <input
-                        type="number"
-                        min={0}
-                        value={b.precio_grupo || ''}
-                        onChange={(e) => actualizarBloque(b.id, { precio_grupo: e.target.value })}
-                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                        placeholder="Ej: 12000"
-                      />
+                    <div className="mt-2 grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">
+                          Precio por grupo ($)
+                        </label>
+                        <input
+                          type="number"
+                          min={0}
+                          value={b.precio_grupo || ''}
+                          onChange={(e) => actualizarBloque(b.id, { precio_grupo: e.target.value })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                          placeholder="Ej: 12000"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">
+                          Personas por grupo
+                        </label>
+                        <input
+                          type="number"
+                          min={1}
+                          value={b.personas_grupo || ''}
+                          onChange={(e) => actualizarBloque(b.id, { personas_grupo: e.target.value })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                          placeholder="Ej: 4"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
