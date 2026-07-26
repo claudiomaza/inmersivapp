@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { titulo, descripcion, categoria, horarios, lugar, precio, capacidad_max, imagen_url } = body
+  const { titulo, descripcion, categoria, horarios, lugar, precio, capacidad_max, imagen_url, precio_por_hora, es_grupal, precio_grupo } = body
 
   if (!titulo || !categoria || precio === undefined) {
     return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 })
@@ -64,6 +64,9 @@ export async function POST(req: NextRequest) {
       precio: Number(precio),
       capacidad_max: capacidad_max || 20,
       imagen_url: imagen_url || null,
+      precio_por_hora: precio_por_hora !== undefined ? Number(precio_por_hora) : null,
+      es_grupal: es_grupal || false,
+      precio_grupo: precio_grupo !== undefined ? Number(precio_grupo) : null,
     })
     .select()
     .single()
@@ -82,7 +85,7 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { id, titulo, descripcion, categoria, horarios, lugar, precio, capacidad_max, imagen_url } = body
+  const { id, titulo, descripcion, categoria, horarios, lugar, precio, capacidad_max, imagen_url, precio_por_hora, es_grupal, precio_grupo } = body
 
   if (!id) {
     return NextResponse.json({ error: 'ID requerido' }, { status: 400 })
@@ -107,6 +110,9 @@ export async function PUT(req: NextRequest) {
   if (precio !== undefined) updates.precio = Number(precio)
   if (capacidad_max !== undefined) updates.capacidad_max = capacidad_max
   if (imagen_url !== undefined) updates.imagen_url = imagen_url
+  if (precio_por_hora !== undefined) updates.precio_por_hora = Number(precio_por_hora)
+  if (es_grupal !== undefined) updates.es_grupal = es_grupal
+  if (precio_grupo !== undefined) updates.precio_grupo = Number(precio_grupo)
 
   const { error } = await supabaseAdmin
     .from('actividades')
