@@ -80,6 +80,7 @@ export default function EditarActividadPage() {
     precio_por_hora: '',
     categoria: '',
     lugar: '',
+    capacidad_max: '',
     foto: '',
   })
   const [bloques, setBloques] = useState<BloqueForm[]>([])
@@ -109,6 +110,7 @@ export default function EditarActividadPage() {
         precio_por_hora: a.precio_por_hora?.toString() || '',
         categoria: a.categoria || '',
         lugar: a.lugar || '',
+        capacidad_max: a.capacidad_max?.toString() || '',
         foto: a.imagen_url || '',
       })
 
@@ -214,6 +216,7 @@ export default function EditarActividadPage() {
         horarios,
         lugar: form.lugar,
         precio: Number(form.precio),
+        capacidad_max: form.capacidad_max ? Number(form.capacidad_max) : null,
         imagen_url: form.foto || null,
         precio_por_hora: form.precio_por_hora ? Number(form.precio_por_hora) : null,
       }),
@@ -356,6 +359,21 @@ export default function EditarActividadPage() {
             onChange={(e) => setForm({ ...form, lugar: e.target.value })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
           />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-texto">Cupo máximo por sesión</label>
+          <input
+            type="number"
+            min={1}
+            value={form.capacidad_max}
+            onChange={(e) => setForm({ ...form, capacidad_max: e.target.value })}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+            placeholder="Ej: 20"
+          />
+          <p className="mt-1 text-xs text-texto-secundario">
+            Cantidad máxima de personas por sesión/evento
+          </p>
         </div>
 
         {/* Bloques horarios */}
