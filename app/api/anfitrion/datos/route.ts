@@ -121,6 +121,29 @@ export async function GET(req: NextRequest) {
     })
   }
 
+  if (tipo === 'cupones') {
+    const { data: comercio } = await supabaseAdmin
+      .from('comercios')
+      .select('*')
+      .eq('anfitrion_id', userId)
+      .single()
+
+    if (!comercio) {
+      return NextResponse.json({ comercio: null, cupones: [] })
+    }
+
+    const { data: cupones } = await supabaseAdmin
+      .from('cupones')
+      .select('*')
+      .eq('comercio_id', comercio.id)
+      .order('created_at', { ascending: false })
+
+    return NextResponse.json({
+      comercio,
+      cupones: cupones || [],
+    })
+  }
+
   if (tipo === 'mensajes') {
     if (ids.length === 0) return NextResponse.json([])
     // Mensajes de personas que reservaron mis actividades (o sobre mis actividades)
