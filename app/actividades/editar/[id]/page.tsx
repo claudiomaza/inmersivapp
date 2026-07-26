@@ -35,7 +35,7 @@ export default function EditarActividadPage() {
   const [diasActivos, setDiasActivos] = useState<string[]>([])
 
   useEffect(() => {
-    if (!id) return
+    if (!id || !user) return
     const cargar = async () => {
       const res = await fetch(`/api/actividades?id=${id}`)
       if (!res.ok) {
@@ -47,7 +47,7 @@ export default function EditarActividadPage() {
       const a = data.actividad
 
       // Verificar que sea el dueño
-      if (a.anfitrion_id !== user?.id) {
+      if (a.anfitrion_id !== user.id) {
         toast.error('No tenés permisos para editar esta actividad')
         router.push('/anfitrion')
         return
