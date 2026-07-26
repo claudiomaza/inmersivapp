@@ -150,7 +150,7 @@ export function useActividadesFiltros(actividades: Actividad[]) {
         // Legacy
         if (!matchFecha) {
           const fechaLegacy = a.fecha === fechaFilter
-          const fechaEnArray = a.fechas && Array.isArray(a.fechas) && a.fechas.includes(fechaFilter)
+          const fechaEnArray = !!(a.fechas && Array.isArray(a.fechas) && a.fechas.includes(fechaFilter))
           matchFecha = fechaLegacy || fechaEnArray
         }
         if (!matchFecha) return false
