@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { actividad_id, fecha, cupon_codigo, cantidad = 1 } = body
+  const { actividad_id, fecha, cupon_codigo, cantidad = 1, participantes } = body
 
   if (!actividad_id || !fecha) {
     return NextResponse.json({ error: "Faltan datos requeridos" }, { status: 400 })
@@ -106,6 +106,7 @@ export async function POST(req: NextRequest) {
       codigo_confirmacion: generarCodigoConfirmacion(),
       cupon_codigo: cupon_codigo || null,
       cantidad,
+      participantes: participantes || null,
     })
     .select()
     .single()
