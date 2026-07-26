@@ -17,7 +17,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [noLeidos, setNoLeidos] = useState(0)
   const [oscuro, setOscuro] = useState(false)
-  const { locale, setLocale } = useLang()
+  const { locale, setLocale, t } = useLang()
 
   useEffect(() => {
     // Inicializar desde localStorage
@@ -83,20 +83,20 @@ export default function Navbar() {
             href="/actividades"
             className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
           >
-            Explorar
+            {t('nav.explorar')}
           </Link>
           <Link
             href="/primeros-pasos"
             className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
           >
-            Primeros pasos
+            {t('nav.primeros_pasos')}
           </Link>
 
           {/* Language toggle */}
           <button
             onClick={() => setLocale(locale === 'es-AR' ? 'en-US' : 'es-AR')}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-texto-secundario transition hover:bg-gray-100"
-            aria-label="Cambiar idioma"
+            aria-label={t('nav.cambiar_idioma')}
           >
             <span className="text-xs font-bold">{locale === 'es-AR' ? 'EN' : 'ES'}</span>
           </button>
@@ -128,14 +128,14 @@ export default function Navbar() {
                 href="/participante"
                 className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
               >
-                Panel Participante
+                {t('nav.panel_participante')}
               </Link>
               {esAnfitrion && (
                 <Link
                   href="/anfitrion"
                   className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
                 >
-                  Panel Anfitrión
+                  {t('nav.panel_anfitrion')}
                 </Link>
               )}
               {esAdmin && (
@@ -143,7 +143,7 @@ export default function Navbar() {
                   href="/admin"
                   className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
                 >
-                  Panel Admin
+                  {t('nav.panel_admin')}
                 </Link>
               )}
 
@@ -151,13 +151,13 @@ export default function Navbar() {
                 href="/reservas"
                 className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
               >
-                Mis reservas
+                {t('nav.mis_reservas')}
               </Link>
               <Link
                 href="/mensajes"
                 className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
               >
-                Mensajes
+                {t('nav.mensajes')}
               </Link>
 
               <Link
@@ -197,14 +197,14 @@ export default function Navbar() {
               className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
               onClick={() => setMenuOpen(false)}
             >
-              Explorar
+              {t('nav.explorar')}
             </Link>
             <Link
               href="/primeros-pasos"
               className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
               onClick={() => setMenuOpen(false)}
             >
-              Primeros pasos
+              {t('nav.primeros_pasos')}
             </Link>
 
             {/* Language toggle mobile */}
@@ -222,7 +222,7 @@ export default function Navbar() {
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
             >
               {oscuro ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              {oscuro ? 'Modo claro' : 'Modo oscuro'}
+              {oscuro ? t('nav.modo_claro') : t('nav.modo_oscuro')}
             </button>
 
             {isSignedIn ? (
@@ -233,7 +233,7 @@ export default function Navbar() {
                   onClick={() => setMenuOpen(false)}
                 >
                   <Bell className="h-5 w-5" />
-                  Notificaciones
+                  {t('nav.notificaciones')}
                   {noLeidos > 0 && (
                     <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-error px-1.5 text-xs font-bold text-white">
                       {noLeidos}
@@ -246,14 +246,14 @@ export default function Navbar() {
                   onClick={() => setMenuOpen(false)}
                 >
                   <UserCircle className="h-5 w-5" />
-                  {user?.fullName || 'Perfil'}
+                  {user?.fullName || t('nav.perfil')}
                 </Link>
                 <Link
                   href="/reservas"
                   className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Mis reservas
+                  {t('nav.mis_reservas')}
                 </Link>
                 <Link
                   href="/mensajes"
@@ -261,14 +261,14 @@ export default function Navbar() {
                   onClick={() => setMenuOpen(false)}
                 >
                   <MessageSquare className="h-5 w-5" />
-                  Mensajes
+                  {t('nav.mensajes')}
                 </Link>
                 <Link
                   href="/participante"
                   className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Panel Participante
+                  {t('nav.panel_participante')}
                 </Link>
                 {esAnfitrion && (
                   <Link
@@ -276,7 +276,7 @@ export default function Navbar() {
                     className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                     onClick={() => setMenuOpen(false)}
                   >
-                    Panel Anfitrión
+                    {t('nav.panel_anfitrion')}
                   </Link>
                 )}
                 {esAdmin && (
@@ -285,7 +285,7 @@ export default function Navbar() {
                     className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                     onClick={() => setMenuOpen(false)}
                   >
-                    Panel Admin
+                    {t('nav.panel_admin')}
                   </Link>
                 )}
                 <button
@@ -295,7 +295,7 @@ export default function Navbar() {
                   }}
                   className="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error/10"
                 >
-                  Cerrar sesión
+                  {t('nav.cerrar_sesion')}
                 </button>
               </>
             ) : (
@@ -304,7 +304,7 @@ export default function Navbar() {
                 className="block rounded-lg bg-primario px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-primario-dark"
                 onClick={() => setMenuOpen(false)}
               >
-                Ingresar
+                {t('nav.ingresar')}
               </Link>
             )}
           </div>
