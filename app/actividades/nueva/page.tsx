@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Plus, MapPin, Clock } from 'lucide-react'
+import { Plus, MapPin, Clock, X } from 'lucide-react'
 
 const CATEGORIAS = [
   'Arte', 'Tecnología', 'Deportes', 'Cocina',
@@ -27,11 +27,12 @@ export default function NuevaActividadPage() {
     departamento: '',
     direccion: '',
     foto: '',
-    fechas: '',
     horaInicio: '18:00',
     horaFin: '20:00',
     diasActivos: [] as string[],
   })
+  const [fechasList, setFechasList] = useState<string[]>([])
+  const [nuevaFecha, setNuevaFecha] = useState('')
 
   const toggleDia = (dia: string) =>
     setForm((f) => ({
@@ -40,6 +41,18 @@ export default function NuevaActividadPage() {
         ? f.diasActivos.filter((d) => d !== dia)
         : [...f.diasActivos, dia],
     }))
+
+  const agregarFecha = () => {
+    if (!nuevaFecha) return
+    if (fechasList.includes(nuevaFecha)) {
+      toast.error('Esa fecha ya está agregada')
+      return
+    }
+    setFechasList([...fechasList, nuevaFecha])
+    setNuevaFecha('')
+  }
+
+  const sacarFecha = (f: string) => setFechasList(fechasList.filter((x) => x !== f))
 
   const crearActividad = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,10 +68,6 @@ export default function NuevaActividadPage() {
       return
     }
 
-    const fechasArray = form.fechas
-      ? form.fechas.split(',').map((f) => f.trim()).filter(Boolean)
-      : []
-
     const res = await fetch('/api/actividades', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -66,19 +75,23 @@ export default function NuevaActividadPage() {
         titulo: form.titulo,
         descripcion: form.descripcion || 'Sin descripción',
         categoria: form.categoria,
-        fecha: fechasArray.length > 0 ? fechasArray[0] : null,
+        fechas: fechasList,
+        fecha: fechasList.length > 0 ? fechasList[0] : null,
         hora: form.horaInicio || null,
+        hora_fin: form.horaFin || null,
         lugar: [form.direccion, form.departamento, form.provincia].filter(Boolean).join(', ') || 'A confirmar',
         precio: Number(form.precio),
         capacidad_max: 20,
         imagen_url: form.foto || null,
+        dias_semana: form.diasActivos.map((d) => DIAS.indexOf(d) + 1),
       }),
     })
 
     setCargando(false)
 
     if (!res.ok) {
-      toast.error('Error al crear la actividad')
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error || 'Error al crear la actividad')
       return
     }
 
@@ -181,17 +194,41 @@ export default function NuevaActividadPage() {
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Fechas</label>
+        {/* Fechas múltiples */}
+        <div>
+          <label className="mb-1 block text-sm font-medium text-texto">Fechas disponibles</label>
+          <div className="flex gap-2">
             <input
-              type="text"
-              value={form.fechas}
-              onChange={(e) => setForm({ ...form, fechas: e.target.value })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              placeholder="2026-08-01, 2026-08-08"
+              type="date"
+              value={nuevaFecha}
+              onChange={(e) => setNuevaFecha(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
             />
+            <button
+              type="button"
+              onClick={agregarFecha}
+              disabled={!nuevaFecha}
+              className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-texto transition hover:bg-gray-200 disabled:opacity-50"
+            >
+              Agregar
+            </button>
           </div>
+          {fechasList.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {fechasList.map((f) => (
+                <span key={f} className="inline-flex items-center gap-1 rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">
+                  {new Date(f + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
+                  <button type="button" onClick={() => sacarFecha(f)} className="ml-0.5 hover:text-red-600">
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm font-medium text-texto">Horario</label>
             <div className="flex items-center gap-2">
@@ -210,6 +247,30 @@ export default function NuevaActividadPage() {
               />
             </div>
           </div>
+        </div>
+
+        {/* Días de la semana */}
+        <div>
+          <label className="mb-1 block text-sm font-medium text-texto">Días de la semana (recurrencia)</label>
+          <div className="flex flex-wrap gap-2">
+            {DIAS.map((dia) => (
+              <button
+                key={dia}
+                type="button"
+                onClick={() => toggleDia(dia)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                  form.diasActivos.includes(dia)
+                    ? 'bg-primario text-white'
+                    : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
+                }`}
+              >
+                {dia}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1 text-xs text-texto-secundario">
+            Opcional: elegí los días de la semana si la actividad se repite semanalmente
+          </p>
         </div>
 
         <div>
