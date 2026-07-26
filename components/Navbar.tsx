@@ -140,6 +140,14 @@ export default function Navbar() {
                   Panel Admin
                 </Link>
               )}
+              {!esAdmin && !esAnfitrion && (
+                <Link
+                  href="/participante"
+                  className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+                >
+                  Mi Panel
+                </Link>
+              )}
 
               <Link
                 href="/reservas"
@@ -273,6 +281,15 @@ export default function Navbar() {
                     onClick={() => setMenuOpen(false)}
                   >
                     Panel Admin
+                  </Link>
+                )}
+                {!esAdmin && !esAnfitrion && (
+                  <Link
+                    href="/participante"
+                    className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Mi Panel
                   </Link>
                 )}
                 <button
