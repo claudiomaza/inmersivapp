@@ -33,6 +33,27 @@ export type Categoria =
   | 'Tecnología'
   | 'Yoga'
 
+export interface BloqueHorario {
+  /** Fecha puntual: YYYY-MM-DD */
+  fecha?: string
+  /** Inicio de rango de fechas: YYYY-MM-DD */
+  fecha_desde?: string
+  /** Fin de rango de fechas: YYYY-MM-DD */
+  fecha_hasta?: string
+  /** Día de la semana (1=lunes…7=domingo) */
+  dia_semana?: number
+  /** Inicio de rango de días (1=lunes…7=domingo) */
+  dia_desde?: number
+  /** Fin de rango de días (1=lunes…7=domingo) */
+  dia_hasta?: number
+  /** Hora de inicio HH:MM */
+  hora: string
+  /** Hora de fin HH:MM */
+  hora_fin: string
+  /** Duración del turno en minutos (opcional). Si no se setea, el bloque completo es un turno */
+  duracion_turno?: number
+}
+
 export interface Actividad {
   id: string
   titulo: string
@@ -48,11 +69,12 @@ export interface Actividad {
   activa?: boolean
   fotos?: string[]
   ubicacion?: Ubicacion
-  horarios?: HorarioSemanal
+  horarios?: BloqueHorario[]
   fechas?: string[]
   created_at: string
   perfiles?: {
     nombre: string
+    apellido?: string
     avatar_url?: string
   }
 }
@@ -63,10 +85,6 @@ export interface Ubicacion {
   direccion: string
 }
 
-export interface HorarioSemanal {
-  [dia: string]: { activo: boolean; inicio: string; fin: string }
-}
-
 export type EstadoReserva = 'pendiente' | 'confirmada' | 'cancelada' | 'completada'
 
 export interface Reserva {
@@ -74,6 +92,7 @@ export interface Reserva {
   usuario_id: string
   actividad_id: string
   fecha: string // ISO
+  hora_inicio?: string
   estado: EstadoReserva
   codigo_confirmacion?: string
   created_at: string
