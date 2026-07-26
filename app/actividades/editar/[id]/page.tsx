@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { toast } from 'sonner'
-import { Save, ArrowLeft, X } from 'lucide-react'
+import { Save, ArrowLeft, Trash2 } from 'lucide-react'
 
 const CATEGORIAS = [
   'Arte', 'Tecnología', 'Deportes', 'Cocina',
@@ -13,6 +13,52 @@ const CATEGORIAS = [
 ]
 
 const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+
+type TipoBloque = 'fecha' | 'rango_fechas' | 'dia_semana' | 'rango_dias'
+
+interface BloqueForm {
+  id: string
+  tipo: TipoBloque
+  fecha?: string
+  fecha_desde?: string
+  fecha_hasta?: string
+  dia_semana?: number
+  dia_desde?: number
+  dia_hasta?: number
+  hora: string
+  hora_fin: string
+  duracion_turno: number
+}
+
+let bloqueIdCounter = 0
+
+function nuevoBloqueId() {
+  return `bloque_${++bloqueIdCounter}`
+}
+
+function inferirTipo(bloque: any): TipoBloque {
+  if (bloque.fecha) return 'fecha'
+  if (bloque.fecha_desde || bloque.fecha_hasta) return 'rango_fechas'
+  if (bloque.dia_semana) return 'dia_semana'
+  if (bloque.dia_desde || bloque.dia_hasta) return 'rango_dias'
+  return 'fecha'
+}
+
+function bloqueDesdeAPI(b: any): BloqueForm {
+  return {
+    id: nuevoBloqueId(),
+    tipo: inferirTipo(b),
+    fecha: b.fecha || undefined,
+    fecha_desde: b.fecha_desde || undefined,
+    fecha_hasta: b.fecha_hasta || undefined,
+    dia_semana: b.dia_semana || undefined,
+    dia_desde: b.dia_desde || undefined,
+    dia_hasta: b.dia_hasta || undefined,
+    hora: b.hora?.slice(0, 5) || '09:00',
+    hora_fin: b.hora_fin?.slice(0, 5) || '18:00',
+    duracion_turno: b.duracion_turno || 0,
+  }
+}
 
 export default function EditarActividadPage() {
   const { id } = useParams<{ id: string }>()
@@ -27,12 +73,8 @@ export default function EditarActividadPage() {
     categoria: '',
     lugar: '',
     foto: '',
-    hora: '18:00',
-    hora_fin: '20:00',
   })
-  const [fechasList, setFechasList] = useState<string[]>([])
-  const [nuevaFecha, setNuevaFecha] = useState('')
-  const [diasActivos, setDiasActivos] = useState<string[]>([])
+  const [bloques, setBloques] = useState<BloqueForm[]>([])
 
   useEffect(() => {
     if (!id || !user) return
@@ -46,7 +88,6 @@ export default function EditarActividadPage() {
       const data = await res.json()
       const a = data.actividad
 
-      // Verificar que sea el dueño
       if (a.anfitrion_id !== user.id) {
         toast.error('No tenés permisos para editar esta actividad')
         router.push('/anfitrion')
@@ -60,38 +101,94 @@ export default function EditarActividadPage() {
         categoria: a.categoria || '',
         lugar: a.lugar || '',
         foto: a.imagen_url || '',
-        hora: a.hora?.slice(0, 5) || '18:00',
-        hora_fin: a.hora_fin?.slice(0, 5) || '20:00',
       })
-      setFechasList(a.fechas || (a.fecha ? [a.fecha] : []))
-      if (a.dias_semana) {
-        setDiasActivos(a.dias_semana.map((d: number) => DIAS[d - 1]))
+
+      // Convertir bloques existentes o migrar desde campos viejos
+      if (a.horarios && Array.isArray(a.horarios) && a.horarios.length > 0) {
+        setBloques(a.horarios.map(bloqueDesdeAPI))
+      } else {
+        // Migración desde campos viejos
+        const nuevos: BloqueForm[] = []
+        if (a.fechas && Array.isArray(a.fechas)) {
+          a.fechas.forEach((f: string) => {
+            nuevos.push({
+              id: nuevoBloqueId(),
+              tipo: 'fecha',
+              fecha: f,
+              hora: (a.hora || '10:00').slice(0, 5),
+              hora_fin: (a.hora_fin || '12:00').slice(0, 5),
+              duracion_turno: 0,
+            })
+          })
+        } else if (a.fecha) {
+          nuevos.push({
+            id: nuevoBloqueId(),
+            tipo: 'fecha',
+            fecha: a.fecha,
+            hora: (a.hora || '10:00').slice(0, 5),
+            hora_fin: (a.hora_fin || '12:00').slice(0, 5),
+            duracion_turno: 0,
+          })
+        }
+        if (a.dias_semana && Array.isArray(a.dias_semana)) {
+          a.dias_semana.forEach((d: number) => {
+            nuevos.push({
+              id: nuevoBloqueId(),
+              tipo: 'dia_semana',
+              dia_semana: d,
+              hora: (a.hora || '10:00').slice(0, 5),
+              hora_fin: (a.hora_fin || '12:00').slice(0, 5),
+              duracion_turno: 0,
+            })
+          })
+        }
+        setBloques(nuevos)
       }
+
       setCargando(false)
     }
     cargar()
   }, [id, user, router])
 
-  const toggleDia = (dia: string) =>
-    setDiasActivos((prev) =>
-      prev.includes(dia) ? prev.filter((d) => d !== dia) : [...prev, dia]
-    )
+  const actualizarBloque = (bid: string, cambios: Partial<BloqueForm>) =>
+    setBloques((b) => b.map((bl) => (bl.id === bid ? { ...bl, ...cambios } : bl)))
 
-  const agregarFecha = () => {
-    if (!nuevaFecha) return
-    if (fechasList.includes(nuevaFecha)) {
-      toast.error('Esa fecha ya está')
-      return
-    }
-    setFechasList([...fechasList, nuevaFecha])
-    setNuevaFecha('')
-  }
+  const eliminarBloque = (bid: string) =>
+    setBloques((b) => b.filter((bl) => bl.id !== bid))
 
-  const sacarFecha = (f: string) => setFechasList(fechasList.filter((x) => x !== f))
+  const agregarBloque = (tipo: TipoBloque) =>
+    setBloques((b) => [...b, {
+      id: nuevoBloqueId(),
+      tipo,
+      hora: '09:00',
+      hora_fin: '18:00',
+      duracion_turno: 0,
+    }])
 
   const guardar = async (e: React.FormEvent) => {
     e.preventDefault()
     setGuardando(true)
+
+    const horarios = bloques.map((b) => {
+      const base: any = { hora: b.hora, hora_fin: b.hora_fin }
+      if (b.duracion_turno > 0) base.duracion_turno = b.duracion_turno
+      if (b.tipo === 'fecha') base.fecha = b.fecha
+      else if (b.tipo === 'rango_fechas') {
+        base.fecha_desde = b.fecha_desde
+        base.fecha_hasta = b.fecha_hasta
+      } else if (b.tipo === 'dia_semana') base.dia_semana = b.dia_semana
+      else if (b.tipo === 'rango_dias') {
+        base.dia_desde = b.dia_desde
+        base.dia_hasta = b.dia_hasta
+      }
+      return base
+    })
+
+    if (horarios.length === 0) {
+      toast.error('Agregá al menos un bloque horario')
+      setGuardando(false)
+      return
+    }
 
     const res = await fetch('/api/actividades', {
       method: 'PUT',
@@ -101,14 +198,10 @@ export default function EditarActividadPage() {
         titulo: form.titulo,
         descripcion: form.descripcion,
         categoria: form.categoria,
-        fechas: fechasList,
-        fecha: fechasList.length > 0 ? fechasList[0] : null,
-        hora: form.hora || null,
-        hora_fin: form.hora_fin || null,
+        horarios,
         lugar: form.lugar,
         precio: Number(form.precio),
         imagen_url: form.foto || null,
-        dias_semana: diasActivos.map((d) => DIAS.indexOf(d) + 1),
       }),
     })
 
@@ -141,17 +234,15 @@ export default function EditarActividadPage() {
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <div>
-          <h1 className="font-titulos text-2xl font-bold text-texto">Editar actividad</h1>
-          <p className="text-sm text-texto-secundario">Actualizá los datos de tu experiencia</p>
-        </div>
+        <h1 className="font-titulos text-2xl font-bold text-texto">Editar actividad</h1>
       </div>
 
-      <form onSubmit={guardar} className="space-y-5">
+      <form onSubmit={guardar} className="space-y-6">
         <div>
           <label className="mb-1 block text-sm font-medium text-texto">Título</label>
           <input
             type="text"
+            required
             value={form.titulo}
             onChange={(e) => setForm({ ...form, titulo: e.target.value })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
@@ -161,23 +252,26 @@ export default function EditarActividadPage() {
         <div>
           <label className="mb-1 block text-sm font-medium text-texto">Descripción</label>
           <textarea
+            required
+            rows={4}
             value={form.descripcion}
             onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-            rows={3}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="mb-1 block text-sm font-medium text-texto">Categoría</label>
             <select
+              required
               value={form.categoria}
               onChange={(e) => setForm({ ...form, categoria: e.target.value })}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
             >
-              {CATEGORIAS.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+              <option value="">Seleccionar</option>
+              {CATEGORIAS.map((c) => (
+                <option key={c} value={c}>{c}</option>
               ))}
             </select>
           </div>
@@ -185,16 +279,17 @@ export default function EditarActividadPage() {
             <label className="mb-1 block text-sm font-medium text-texto">Precio ($)</label>
             <input
               type="number"
+              required
+              min={0}
               value={form.precio}
               onChange={(e) => setForm({ ...form, precio: e.target.value })}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              min="0"
             />
           </div>
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Ubicación</label>
+          <label className="mb-1 block text-sm font-medium text-texto">Lugar</label>
           <input
             type="text"
             value={form.lugar}
@@ -203,79 +298,190 @@ export default function EditarActividadPage() {
           />
         </div>
 
-        {/* Fechas */}
+        {/* Bloques horarios */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Fechas disponibles</label>
-          <div className="flex gap-2">
-            <input
-              type="date"
-              value={nuevaFecha}
-              onChange={(e) => setNuevaFecha(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            />
-            <button
-              type="button"
-              onClick={agregarFecha}
-              disabled={!nuevaFecha}
-              className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-texto transition hover:bg-gray-200 disabled:opacity-50"
-            >
-              Agregar
-            </button>
-          </div>
-          {fechasList.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {fechasList.map((f) => (
-                <span key={f} className="inline-flex items-center gap-1 rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">
-                  {new Date(f + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
-                  <button type="button" onClick={() => sacarFecha(f)} className="ml-0.5 hover:text-red-600">
-                    <X className="h-3 w-3" />
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Horario</label>
-            <div className="flex items-center gap-2">
-              <input
-                type="time"
-                value={form.hora}
-                onChange={(e) => setForm({ ...form, hora: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              />
-              <span className="text-texto-secundario">a</span>
-              <input
-                type="time"
-                value={form.hora_fin}
-                onChange={(e) => setForm({ ...form, hora_fin: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Días de la semana */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Días de la semana (recurrencia)</label>
-          <div className="flex flex-wrap gap-2">
-            {DIAS.map((dia) => (
+          <div className="mb-3 flex items-center justify-between">
+            <label className="block text-sm font-medium text-texto">Horarios</label>
+            <div className="flex gap-1.5">
               <button
-                key={dia}
                 type="button"
-                onClick={() => toggleDia(dia)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-                  diasActivos.includes(dia)
-                    ? 'bg-primario text-white'
-                    : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
-                }`}
+                onClick={() => agregarBloque('fecha')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
               >
-                {dia}
+                + Fecha
               </button>
+              <button
+                type="button"
+                onClick={() => agregarBloque('rango_fechas')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
+              >
+                + Rango fechas
+              </button>
+              <button
+                type="button"
+                onClick={() => agregarBloque('dia_semana')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
+              >
+                + Día semanal
+              </button>
+              <button
+                type="button"
+                onClick={() => agregarBloque('rango_dias')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
+              >
+                + Rango días
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {bloques.map((b) => (
+              <div key={b.id} className="rounded-xl border border-gray-200 bg-white p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-primario">
+                    {b.tipo === 'fecha' && 'Fecha puntual'}
+                    {b.tipo === 'rango_fechas' && 'Rango de fechas'}
+                    {b.tipo === 'dia_semana' && 'Día de la semana'}
+                    {b.tipo === 'rango_dias' && 'Rango de días'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => eliminarBloque(b.id)}
+                    className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-500"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {b.tipo === 'fecha' && (
+                    <div>
+                      <label className="mb-1 block text-xs text-texto-secundario">Fecha</label>
+                      <input
+                        type="date"
+                        value={b.fecha || ''}
+                        onChange={(e) => actualizarBloque(b.id, { fecha: e.target.value })}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                      />
+                    </div>
+                  )}
+
+                  {b.tipo === 'rango_fechas' && (
+                    <>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Desde</label>
+                        <input
+                          type="date"
+                          value={b.fecha_desde || ''}
+                          onChange={(e) => actualizarBloque(b.id, { fecha_desde: e.target.value })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Hasta</label>
+                        <input
+                          type="date"
+                          value={b.fecha_hasta || ''}
+                          onChange={(e) => actualizarBloque(b.id, { fecha_hasta: e.target.value })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {b.tipo === 'dia_semana' && (
+                    <div>
+                      <label className="mb-1 block text-xs text-texto-secundario">Día</label>
+                      <select
+                        value={b.dia_semana || ''}
+                        onChange={(e) => actualizarBloque(b.id, { dia_semana: Number(e.target.value) })}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                      >
+                        <option value="">Seleccionar</option>
+                        {DIAS.map((d, i) => (
+                          <option key={i} value={i + 1}>{d}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {b.tipo === 'rango_dias' && (
+                    <>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Desde</label>
+                        <select
+                          value={b.dia_desde || ''}
+                          onChange={(e) => actualizarBloque(b.id, { dia_desde: Number(e.target.value) })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        >
+                          <option value="">Seleccionar</option>
+                          {DIAS.map((d, i) => (
+                            <option key={i} value={i + 1}>{d}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Hasta</label>
+                        <select
+                          value={b.dia_hasta || ''}
+                          onChange={(e) => actualizarBloque(b.id, { dia_hasta: Number(e.target.value) })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        >
+                          <option value="">Seleccionar</option>
+                          {DIAS.map((d, i) => (
+                            <option key={i} value={i + 1}>{d}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </>
+                  )}
+
+                  <div>
+                    <label className="mb-1 block text-xs text-texto-secundario">Hora inicio</label>
+                    <input
+                      type="time"
+                      value={b.hora}
+                      onChange={(e) => actualizarBloque(b.id, { hora: e.target.value })}
+                      className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-texto-secundario">Hora fin</label>
+                    <input
+                      type="time"
+                      value={b.hora_fin}
+                      onChange={(e) => actualizarBloque(b.id, { hora_fin: e.target.value })}
+                      className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-3">
+                  <label className="mb-1 block text-xs text-texto-secundario">
+                    Duración del turno{' '}
+                    <span className="italic text-gray-400">(minutos, 0 = bloque completo)</span>
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    step={15}
+                    value={b.duracion_turno}
+                    onChange={(e) => actualizarBloque(b.id, { duracion_turno: Number(e.target.value) })}
+                    className="w-32 rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                  />
+                  {b.duracion_turno > 0 && (
+                    <p className="mt-1 text-xs text-texto-secundario">
+                      Se generarán turnos de {b.duracion_turno} min cada uno
+                    </p>
+                  )}
+                </div>
+              </div>
             ))}
+            {bloques.length === 0 && (
+              <p className="py-4 text-center text-sm text-texto-secundario">
+                No hay bloques horarios. Agregá al menos uno.
+              </p>
+            )}
           </div>
         </div>
 
