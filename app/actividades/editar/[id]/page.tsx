@@ -32,6 +32,7 @@ interface BloqueForm {
   precio_por_hora?: number
   es_grupal?: boolean
   precio_grupo?: number
+  personas_grupo?: number
 }
 
 let bloqueIdCounter = 0
@@ -64,6 +65,7 @@ function bloqueDesdeAPI(b: any): BloqueForm {
     precio_por_hora: b.precio_por_hora || undefined,
     es_grupal: b.es_grupal || false,
     precio_grupo: b.precio_grupo || undefined,
+    personas_grupo: b.personas_grupo || undefined,
   }
 }
 
@@ -567,8 +569,11 @@ export default function EditarActividadPage() {
                         min={0}
                         value={b.precio_por_hora || ''}
                         onChange={(e) => actualizarBloque(b.id, { precio_por_hora: e.target.value ? Number(e.target.value) : undefined })}
-                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        className={`w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20 ${
+                          b.es_grupal ? 'cursor-not-allowed bg-gray-100 opacity-50' : ''
+                        }`}
                         placeholder="Vacío = precio base"
+                        disabled={b.es_grupal}
                       />
                     </div>
                     <div className="flex items-end pb-2">
@@ -576,7 +581,13 @@ export default function EditarActividadPage() {
                         <input
                           type="checkbox"
                           checked={b.es_grupal || false}
-                          onChange={(e) => actualizarBloque(b.id, { es_grupal: e.target.checked })}
+                          onChange={(e) => {
+                            const checked = e.target.checked
+                            actualizarBloque(b.id, {
+                              es_grupal: checked,
+                              ...(checked ? {} : { precio_grupo: undefined, personas_grupo: undefined }),
+                            })
+                          }}
                           className="h-4 w-4 rounded border-gray-300 text-primario focus:ring-primario"
                         />
                         <span className="text-xs">Grupal</span>
@@ -584,18 +595,33 @@ export default function EditarActividadPage() {
                     </div>
                   </div>
                   {b.es_grupal && (
-                    <div className="mt-2">
-                      <label className="mb-1 block text-xs text-texto-secundario">
-                        Precio por grupo ($)
-                      </label>
-                      <input
-                        type="number"
-                        min={0}
-                        value={b.precio_grupo || ''}
-                        onChange={(e) => actualizarBloque(b.id, { precio_grupo: e.target.value ? Number(e.target.value) : undefined })}
-                        className="w-40 rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                        placeholder="Ej: 12000"
-                      />
+                    <div className="mt-2 grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">
+                          Precio por grupo ($)
+                        </label>
+                        <input
+                          type="number"
+                          min={0}
+                          value={b.precio_grupo || ''}
+                          onChange={(e) => actualizarBloque(b.id, { precio_grupo: e.target.value ? Number(e.target.value) : undefined })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                          placeholder="Ej: 12000"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">
+                          Personas por grupo
+                        </label>
+                        <input
+                          type="number"
+                          min={1}
+                          value={b.personas_grupo || ''}
+                          onChange={(e) => actualizarBloque(b.id, { personas_grupo: e.target.value ? Number(e.target.value) : undefined })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                          placeholder="Ej: 4"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
