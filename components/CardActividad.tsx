@@ -1,7 +1,49 @@
 import Link from 'next/link'
-import { formatPrecio } from '@/lib/utils'
+
+function precioDesde(actividad: any): string | null {
+  const horarios = actividad.horarios || []
+  if (!horarios.length) return null
+
+  let min = Infinity
+  let minGrupal = Infinity
+  let todasGrupales = true
+
+  for (const h of horarios) {
+    if (h.precio && h.precio > 0) {
+      min = Math.min(min, h.precio)
+      todasGrupales = false
+    }
+    if (h.precio_grupo && h.precio_grupo > 0) {
+      minGrupal = Math.min(minGrupal, h.precio_grupo)
+    }
+  }
+
+  const precioIndividual = min === Infinity ? null : min
+  const precioGrupal = minGrupal === Infinity ? null : minGrupal
+
+  // Si hay ambos, mostrar el más barato
+  if (precioIndividual && precioGrupal) {
+    const menor = Math.min(precioIndividual, precioGrupal)
+    return `Desde $${menor.toLocaleString('es-AR')}`
+  }
+  if (precioIndividual) {
+    return `Desde $${precioIndividual.toLocaleString('es-AR')}`
+  }
+  if (precioGrupal) {
+    return `Desde $${precioGrupal.toLocaleString('es-AR')}`
+  }
+
+  // Fallback a precio_por_hora
+  if (actividad.precio_por_hora) {
+    return `$${actividad.precio_por_hora.toLocaleString('es-AR')}/h`
+  }
+
+  return null
+}
 
 export default function CardActividad({ actividad }: { actividad: any }) {
+  const precioTexto = precioDesde(actividad)
+
   return (
     <Link
       href={`/actividades/${actividad.id}`}
@@ -37,9 +79,15 @@ export default function CardActividad({ actividad }: { actividad: any }) {
           {actividad.descripcion}
         </p>
         <div className="mt-auto flex items-center justify-between pt-3">
-          <span className="font-titulos text-xl font-bold text-primario">
-            {formatPrecio(actividad.precio)}
-          </span>
+          {precioTexto ? (
+            <span className="font-titulos text-xl font-bold text-primario">
+              {precioTexto}
+            </span>
+          ) : (
+            <span className="text-sm text-texto-secundario/70">
+              Sin precio
+            </span>
+          )}
           <span className="text-xs text-texto-secundario/70">
             {actividad.lugar?.split(',')[0] || ''}
           </span>
