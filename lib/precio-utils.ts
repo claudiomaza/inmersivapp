@@ -4,9 +4,9 @@
  * Utilidades de precio dinámico para Inmersivapp
  * 
  * Lógica de cálculo:
- * 1. Si el bloque horario tiene "precio" propio → usa ese
- * 2. Si es_grupal y tiene precio_grupo → usa ese (precio fijo grupal)
- * 3. Si tiene precio_por_hora → precio_por_hora × duración_en_hs
+ * 1. Si el bloque tiene "precio_grupo" y es grupal → precio fijo grupal (no × personas)
+ * 2. Si el bloque tiene "precio" propio → precio especial por persona para ese bloque
+ * 3. Si la actividad tiene "precio_por_hora" → precio_por_hora × duración del bloque
  * 4. Sino → actividad.precio (legacy)
  */
 
@@ -16,14 +16,18 @@ export interface BloqueHorario {
   dia_semana?: number
   fecha?: string
   duracion_turno?: number
+  /** Precio especial por persona para este bloque (sobreescribe precio_por_hora) */
   precio?: number
+  /** Si este bloque es grupal (precio fijo por grupo) */
+  es_grupal?: boolean
+  /** Precio fijo del grupo para este bloque */
+  precio_grupo?: number
 }
 
 export interface ActividadPrecio {
   precio: number
+  /** Precio base por hora por persona a nivel actividad */
   precio_por_hora?: number | null
-  es_grupal?: boolean
-  precio_grupo?: number | null
   horarios?: BloqueHorario[]
 }
 
@@ -47,22 +51,23 @@ export function duracionEnHoras(bloque: BloqueHorario): number {
 
 /**
  * Calcula el precio unitario de una actividad para un bloque horario específico
+ * Devuelve el precio POR PERSONA (o por grupo si es grupal)
  */
 export function calcularPrecioUnitario(
   actividad: ActividadPrecio,
   bloque?: BloqueHorario | null
 ): number {
-  // 1. Precio específico del bloque horario
+  // 1. Precio grupal del bloque (precio fijo por grupo, no por persona)
+  if (bloque?.es_grupal && bloque?.precio_grupo) {
+    return bloque.precio_grupo
+  }
+
+  // 2. Precio especial del bloque por persona
   if (bloque?.precio) {
     return bloque.precio
   }
 
-  // 2. Precio grupal fijo
-  if (actividad.es_grupal && actividad.precio_grupo) {
-    return actividad.precio_grupo
-  }
-
-  // 3. Precio por hora
+  // 3. Precio por hora de la actividad
   if (actividad.precio_por_hora) {
     const hs = bloque ? duracionEnHoras(bloque) : 1
     return Math.round(actividad.precio_por_hora * hs)
@@ -82,8 +87,8 @@ export function calcularPrecioTotal(
 ): number {
   const unitario = calcularPrecioUnitario(actividad, bloque)
 
-  // Si es grupal, el precio es fijo (no se multiplica por personas)
-  if (actividad.es_grupal) {
+  // Si el bloque es grupal, precio fijo (no se multiplica por personas)
+  if (bloque?.es_grupal) {
     return unitario
   }
 
@@ -94,11 +99,8 @@ export function calcularPrecioTotal(
  * Texto descriptivo del tipo de precio
  */
 export function descripcionPrecio(actividad: ActividadPrecio): string {
-  if (actividad.es_grupal) {
-    return 'por grupo'
-  }
   if (actividad.precio_por_hora) {
-    return `$${actividad.precio_por_hora.toLocaleString('es-AR')}/hora`
+    return `$${actividad.precio_por_hora.toLocaleString('es-AR')}/hora por persona`
   }
   return 'por persona'
 }
@@ -112,12 +114,12 @@ export function descripcionPrecioBloque(
 ): string {
   const unitario = calcularPrecioUnitario(actividad, bloque)
 
-  if (bloque.precio) {
-    return `$${unitario.toLocaleString('es-AR')} por persona`
+  if (bloque.es_grupal) {
+    return `$${unitario.toLocaleString('es-AR')} por grupo`
   }
 
-  if (actividad.es_grupal) {
-    return `$${unitario.toLocaleString('es-AR')} por grupo`
+  if (bloque.precio) {
+    return `$${unitario.toLocaleString('es-AR')} por persona (precio especial)`
   }
 
   if (actividad.precio_por_hora) {
