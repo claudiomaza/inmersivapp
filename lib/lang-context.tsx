@@ -1,7 +1,8 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { esAR } from '@/lib/clerk-localization'
+import { getTranslations } from '@/lib/translations'
 
 type Locale = 'es-AR' | 'en-US'
 
@@ -9,12 +10,14 @@ interface LangCtx {
   locale: Locale
   setLocale: (l: Locale) => void
   localization: any
+  t: (key: string, params?: Record<string, string | number>) => string
 }
 
 const LangContext = createContext<LangCtx>({
   locale: 'es-AR',
   setLocale: () => {},
   localization: esAR,
+  t: (key: string) => key,
 })
 
 export function useLang() {
@@ -40,8 +43,19 @@ export function LangProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = l === 'en-US' ? 'en' : 'es'
   }
 
+  const t = useCallback((key: string, params?: Record<string, string | number>) => {
+    const dict = getTranslations(locale)
+    let text = dict[key] || key
+    if (params) {
+      for (const [k, v] of Object.entries(params)) {
+        text = text.replace(`{${k}}`, String(v))
+      }
+    }
+    return text
+  }, [locale])
+
   return (
-    <LangContext.Provider value={{ locale, setLocale, localization }}>
+    <LangContext.Provider value={{ locale, setLocale, localization, t }}>
       {children}
     </LangContext.Provider>
   )
