@@ -6,19 +6,21 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { MessageSquare, Ticket, Star, Send, MessageCircle, HelpCircle } from 'lucide-react'
+import { useLang } from '@/lib/lang-context'
 import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'mensajes' | 'reservas' | 'resenas'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
-  { key: 'reservas', label: 'Reservas', icon: <Ticket className="h-4 w-4" /> },
-  { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
+  { key: 'mensajes', label: t('panel.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
+  { key: 'reservas', label: t('panel.reservas'), icon: <Ticket className="h-4 w-4" /> },
+  { key: 'resenas', label: t('panel.resenas'), icon: <Star className="h-4 w-4" /> },
 ]
 
 export default function ParticipantePage() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
+  const { t } = useLang()
   const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
   const [tab, setTab] = useState<Tab>('mensajes')
   const [cargando, setCargando] = useState(true)
@@ -89,7 +91,7 @@ export default function ParticipantePage() {
       setChatMensajes(prev => [...prev, { contenido: textoEnvio, emisor_id: user?.id, created_at: new Date().toISOString() }])
       setTextoEnvio('')
     } else {
-      toast.error('Error al enviar mensaje')
+      toast.error('{t("panel.error_enviar")}')
     }
     setEnviando(false)
   }
@@ -110,10 +112,10 @@ export default function ParticipantePage() {
       body: JSON.stringify({ reserva_id: id, estado: 'cancelada' }),
     })
     if (res.ok) {
-      toast.success('Reserva cancelada')
+      toast.success('{t("panel.reserva_cancelada")}')
       cargarReservas()
     } else {
-      toast.error('Error al cancelar')
+      toast.error('{t("panel.error_cancelar")}')
     }
   }
 
@@ -129,8 +131,8 @@ export default function ParticipantePage() {
   if (!isSignedIn) {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
-        <h1 className="font-titulos text-2xl font-bold text-texto">Iniciá sesión</h1>
-        <p className="text-texto-secundario">Necesitás iniciar sesión para ver tu panel.</p>
+        <h1 className="font-titulos text-2xl font-bold text-texto">{t("panel.iniciar_sesion_h1")}</h1>
+        <p className="text-texto-secundario">{t("panel.iniciar_sesion_p")}</p>
         <Link href="/login" className="rounded-lg bg-primario px-4 py-2 font-semibold text-white">
           Ingresar
         </Link>
@@ -141,14 +143,14 @@ export default function ParticipantePage() {
   if (cargando) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-texto-secundario">Cargando...</p>
+        <p className="text-texto-secundario">{t("panel.cargando")}</p>
       </div>
     )
   }
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="mb-6 font-titulos text-2xl font-bold text-texto">Panel Participante</h1>
+      <h1 className="mb-6 font-titulos text-2xl font-bold text-texto">{t("panel.titulo")}</h1>
 
       {/* Tabs */}
       <div className="mb-6 flex gap-2 overflow-x-auto border-b border-gray-200 pb-2">
@@ -177,7 +179,7 @@ export default function ParticipantePage() {
                 onClick={() => setChatAbierto(null)}
                 className="mb-4 text-sm text-primario hover:underline"
               >
-                ← Volver a conversaciones
+                ← {t("panel.volver_conv")}
               </button>
               <div className="max-h-96 space-y-3 overflow-y-auto rounded-xl bg-white p-4 shadow-sm">
                 {chatMensajes.map((m, i) => (
@@ -206,7 +208,7 @@ export default function ParticipantePage() {
                   value={textoEnvio}
                   onChange={(e) => setTextoEnvio(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()}
-                  placeholder="Escribí un mensaje..."
+                  placeholder="{t("panel.escribir_mensaje")}"
                   className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
                 />
                 <button
@@ -222,7 +224,7 @@ export default function ParticipantePage() {
             <div>
               <div className="space-y-3">
                 {conversaciones.length === 0 ? (
-                  <p className="text-center text-texto-secundario">No tenés mensajes todavía.</p>
+                  <p className="text-center text-texto-secundario">{t("panel.no_mensajes")}</p>
                 ) : (
                   conversaciones.map((conv) => (
                     <button
@@ -256,7 +258,7 @@ export default function ParticipantePage() {
                   onClick={() => abrirChat(adminId)}
                   className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primario/10 p-3 text-sm font-medium text-primario transition hover:bg-primario/20"
                 >
-                  <HelpCircle className="h-4 w-4" /> Contactar al administrador
+                  <HelpCircle className="h-4 w-4" /> {t("panel.contactar_admin")}
                 </button>
               )}
             </div>
@@ -268,7 +270,7 @@ export default function ParticipantePage() {
       {tab === 'reservas' && (
         <div className="space-y-4">
           {reservas.length === 0 ? (
-            <p className="text-center text-texto-secundario">No tenés reservas todavía.</p>
+            <p className="text-center text-texto-secundario">{t("panel.no_reservas")}</p>
           ) : (
             reservas.map((r) => (
               <div key={r.id} className="rounded-xl bg-white p-4 shadow-sm">
@@ -307,7 +309,7 @@ export default function ParticipantePage() {
                     onClick={() => cancelarReserva(r.id)}
                     className="mt-4 rounded-lg bg-error px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
                   >
-                    Cancelar reserva
+                    {t("panel.cancelar_reserva")}
                   </button>
                 )}
               </div>
@@ -320,7 +322,7 @@ export default function ParticipantePage() {
       {tab === 'resenas' && (
         <div className="space-y-4">
           {resenas.length === 0 ? (
-            <p className="text-center text-texto-secundario">No hiciste reseñas todavía.</p>
+            <p className="text-center text-texto-secundario">{t("panel.no_resenas")}</p>
           ) : (
             resenas.map((r) => (
               <div key={r.id} className="rounded-xl bg-white p-4 shadow-sm">
