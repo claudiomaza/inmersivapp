@@ -10,6 +10,8 @@ const CATEGORIAS = [
   'Deportes', 'Manualidades', 'Teatro', 'Educación',
 ]
 
+const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+
 interface Props {
   filtros: FiltrosActividades
   actualizar: (campo: keyof FiltrosActividades, valor: any) => void
@@ -40,31 +42,31 @@ export default function FiltrosBar({
             placeholder="Buscar actividades..."
             value={filtros.busqueda}
             onChange={(e) => actualizar('busqueda', e.target.value)}
-            className="w-full rounded-xl border border-gray-200/80 bg-superficie py-3 pl-10 pr-4 text-sm placeholder:text-texto-secundario/60 focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
+            className="w-full rounded-xl border border-gray-200/80 bg-fondo py-2.5 pl-10 pr-4 text-sm placeholder:text-texto-secundario/50 focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
           />
         </div>
         <button
           onClick={() => setAbierto(!abierto)}
           className={cn(
-            'flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition',
-            abierto || activos > 0
-              ? 'border-primario/30 bg-primario/5 text-primario'
-              : 'border-gray-200/80 bg-superficie text-texto-secundario hover:border-gray-300'
+            'flex items-center gap-2 rounded-xl border border-gray-200/80 px-4 py-2.5 text-sm font-medium transition',
+            activos > 0
+              ? 'border-primario/40 bg-primario/5 text-primario'
+              : 'text-texto-secundario hover:border-gray-300 hover:bg-gray-50'
           )}
         >
           <SlidersHorizontal className="h-4 w-4" />
           Filtros
           {activos > 0 && (
-            <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primario px-1.5 text-[10px] font-bold text-white">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primario text-xs text-white">
               {activos}
             </span>
           )}
         </button>
       </div>
 
-      {/* Filters panel */}
+      {/* Panel de filtros */}
       {abierto && (
-        <div className="mt-4 rounded-2xl border border-gray-200/60 bg-superficie p-6">
+        <div className="mt-4 rounded-xl border border-gray-200/80 bg-white p-5 shadow-sm">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* Categoría */}
             <div>
@@ -83,17 +85,17 @@ export default function FiltrosBar({
               </select>
             </div>
 
-            {/* Zona */}
+            {/* Lugar */}
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
-                Zona / Departamento
+                Lugar
               </label>
               <select
                 value={filtros.lugar}
                 onChange={(e) => actualizar('lugar', e.target.value)}
                 className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
               >
-                <option value="">Todas</option>
+                <option value="">Todos</option>
                 {lugares.map((l) => (
                   <option key={l} value={l}>{l}</option>
                 ))}
@@ -113,7 +115,26 @@ export default function FiltrosBar({
               />
             </div>
 
-            {/* Precio */}
+            {/* Día de la semana */}
+            <div>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
+                Día de la semana
+              </label>
+              <select
+                value={filtros.diaSemana}
+                onChange={(e) => actualizar('diaSemana', e.target.value)}
+                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
+              >
+                <option value="">Todos</option>
+                {DIAS.map((d) => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Precio y Duración */}
+          <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
                 Precio mínimo
@@ -135,6 +156,30 @@ export default function FiltrosBar({
                 placeholder="Ej: 5000"
                 value={filtros.precioMax || ''}
                 onChange={(e) => actualizar('precioMax', e.target.value ? e.target.value : '')}
+                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
+              />
+            </div>
+            <div>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
+                Duración mín (min)
+              </label>
+              <input
+                type="number"
+                placeholder="Ej: 30"
+                value={filtros.duracionMin || ''}
+                onChange={(e) => actualizar('duracionMin', e.target.value ? e.target.value : '')}
+                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
+              />
+            </div>
+            <div>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
+                Duración máx (min)
+              </label>
+              <input
+                type="number"
+                placeholder="Ej: 120"
+                value={filtros.duracionMax || ''}
+                onChange={(e) => actualizar('duracionMax', e.target.value ? e.target.value : '')}
                 className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
               />
             </div>
