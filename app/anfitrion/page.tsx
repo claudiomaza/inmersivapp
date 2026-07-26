@@ -8,23 +8,25 @@ import Link from 'next/link'
 import {
   LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send, HelpCircle, Tag, Pencil,
 } from 'lucide-react'
+import { useLang } from '@/lib/lang-context'
 import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'ingresos' | 'resumen' | 'cupones'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
-  { key: 'reservas', label: 'Reservas', icon: <MessageSquare className="h-4 w-4" /> },
-  { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
-  { key: 'actividades', label: 'Mis Experiencias', icon: <CalendarDays className="h-4 w-4" /> },
+  { key: 'mensajes', label: t('anfitrion.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
+  { key: 'reservas', label: t('anfitrion.reservas'), icon: <MessageSquare className="h-4 w-4" /> },
+  { key: 'resenas', label: t('anfitrion.resenas'), icon: <Star className="h-4 w-4" /> },
+  { key: 'actividades', label: t('anfitrion.mis_exp'), icon: <CalendarDays className="h-4 w-4" /> },
   { key: 'cupones', label: 'Cupones', icon: <Tag className="h-4 w-4" /> },
-  { key: 'ingresos', label: 'Ingresos', icon: <DollarSign className="h-4 w-4" /> },
-  { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
+  { key: 'ingresos', label: t('anfitrion.ingresos'), icon: <DollarSign className="h-4 w-4" /> },
+  { key: 'resumen', label: t('anfitrion.resumen'), icon: <LayoutDashboard className="h-4 w-4" /> },
 ]
 
 export default function AnfitrionPage() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
+  const { t } = useLang()
   const [tab, setTab] = useState<Tab>('resumen')
   const [cargando, setCargando] = useState(true)
 
@@ -192,7 +194,7 @@ export default function AnfitrionPage() {
   if (cargando) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-texto-secundario">Cargando panel…</p>
+        <p className="text-texto-secundario">{t("anfitrion.cargando")}</p>
       </div>
     )
   }
@@ -200,7 +202,7 @@ export default function AnfitrionPage() {
   return (
     <div className="mx-auto max-w-6xl">
       <div className="mb-8">
-        <h1 className="font-titulos text-2xl font-bold text-texto">Panel de Anfitrión</h1>
+        <h1 className="font-titulos text-2xl font-bold text-texto">{t("anfitrion.titulo")}</h1>
         <p className="mt-1 text-sm text-texto-secundario">
           Bienvenido, {user?.fullName || 'anfitrión'} — administrá tus experiencias
         </p>
