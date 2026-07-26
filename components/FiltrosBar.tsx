@@ -100,6 +100,19 @@ export default function FiltrosBar({
               </select>
             </div>
 
+            {/* Fecha */}
+            <div>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
+                Fecha
+              </label>
+              <input
+                type="date"
+                value={filtros.fecha}
+                onChange={(e) => actualizar('fecha', e.target.value)}
+                className="w-full rounded-xl border border-gray-200/80 bg-fondo px-3.5 py-2.5 text-sm focus:border-primario/40 focus:outline-none focus:ring-2 focus:ring-primario/10"
+              />
+            </div>
+
             {/* Precio */}
             <div>
               <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-texto-secundario">
