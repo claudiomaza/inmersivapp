@@ -5,7 +5,133 @@ import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { formatPrecio } from '@/lib/utils'
 import { toast } from 'sonner'
-import { Star, MessageCircle, Ticket, Calendar, Pencil } from 'lucide-react'
+import { Star, MessageCircle, Ticket, Calendar, Pencil, Clock, MapPin } from 'lucide-react'
+
+const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+
+interface SlotInfo {
+  fecha: string
+  hora_inicio: string
+  hora_fin: string
+  label: string
+}
+
+function expandirHorarios(horarios: any[]): SlotInfo[] {
+  if (!horarios || !Array.isArray(horarios) || horarios.length === 0) return []
+  const hoy = new Date()
+  hoy.setHours(0, 0, 0, 0)
+  const slots: SlotInfo[] = []
+
+  for (const b of horarios) {
+    const hora = b.hora?.slice(0, 5) || '09:00'
+    const hora_fin = b.hora_fin?.slice(0, 5) || '18:00'
+    const duracion = b.duracion_turno || 0
+
+    // Fecha puntual
+    if (b.fecha) {
+      const d = new Date(b.fecha + 'T23:59:59')
+      if (d >= hoy) {
+        agregarSlots(slots, b.fecha, hora, hora_fin, duracion)
+      }
+      continue
+    }
+
+    // Rango de fechas
+    if (b.fecha_desde || b.fecha_hasta) {
+      const desde = b.fecha_desde || b.fecha
+      const hasta = b.fecha_hasta || b.fecha_desde || b.fecha
+      if (desde && hasta) {
+        let current = new Date(desde + 'T12:00:00')
+        const end = new Date(hasta + 'T12:00:00')
+        while (current <= end) {
+          if (current >= hoy) {
+            const fechaStr = current.toISOString().split('T')[0]
+            agregarSlots(slots, fechaStr, hora, hora_fin, duracion)
+          }
+          current.setDate(current.getDate() + 1)
+        }
+      }
+      continue
+    }
+
+    // Día de la semana
+    if (b.dia_semana) {
+      for (let i = 0; i < 90; i++) {
+        const d = new Date()
+        d.setDate(d.getDate() + i)
+        const diaSem = d.getDay() === 0 ? 7 : d.getDay() // domingo=7
+        if (diaSem === b.dia_semana) {
+          const fechaStr = d.toISOString().split('T')[0]
+          agregarSlots(slots, fechaStr, hora, hora_fin, duracion)
+        }
+      }
+      continue
+    }
+
+    // Rango de días
+    if (b.dia_desde || b.dia_hasta) {
+      const desde = b.dia_desde || b.dia_semana || 1
+      const hasta = b.dia_hasta || b.dia_desde || b.dia_semana || 7
+      for (let i = 0; i < 90; i++) {
+        const d = new Date()
+        d.setDate(d.getDate() + i)
+        const diaSem = d.getDay() === 0 ? 7 : d.getDay()
+        if (diaSem >= desde && diaSem <= hasta) {
+          const fechaStr = d.toISOString().split('T')[0]
+          agregarSlots(slots, fechaStr, hora, hora_fin, duracion)
+        }
+      }
+    }
+  }
+
+  // Ordenar por fecha y hora
+  slots.sort((a, b) => a.fecha.localeCompare(b.fecha) || a.hora_inicio.localeCompare(b.hora_inicio))
+  return slots
+}
+
+function agregarSlots(slots: SlotInfo[], fecha: string, hora: string, hora_fin: string, duracion: number) {
+  if (duracion > 0) {
+    // Generar slots de duracion minutos dentro del rango
+    const [hIni, mIni] = hora.split(':').map(Number)
+    const [hFin, mFin] = hora_fin.split(':').map(Number)
+    let minActual = hIni * 60 + mIni
+    const minFin = hFin * 60 + mFin
+    while (minActual + duracion <= minFin) {
+      const h = Math.floor(minActual / 60)
+      const m = minActual % 60
+      const hh = Math.floor((minActual + duracion) / 60)
+      const mm = (minActual + duracion) % 60
+      const inicio = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`
+      const fin = `${hh.toString().padStart(2, '0')}:${mm.toString().padStart(2, '0')}`
+      slots.push({
+        fecha,
+        hora_inicio: inicio,
+        hora_fin: fin,
+        label: `${inicio} - ${fin} (${duracion}min)`,
+      })
+      minActual += duracion
+    }
+  } else {
+    // Bloque completo como un solo turno
+    slots.push({
+      fecha,
+      hora_inicio: hora,
+      hora_fin,
+      label: `${hora} - ${hora_fin}`,
+    })
+  }
+}
+
+function resumirHorarios(horarios: any[]): string[] {
+  if (!horarios || !Array.isArray(horarios)) return []
+  return horarios.map((b) => {
+    if (b.fecha) return `📅 ${new Date(b.fecha + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })} — ${b.hora?.slice(0, 5)} a ${b.hora_fin?.slice(0, 5)}`
+    if (b.fecha_desde) return `📅 ${b.fecha_desde} → ${b.fecha_hasta || ''} — ${b.hora?.slice(0, 5)} a ${b.hora_fin?.slice(0, 5)}`
+    if (b.dia_semana) return `🔄 ${DIAS[b.dia_semana - 1]} — ${b.hora?.slice(0, 5)} a ${b.hora_fin?.slice(0, 5)}`
+    if (b.dia_desde) return `🔄 ${DIAS[b.dia_desde - 1]} → ${b.dia_hasta ? DIAS[b.dia_hasta - 1] : ''} — ${b.hora?.slice(0, 5)} a ${b.hora_fin?.slice(0, 5)}`
+    return ''
+  }).filter(Boolean)
+}
 
 export default function DetalleActividadPage() {
   const { id } = useParams<{ id: string }>()
@@ -15,7 +141,7 @@ export default function DetalleActividadPage() {
   const [resenas, setResenas] = useState<any[]>([])
   const [cargando, setCargando] = useState(true)
   const [reservando, setReservando] = useState(false)
-  const [fechaSel, setFechaSel] = useState('')
+  const [slotSel, setSlotSel] = useState<SlotInfo | null>(null)
 
   const [puntuacion, setPuntuacion] = useState(0)
   const [comentario, setComentario] = useState('')
@@ -28,6 +154,17 @@ export default function DetalleActividadPage() {
 
   const esAnfitrion = user?.id === actividad?.anfitrion_id
 
+  const cargarActividad = useCallback(async () => {
+    const res = await fetch(`/api/actividades?id=${id}`)
+    if (!res.ok) {
+      toast.error('No se pudo cargar la actividad')
+      router.push('/actividades')
+      return
+    }
+    const data = await res.json()
+    setActividad(data.actividad)
+  }, [id, router])
+
   const cargarResenas = useCallback(async () => {
     const res = await fetch(`/api/resenas?actividad_id=${id}`)
     if (res.ok) {
@@ -37,48 +174,13 @@ export default function DetalleActividadPage() {
   }, [id])
 
   useEffect(() => {
-    if (!id) return
-    const cargar = async () => {
-      const [actividadRes, resenasRes] = await Promise.all([
-        fetch(`/api/actividades?id=${id}`),
-        fetch(`/api/resenas?actividad_id=${id}`),
-      ])
-      if (actividadRes.ok) {
-        const data = await actividadRes.json()
-        setActividad(data.actividad)
-        // Auto-seleccionar primera fecha disponible
-        if (data.actividad?.fechas?.length > 0) {
-          setFechaSel(data.actividad.fechas[0])
-        }
-      }
-      if (resenasRes.ok) {
-        const data = await resenasRes.json()
-        setResenas(data.resenas || [])
-      }
-      setCargando(false)
-    }
-    cargar()
-  }, [id])
-
-  useEffect(() => {
-    if (!isSignedIn || !user || !id) return
-    fetch(`/api/reservas?actividad_id=${id}&usuario_id=${user.id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.reservas && data.reservas.length > 0) {
-          setTieneReservaPagada(true)
-        }
-      })
-      .catch(() => {})
-  }, [isSignedIn, user, id])
+    cargarActividad()
+    cargarResenas()
+  }, [cargarActividad, cargarResenas])
 
   const reservar = async () => {
-    if (!isSignedIn || !user) {
-      toast.error('Iniciá sesión para reservar')
-      return
-    }
-    if (!fechaSel) {
-      toast.error('Seleccioná una fecha')
+    if (!slotSel) {
+      toast.error('Seleccioná un horario')
       return
     }
     setReservando(true)
@@ -87,7 +189,8 @@ export default function DetalleActividadPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         actividad_id: id,
-        fecha: fechaSel,
+        fecha: slotSel.fecha,
+        hora_inicio: slotSel.hora_inicio,
         cupon: cuponValido?.valido ? cuponCodigo : undefined,
       }),
     })
@@ -172,9 +275,17 @@ export default function DetalleActividadPage() {
     ? (resenas.reduce((s, r) => s + r.puntuacion, 0) / resenas.length).toFixed(1)
     : null
 
-  const fechasDisponibles = actividad.fechas?.length > 0
-    ? actividad.fechas.filter((f: string) => new Date(f + 'T23:59:59') >= new Date())
-    : (actividad.fecha ? [actividad.fecha] : [])
+  const horarios = actividad.horarios || []
+  const slotsDisponibles = expandirHorarios(horarios)
+
+  // Agrupar slots por fecha
+  const slotsPorFecha: Record<string, SlotInfo[]> = {}
+  for (const s of slotsDisponibles) {
+    if (!slotsPorFecha[s.fecha]) slotsPorFecha[s.fecha] = []
+    slotsPorFecha[s.fecha].push(s)
+  }
+
+  const resumenHorarios = resumirHorarios(horarios)
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -199,7 +310,7 @@ export default function DetalleActividadPage() {
                 </span>
                 {esAnfitrion && (
                   <button
-                    onClick={() => router.push(`/actividades/${id}/editar`)}
+                    onClick={() => router.push(`/actividades/editar/${id}`)}
                     className="rounded-full bg-gray-100 p-1.5 text-gray-500 transition hover:bg-gray-200 hover:text-primario"
                     title="Editar actividad"
                   >
@@ -227,41 +338,54 @@ export default function DetalleActividadPage() {
           <div className="mt-6 flex flex-wrap gap-4 text-sm text-texto-secundario">
             {actividad.lugar && (
               <span className="flex items-center gap-1">
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                <MapPin className="h-4 w-4" />
                 {actividad.lugar}
-              </span>
-            )}
-            {actividad.hora && (
-              <span className="flex items-center gap-1">
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {actividad.hora?.slice(0, 5)}{actividad.hora_fin ? ` - ${actividad.hora_fin.slice(0, 5)}` : ''}
               </span>
             )}
           </div>
 
-          {/* Fechas disponibles */}
-          {fechasDisponibles.length > 0 && (
+          {/* Horarios */}
+          {resumenHorarios.length > 0 && (
+            <div className="mt-4 rounded-lg bg-gray-50 p-3">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-texto-secundario">
+                Horarios
+              </p>
+              <div className="space-y-1">
+                {resumenHorarios.map((r, i) => (
+                  <p key={i} className="text-sm text-texto">{r}</p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Slots disponibles */}
+          {slotsDisponibles.length > 0 && (
             <div className="mt-4">
-              <p className="mb-2 text-sm font-medium text-texto">📅 Fechas disponibles</p>
-              <div className="flex flex-wrap gap-2">
-                {fechasDisponibles.map((f: string) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => setFechaSel(f)}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-                      fechaSel === f
-                        ? 'bg-primario text-white'
-                        : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
-                    }`}
-                  >
-                    {new Date(f + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
-                  </button>
+              <p className="mb-2 text-sm font-medium text-texto">📅 Elegí tu turno</p>
+              <div className="max-h-72 space-y-2 overflow-y-auto">
+                {Object.entries(slotsPorFecha).map(([fecha, slots]) => (
+                  <div key={fecha}>
+                    <p className="mb-1 text-xs font-semibold text-texto-secundario">
+                      {new Date(fecha + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {slots.map((s, i) => (
+                        <button
+                          key={`${s.fecha}-${s.hora_inicio}-${i}`}
+                          type="button"
+                          onClick={() => setSlotSel(s)}
+                          className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                            slotSel?.fecha === s.fecha && slotSel?.hora_inicio === s.hora_inicio
+                              ? 'bg-primario text-white'
+                              : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
+                          }`}
+                        >
+                          <Clock className="mr-1 inline h-3 w-3" />
+                          {s.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -299,7 +423,7 @@ export default function DetalleActividadPage() {
           {/* Botón de reserva */}
           <button
             onClick={reservar}
-            disabled={reservando || !fechaSel}
+            disabled={reservando || !slotSel}
             className="mt-4 w-full rounded-lg bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
           >
             {reservando ? 'Reservando…' : 'Reservar ahora'}
