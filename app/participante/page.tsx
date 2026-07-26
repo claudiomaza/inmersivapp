@@ -208,7 +208,7 @@ export default function ParticipantePage() {
                   value={textoEnvio}
                   onChange={(e) => setTextoEnvio(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()}
-                  placeholder="{t("panel.escribir_mensaje")}"
+                  placeholder={t("panel.escribir_mensaje")}
                   className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
                 />
                 <button
