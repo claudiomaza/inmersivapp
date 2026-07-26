@@ -5,7 +5,8 @@ import { useUser, useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Bell, Menu, X, UserCircle, Sun, Moon, MessageSquare } from 'lucide-react'
+import { Bell, Menu, X, UserCircle, Sun, Moon, MessageSquare, Languages } from 'lucide-react'
+import { useLang } from '@/lib/lang-context'
 
 export default function Navbar() {
   const { isSignedIn, user } = useUser()
@@ -16,6 +17,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [noLeidos, setNoLeidos] = useState(0)
   const [oscuro, setOscuro] = useState(false)
+  const { locale, setLocale } = useLang()
 
   useEffect(() => {
     // Inicializar desde localStorage
@@ -90,6 +92,15 @@ export default function Navbar() {
             Primeros pasos
           </Link>
 
+          {/* Language toggle */}
+          <button
+            onClick={() => setLocale(locale === 'es-AR' ? 'en-US' : 'es-AR')}
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-texto-secundario transition hover:bg-gray-100"
+            aria-label="Cambiar idioma"
+          >
+            <span className="text-xs font-bold">{locale === 'es-AR' ? 'EN' : 'ES'}</span>
+          </button>
+
           {/* Theme toggle */}
           <button
             onClick={toggleTema}
@@ -113,12 +124,6 @@ export default function Navbar() {
                 )}
               </Link>
 
-              <Link
-                href="/participante"
-                className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
-              >
-                Panel Participante
-              </Link>
               {esAnfitrion && (
                 <Link
                   href="/anfitrion"
@@ -137,19 +142,25 @@ export default function Navbar() {
               )}
 
               <Link
+                href="/reservas"
+                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
+              >
+                Mis reservas
+              </Link>
+              <Link
+                href="/mensajes"
+                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
+              >
+                Mensajes
+              </Link>
+
+              <Link
                 href="/perfil"
                 className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
               >
                 <UserCircle className="h-5 w-5" />
                 {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || 'Perfil'}
               </Link>
-
-              <button
-                onClick={cerrarSesion}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-error transition hover:bg-error/10"
-              >
-                Cerrar sesión
-              </button>
             </>
           ) : (
             <Link
@@ -190,6 +201,15 @@ export default function Navbar() {
               Primeros pasos
             </Link>
 
+            {/* Language toggle mobile */}
+            <button
+              onClick={() => { setLocale(locale === 'es-AR' ? 'en-US' : 'es-AR'); setMenuOpen(false) }}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+            >
+              <Languages className="h-5 w-5" />
+              {locale === 'es-AR' ? 'English' : 'Español'}
+            </button>
+
             {/* Theme toggle mobile */}
             <button
               onClick={() => { toggleTema(); setMenuOpen(false) }}
@@ -223,11 +243,19 @@ export default function Navbar() {
                   {user?.fullName || 'Perfil'}
                 </Link>
                 <Link
-                  href="/participante"
-                  className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
+                  href="/reservas"
+                  className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Panel Participante
+                  Mis reservas
+                </Link>
+                <Link
+                  href="/mensajes"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <MessageSquare className="h-5 w-5" />
+                  Mensajes
                 </Link>
                 {esAnfitrion && (
                   <Link
