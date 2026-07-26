@@ -61,6 +61,7 @@ export default function NuevaActividadPage() {
     precio_por_hora: '',  // único precio base: por hora por persona
     categoria: '',
     lugar: '',
+    capacidad_max: '',
     foto: '',
   })
   const [bloques, setBloques] = useState<BloqueForm[]>([])
@@ -116,6 +117,7 @@ export default function NuevaActividadPage() {
         descripcion: form.descripcion,
         categoria: form.categoria,
         lugar: form.lugar,
+        capacidad_max: form.capacidad_max ? Number(form.capacidad_max) : null,
         imagen_url: form.foto || null,
         precio: 0, // legacy, se mantiene por compatibilidad
         precio_por_hora: form.precio_por_hora ? Number(form.precio_por_hora) : null,
@@ -206,6 +208,21 @@ export default function NuevaActividadPage() {
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
             placeholder="Ej: Salta 123, Mendoza"
           />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-texto">Cupo máximo por sesión</label>
+          <input
+            type="number"
+            min={1}
+            value={form.capacidad_max}
+            onChange={(e) => setForm({ ...form, capacidad_max: e.target.value })}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
+            placeholder="Ej: 20"
+          />
+          <p className="mt-1 text-xs text-texto-secundario">
+            Cantidad máxima de personas que pueden participar en cada sesión/evento
+          </p>
         </div>
 
         {/* Bloques horarios */}
