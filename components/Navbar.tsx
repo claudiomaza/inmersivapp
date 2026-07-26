@@ -124,6 +124,12 @@ export default function Navbar() {
                 )}
               </Link>
 
+              <Link
+                href="/participante"
+                className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+              >
+                Mi Panel
+              </Link>
               {esAnfitrion && (
                 <Link
                   href="/anfitrion"
@@ -138,14 +144,6 @@ export default function Navbar() {
                   className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
                 >
                   Panel Admin
-                </Link>
-              )}
-              {!esAdmin && !esAnfitrion && (
-                <Link
-                  href="/participante"
-                  className="rounded-lg bg-primario/10 px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
-                >
-                  Mi Panel
                 </Link>
               )}
 
@@ -265,6 +263,13 @@ export default function Navbar() {
                   <MessageSquare className="h-5 w-5" />
                   Mensajes
                 </Link>
+                <Link
+                  href="/participante"
+                  className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Mi Panel
+                </Link>
                 {esAnfitrion && (
                   <Link
                     href="/anfitrion"
@@ -281,15 +286,6 @@ export default function Navbar() {
                     onClick={() => setMenuOpen(false)}
                   >
                     Panel Admin
-                  </Link>
-                )}
-                {!esAdmin && !esAnfitrion && (
-                  <Link
-                    href="/participante"
-                    className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Mi Panel
                   </Link>
                 )}
                 <button
