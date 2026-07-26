@@ -29,7 +29,7 @@ interface BloqueForm {
   hora_fin: string
   duracion_turno: number
   // Precios por bloque
-  precio?: string        // precio especial por persona para este bloque
+  precio_por_hora?: string  // precio por hora especial para este bloque
   es_grupal: boolean
   precio_grupo?: string  // precio fijo grupal
 }
@@ -88,7 +88,7 @@ export default function NuevaActividadPage() {
         es_grupal: b.es_grupal || false,
       }
       if (b.duracion_turno > 0) base.duracion_turno = b.duracion_turno
-      if (b.precio) base.precio = Number(b.precio)
+      if (b.precio_por_hora) base.precio_por_hora = Number(b.precio_por_hora)
       if (b.precio_grupo) base.precio_grupo = Number(b.precio_grupo)
       if (b.tipo === 'fecha') base.fecha = b.fecha
       else if (b.tipo === 'rango_fechas') {
@@ -398,13 +398,13 @@ export default function NuevaActividadPage() {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="mb-1 block text-xs text-texto-secundario">
-                        Precio especial por persona ($)
+                        Precio por hora ($)
                       </label>
                       <input
                         type="number"
                         min={0}
-                        value={b.precio || ''}
-                        onChange={(e) => actualizarBloque(b.id, { precio: e.target.value })}
+                        value={b.precio_por_hora || ''}
+                        onChange={(e) => actualizarBloque(b.id, { precio_por_hora: e.target.value })}
                         className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
                         placeholder="Vacío = precio base"
                       />
