@@ -438,7 +438,6 @@ export default function AnfitrionPage() {
               )}
               <button
                 onClick={() => {
-                  // Buscar admin y abrir chat
                   fetch('/api/admin/contacto').then(r => r.json()).then(d => {
                     if (d.adminId) {
                       const adminId = d.adminId
@@ -454,6 +453,7 @@ export default function AnfitrionPage() {
               >
                 <HelpCircle className="h-4 w-4" /> Contactar al administrador
               </button>
+            </div>
           )}
         </div>
       )}
