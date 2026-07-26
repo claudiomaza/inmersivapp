@@ -6,17 +6,18 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import {
-  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send, HelpCircle,
+  LayoutDashboard, CalendarDays, Star, DollarSign, MessageSquare, Send, HelpCircle, Tag,
 } from 'lucide-react'
 import { formatPrecio } from '@/lib/utils'
 
-type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'ingresos' | 'resumen'
+type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'ingresos' | 'resumen' | 'cupones'
 
 const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
   { key: 'mensajes', label: 'Mensajes', icon: <MessageSquare className="h-4 w-4" /> },
   { key: 'reservas', label: 'Reservas', icon: <MessageSquare className="h-4 w-4" /> },
   { key: 'resenas', label: 'Reseñas', icon: <Star className="h-4 w-4" /> },
   { key: 'actividades', label: 'Mis Experiencias', icon: <CalendarDays className="h-4 w-4" /> },
+  { key: 'cupones', label: 'Cupones', icon: <Tag className="h-4 w-4" /> },
   { key: 'ingresos', label: 'Ingresos', icon: <DollarSign className="h-4 w-4" /> },
   { key: 'resumen', label: 'Resumen', icon: <LayoutDashboard className="h-4 w-4" /> },
 ]
@@ -45,6 +46,19 @@ export default function AnfitrionPage() {
   const [chatMensajes, setChatMensajes] = useState<any[]>([])
   const [textoEnvio, setTextoEnvio] = useState('')
   const [enviando, setEnviando] = useState(false)
+
+  // Cupones
+  const [comercio, setComercio] = useState<any>(null)
+  const [cupones, setCupones] = useState<any[]>([])
+  const [creandoCupon, setCreandoCupon] = useState(false)
+  const [formCupon, setFormCupon] = useState({
+    codigo: '',
+    descuento_tipo: 'porcentaje' as 'porcentaje' | 'fijo',
+    descuento_valor: '',
+    condiciones: '',
+    usos_maximos: '100',
+  })
+  const [creando, setCreando] = useState(false)
 
   const cargarResumen = async () => {
     const res = await fetch('/api/anfitrion/datos?tipo=resumen')
@@ -90,6 +104,44 @@ export default function AnfitrionPage() {
     setParticipantes(data.participantes || [])
   }
 
+  const cargarCupones = async () => {
+    const res = await fetch('/api/anfitrion/datos?tipo=cupones')
+    if (!res.ok) return
+    const data = await res.json()
+    setComercio(data.comercio)
+    setCupones(data.cupones || [])
+  }
+
+  const crearCupon = async () => {
+    if (!formCupon.codigo.trim() || !formCupon.descuento_valor || !comercio) {
+      toast.error('Completá el código y el valor del descuento')
+      return
+    }
+    setCreando(true)
+    const res = await fetch('/api/cupones/crear', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        codigo: formCupon.codigo,
+        comercio_id: comercio.id,
+        descuento_tipo: formCupon.descuento_tipo,
+        descuento_valor: Number(formCupon.descuento_valor),
+        condiciones: formCupon.condiciones,
+        usos_maximos: Number(formCupon.usos_maximos),
+      }),
+    })
+    setCreando(false)
+    if (!res.ok) {
+      const err = await res.json()
+      toast.error(err.error || 'Error al crear cupón')
+      return
+    }
+    toast.success('¡Cupón creado!')
+    setCreandoCupon(false)
+    setFormCupon({ codigo: '', descuento_tipo: 'porcentaje', descuento_valor: '', condiciones: '', usos_maximos: '100' })
+    cargarCupones()
+  }
+
   const abrirChat = async (usuarioId: string) => {
     setChatAbierto(usuarioId)
     setChatMensajes(mensajesConv.filter((m: any) =>
@@ -132,6 +184,7 @@ export default function AnfitrionPage() {
       cargarResenas(),
       cargarIngresos(),
       cargarMensajes(),
+      cargarCupones(),
     ]).finally(() => setCargando(false))
   }, [isSignedIn])
 
@@ -232,10 +285,8 @@ export default function AnfitrionPage() {
                       <td className="px-4 py-3 font-semibold text-primario">{formatPrecio(a.precio)}</td>
                       <td className="px-4 py-3 text-texto-secundario">{a.lugar?.split(",")[0] || a.lugar}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-                          true ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
-                        }`}>
-                          {true ? 'Activa' : 'Inactiva'}
+                        <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                          Activa
                         </span>
                       </td>
                     </tr>
@@ -307,46 +358,129 @@ export default function AnfitrionPage() {
             </div>
           )}
         </div>
+      )}
+
+      {/* Cupones */}
+      {tab === 'cupones' && (
+        <div>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-sm text-texto-secundario">
+              {comercio
+                ? `Cupones de ${comercio.nombre} (${cupones.length})`
+                : 'Todavía no tenés un comercio registrado'}
+            </p>
+            {comercio && (
+              <button
+                onClick={() => setCreandoCupon(!creandoCupon)}
+                className="rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark"
+              >
+                {creandoCupon ? 'Cancelar' : '+ Nuevo cupón'}
+              </button>
+            )}
+          </div>
+
+          {creandoCupon && comercio && (
+            <div className="mb-6 rounded-xl bg-superficie p-5 shadow-sm">
+              <h3 className="mb-4 font-titulos text-lg font-bold text-texto">Crear cupón de descuento</h3>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-texto-secundario">Código del cupón</label>
+                  <input type="text" value={formCupon.codigo} onChange={(e) => setFormCupon({ ...formCupon, codigo: e.target.value })} placeholder="Ej: ASTRO15" className="w-full rounded-lg border px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20" />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-texto-secundario">Usos máximos</label>
+                  <input type="number" value={formCupon.usos_maximos} onChange={(e) => setFormCupon({ ...formCupon, usos_maximos: e.target.value })} min="1" className="w-full rounded-lg border px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20" />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-texto-secundario">Tipo de descuento</label>
+                  <select value={formCupon.descuento_tipo} onChange={(e) => setFormCupon({ ...formCupon, descuento_tipo: e.target.value as 'porcentaje' | 'fijo' })} className="w-full rounded-lg border px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20">
+                    <option value="porcentaje">Porcentaje (%)</option>
+                    <option value="fijo">Monto fijo ($)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-texto-secundario">{formCupon.descuento_tipo === 'porcentaje' ? 'Valor %' : 'Valor $'}</label>
+                  <input type="number" value={formCupon.descuento_valor} onChange={(e) => setFormCupon({ ...formCupon, descuento_valor: e.target.value })} min="1" max={formCupon.descuento_tipo === 'porcentaje' ? 100 : undefined} placeholder={formCupon.descuento_tipo === 'porcentaje' ? 'Ej: 15' : 'Ej: 500'} className="w-full rounded-lg border px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20" />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-texto-secundario">Condiciones (opcional)</label>
+                  <input type="text" value={formCupon.condiciones} onChange={(e) => setFormCupon({ ...formCupon, condiciones: e.target.value })} placeholder="Ej: Válido solo para experiencias de astroturismo" className="w-full rounded-lg border px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20" />
+                </div>
+              </div>
+              <button onClick={crearCupon} disabled={creando || !formCupon.codigo.trim() || !formCupon.descuento_valor} className="mt-4 rounded-lg bg-primario px-6 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50">
+                {creando ? 'Creando…' : 'Crear cupón'}
+              </button>
+            </div>
           )}
+
+          {!comercio ? (
+            <div className="rounded-xl bg-superficie p-8 text-center shadow-sm">
+              <Tag className="mx-auto mb-3 h-12 w-12 text-texto-secundario/50" />
+              <p className="text-sm text-texto-secundario">Para crear cupones primero necesitás registrar un comercio.</p>
+              <p className="mt-1 text-xs text-texto-secundario/70">Contactá al administrador para que te registre como comercio.</p>
+            </div>
+          ) : cupones.length === 0 ? (
+            <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">Todavía no creaste ningún cupón. ¡Crea el primero!</p>
+          ) : (
+            <div className="overflow-x-auto rounded-xl bg-superficie shadow-sm">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b text-xs font-medium uppercase tracking-wider text-texto-secundario">
+                    <th className="px-4 py-3">Código</th>
+                    <th className="px-4 py-3">Descuento</th>
+                    <th className="px-4 py-3">Usos</th>
+                    <th className="px-4 py-3">Condiciones</th>
+                    <th className="px-4 py-3">Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cupones.map((c) => (
+                    <tr key={c.codigo} className="border-b last:border-0 hover:bg-gray-50">
+                      <td className="px-4 py-3 font-mono font-bold text-primario">{c.codigo}</td>
+                      <td className="px-4 py-3 font-semibold text-texto">{c.descuento_tipo === 'porcentaje' ? `${c.descuento_valor}%` : `$${c.descuento_valor}`}</td>
+                      <td className="px-4 py-3 text-texto-secundario">{c.usos_actuales} / {c.usos_maximos}</td>
+                      <td className="max-w-[200px] truncate px-4 py-3 text-texto-secundario">{c.condiciones || '—'}</td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${c.activo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                          {c.activo ? 'Activo' : 'Inactivo'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       {tab === 'ingresos' && (
         <div>
           <div className="mb-6 grid gap-4 sm:grid-cols-3">
             <div className="rounded-xl bg-superficie p-5 shadow-sm">
               <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Pendiente de cobro</p>
-              <p className="mt-2 font-titulos text-2xl font-bold text-primario">
-                {formatPrecio(pagosPendientes.reduce((s, p) => s + p.monto, 0))}
-              </p>
+              <p className="mt-2 font-titulos text-2xl font-bold text-primario">{formatPrecio(pagosPendientes.reduce((s, p) => s + p.monto, 0))}</p>
             </div>
             <div className="rounded-xl bg-superficie p-5 shadow-sm">
               <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Ya cobrado</p>
-              <p className="mt-2 font-titulos text-2xl font-bold text-green-600">
-                {formatPrecio(totalPagado)}
-              </p>
+              <p className="mt-2 font-titulos text-2xl font-bold text-green-600">{formatPrecio(totalPagado)}</p>
             </div>
             <div className="rounded-xl bg-superficie p-5 shadow-sm">
               <p className="text-xs font-medium uppercase tracking-wider text-texto-secundario">Comisión (10%)</p>
-              <p className="mt-2 font-titulos text-2xl font-bold text-texto-secundario">
-                {formatPrecio(pagosPendientes.reduce((s, p) => s + p.comision, 0))}
-              </p>
+              <p className="mt-2 font-titulos text-2xl font-bold text-texto-secundario">{formatPrecio(pagosPendientes.reduce((s, p) => s + p.comision, 0))}</p>
             </div>
           </div>
           {pagosPendientes.length === 0 ? (
-            <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">
-              No tenés pagos pendientes. Cuando alguien reserve y pague, vas a verlo acá.
-            </p>
+            <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">No tenés pagos pendientes. Cuando alguien reserve y pague, vas a verlo acá.</p>
           ) : (
             <div className="space-y-3">
               {pagosPendientes.map((p) => (
                 <div key={p.id} className="flex items-center justify-between rounded-xl bg-superficie p-4 shadow-sm">
                   <div>
                     <p className="font-medium text-texto">{formatPrecio(p.monto)}</p>
-                    <p className="mt-0.5 text-xs text-texto-secundario">
-                      Comisión: {formatPrecio(p.comision)} — {new Date(p.created_at).toLocaleDateString('es-AR')}
-                    </p>
+                    <p className="mt-0.5 text-xs text-texto-secundario">Comisión: {formatPrecio(p.comision)} — {new Date(p.created_at).toLocaleDateString('es-AR')}</p>
                   </div>
-                  <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-700">
-                    Pendiente
-                  </span>
+                  <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-700">Pendiente</span>
                 </div>
               ))}
             </div>
@@ -354,17 +488,12 @@ export default function AnfitrionPage() {
         </div>
       )}
 
-      {/* Mensajes como anfitrión */}
+      {/* Mensajes */}
       {tab === 'mensajes' && (
         <div>
           {chatAbierto ? (
             <div>
-              <button
-                onClick={() => setChatAbierto(null)}
-                className="mb-4 flex items-center gap-2 text-sm text-primario hover:underline"
-              >
-                ← Volver a conversaciones
-              </button>
+              <button onClick={() => setChatAbierto(null)} className="mb-4 flex items-center gap-2 text-sm text-primario hover:underline">← Volver a conversaciones</button>
               <div className="rounded-xl bg-superficie p-4 shadow-sm">
                 <div className="mb-4 max-h-80 space-y-3 overflow-y-auto">
                   {chatMensajes.length === 0 ? (
@@ -372,34 +501,17 @@ export default function AnfitrionPage() {
                   ) : (
                     chatMensajes.map((m) => (
                       <div key={m.id} className={`flex ${m.emisor_id === user?.id ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[75%] rounded-xl px-4 py-2 text-sm ${
-                          m.emisor_id === user?.id
-                            ? 'bg-primario text-white'
-                            : 'bg-gray-100 text-texto'
-                        }`}>
+                        <div className={`max-w-[75%] rounded-xl px-4 py-2 text-sm ${m.emisor_id === user?.id ? 'bg-primario text-white' : 'bg-gray-100 text-texto'}`}>
                           <p>{m.contenido}</p>
-                          <p className="mt-1 text-xs opacity-70">
-                            {new Date(m.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
-                          </p>
+                          <p className="mt-1 text-xs opacity-70">{new Date(m.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}</p>
                         </div>
                       </div>
                     ))
                   )}
                 </div>
                 <div className="flex gap-2 border-t pt-3">
-                  <input
-                    type="text"
-                    value={textoEnvio}
-                    onChange={(e) => setTextoEnvio(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()}
-                    placeholder="Escribí un mensaje…"
-                    className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                  />
-                  <button
-                    onClick={enviarMensaje}
-                    disabled={enviando || !textoEnvio.trim()}
-                    className="flex items-center gap-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
-                  >
+                  <input type="text" value={textoEnvio} onChange={(e) => setTextoEnvio(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()} placeholder="Escribí un mensaje…" className="flex-1 rounded-lg border px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20" />
+                  <button onClick={enviarMensaje} disabled={enviando || !textoEnvio.trim()} className="flex items-center gap-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50">
                     <Send className="h-4 w-4" />
                   </button>
                 </div>
@@ -407,50 +519,24 @@ export default function AnfitrionPage() {
             </div>
           ) : (
             <div>
-              <p className="mb-4 text-sm text-texto-secundario">
-                {participantes.length} participante(s) de tus experiencias
-              </p>
+              <p className="mb-4 text-sm text-texto-secundario">{participantes.length} participante(s) de tus experiencias</p>
               {participantes.length === 0 ? (
-                <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">
-                  Cuando alguien reserve tu experiencia, podrás chatear con ellos acá.
-                </p>
+                <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">Cuando alguien reserve tu experiencia, podrás chatear con ellos acá.</p>
               ) : (
                 <div className="space-y-3">
                   {participantes.map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => abrirChat(p.id)}
-                      className="flex w-full items-center gap-3 rounded-xl bg-superficie p-4 shadow-sm transition hover:bg-gray-100"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
-                        {(p.nombre || 'U')[0].toUpperCase()}
-                      </div>
+                    <button key={p.id} onClick={() => abrirChat(p.id)} className="flex w-full items-center gap-3 rounded-xl bg-superficie p-4 shadow-sm transition hover:bg-gray-100">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">{(p.nombre || 'U')[0].toUpperCase()}</div>
                       <div className="flex-1 text-left">
                         <p className="font-medium text-texto">{p.nombre} {p.apellido}</p>
-                        <p className="text-xs text-texto-secundario">
-                          {mensajesConv.filter((m: any) => m.emisor_id === p.id || m.receptor_id === p.id).length} mensajes
-                        </p>
+                        <p className="text-xs text-texto-secundario">{mensajesConv.filter((m: any) => m.emisor_id === p.id || m.receptor_id === p.id).length} mensajes</p>
                       </div>
                       <MessageSquare className="h-4 w-4 text-primario" />
                     </button>
                   ))}
                 </div>
               )}
-              <button
-                onClick={() => {
-                  fetch('/api/admin/contacto').then(r => r.json()).then(d => {
-                    if (d.adminId) {
-                      const adminId = d.adminId
-                      setChatAbierto(adminId)
-                      setChatMensajes(mensajesConv.filter((m: any) =>
-                        (m.emisor_id === adminId && m.receptor_id === user?.id) ||
-                        (m.emisor_id === user?.id && m.receptor_id === adminId)
-                      ))
-                    }
-                  })
-                }}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primario/10 p-3 text-sm font-medium text-primario transition hover:bg-primario/20"
-              >
+              <button onClick={() => { fetch('/api/admin/contacto').then(r => r.json()).then(d => { if (d.adminId) { setChatAbierto(d.adminId); setChatMensajes(mensajesConv.filter((m: any) => (m.emisor_id === d.adminId && m.receptor_id === user?.id) || (m.emisor_id === user?.id && m.receptor_id === d.adminId))) } }) }} className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primario/10 p-3 text-sm font-medium text-primario transition hover:bg-primario/20">
                 <HelpCircle className="h-4 w-4" /> Contactar al administrador
               </button>
             </div>
