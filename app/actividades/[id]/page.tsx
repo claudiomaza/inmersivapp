@@ -163,6 +163,7 @@ export default function DetalleActividadPage() {
     }
     const data = await res.json()
     setActividad(data.actividad)
+    setCargando(false)
   }, [id, router])
 
   const cargarResenas = useCallback(async () => {
