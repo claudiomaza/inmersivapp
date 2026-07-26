@@ -31,6 +31,9 @@ export default function DetalleActividadPage() {
   const [comentario, setComentario] = useState('')
   const [enviandoResena, setEnviandoResena] = useState(false)
 
+  // Participantes para reserva grupal
+  const [participantes, setParticipantes] = useState<{ nombre: string; dni: string }[]>([])
+
   const [cuponCodigo, setCuponCodigo] = useState('')
   const [cuponValido, setCuponValido] = useState<{ valido: boolean; descuento: number; mensaje: string } | null>(null)
   const [verificandoCupon, setVerificandoCupon] = useState(false)
@@ -49,10 +52,19 @@ export default function DetalleActividadPage() {
     ]).finally(() => setCargando(false))
   }, [id, cargarResenas])
 
-  // Reset cantidad cuando la actividad es grupal
+  // Reset cantidad cuando cambia el bloque
   useEffect(() => {
-    if (actividad?.es_grupal) setCantidad(1)
-  }, [actividad?.es_grupal])
+    setCantidad(1)
+    setParticipantes([])
+  }, [bloqueSel])
+
+  // Sincronizar participantes con la cantidad
+  useEffect(() => {
+    setParticipantes(prev => {
+      const nuevos = Array.from({ length: cantidad }, (_, i) => prev[i] || { nombre: '', dni: '' })
+      return nuevos
+    })
+  }, [cantidad])
 
   // Calcular precio actual
   const precioUnitario = calcularPrecioUnitario(actividad || {}, bloqueSel)
@@ -67,6 +79,13 @@ export default function DetalleActividadPage() {
     if (!isSignedIn) return router.push('/login')
     if (!fechaSel) return toast.error('Seleccioná una fecha')
     if (!actividad.es_grupal && cantidad < 1) return toast.error('Seleccioná al menos 1 persona')
+
+    // Validate participants if grupal
+    if (bloqueSel?.es_grupal) {
+      const incompletos = participantes.some(p => !p.nombre.trim() || !p.dni.trim())
+      if (incompletos) return toast.error('Completá nombre y DNI de todos los participantes')
+    }
+
     setReservando(true)
 
     const res = await fetch('/api/reservas', {
@@ -75,9 +94,10 @@ export default function DetalleActividadPage() {
       body: JSON.stringify({
         actividad_id: id,
         fecha: fechaSel,
-        cantidad: actividad.es_grupal ? 1 : cantidad,
+        cantidad: bloqueSel?.es_grupal ? cantidad : cantidad,
         monto: precioFinal,
         cupon_codigo: cuponValido?.valido ? cuponCodigo : undefined,
+        participantes: bloqueSel?.es_grupal ? participantes : undefined,
       }),
     })
 
@@ -239,9 +259,15 @@ export default function DetalleActividadPage() {
                                 : ''}
                           </p>
                         </div>
+                      <div className="text-right">
                         <p className="text-lg font-bold text-primario">
                           {formatPrecio(precio)}
                         </p>
+                        {h.es_grupal && h.personas_grupo && (
+                          <p className="text-xs text-texto-secundario">
+                            hasta {h.personas_grupo} pers.
+                          </p>
+                        )}
                       </div>
                       {actividad.precio_por_hora && !h.precio && (
                         <p className="mt-1 text-xs text-texto-secundario">
@@ -365,38 +391,74 @@ export default function DetalleActividadPage() {
             {actividad.capacidad_max && (
               <p className="mt-3 text-center text-sm text-texto-secundario">
                 <Users className="mr-1 inline h-4 w-4" />
-                {actividad.es_grupal
-                  ? `Hasta ${actividad.capacidad_max} personas por grupo`
+                {bloqueSel?.es_grupal
+                  ? `Hasta ${actividad.capacidad_max} grupos`
                   : `Capacidad máxima: ${actividad.capacidad_max} personas`
                 }
               </p>
             )}
 
-            {/* Selector de personas (solo individual) */}
-            {!actividad.es_grupal && (
-              <div className="mt-4">
-                <label className="mb-1 block text-sm font-medium text-texto">
-                  Cantidad de personas
-                </label>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setCantidad(Math.max(1, cantidad - 1))}
-                    disabled={cantidad <= 1}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-lg font-medium transition hover:bg-gray-50 disabled:opacity-30"
-                  >
-                    –
-                  </button>
-                  <span className="min-w-[2rem] text-center text-lg font-semibold text-texto">
-                    {cantidad}
-                  </span>
-                  <button
-                    onClick={() => setCantidad(Math.min(actividad.capacidad_max || 10, cantidad + 1))}
-                    disabled={cantidad >= (actividad.capacidad_max || 10)}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-lg font-medium transition hover:bg-gray-50 disabled:opacity-30"
-                  >
-                    +
-                  </button>
-                </div>
+            {/* Selector de personas */}
+            <div className="mt-4">
+              <label className="mb-1 block text-sm font-medium text-texto">
+                {bloqueSel?.es_grupal ? 'Cantidad de grupos' : 'Cantidad de personas'}
+              </label>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setCantidad(Math.max(1, cantidad - 1))}
+                  disabled={cantidad <= 1}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-lg font-medium transition hover:bg-gray-50 disabled:opacity-30"
+                >
+                  –
+                </button>
+                <span className="min-w-[2rem] text-center text-lg font-semibold text-texto">
+                  {cantidad}
+                </span>
+                <button
+                  onClick={() => setCantidad(Math.min(actividad.capacidad_max || 10, cantidad + 1))}
+                  disabled={cantidad >= (actividad.capacidad_max || 10)}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-lg font-medium transition hover:bg-gray-50 disabled:opacity-30"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Formulario de participantes para reserva grupal */}
+            {bloqueSel?.es_grupal && cantidad > 0 && (
+              <div className="mt-4 space-y-3">
+                <p className="text-sm font-medium text-texto">Datos de los participantes</p>
+                {participantes.map((p, i) => (
+                  <div key={i} className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                    <p className="mb-2 text-xs font-semibold text-texto-secundario">
+                      Persona {i + 1}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        value={p.nombre}
+                        onChange={(e) => {
+                          const nuevos = [...participantes]
+                          nuevos[i] = { ...nuevos[i], nombre: e.target.value }
+                          setParticipantes(nuevos)
+                        }}
+                        placeholder="Nombre completo"
+                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                      />
+                      <input
+                        type="text"
+                        value={p.dni}
+                        onChange={(e) => {
+                          const nuevos = [...participantes]
+                          nuevos[i] = { ...nuevos[i], dni: e.target.value.replace(/\D/g, '') }
+                          setParticipantes(nuevos)
+                        }}
+                        placeholder="DNI"
+                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
 
@@ -420,7 +482,7 @@ export default function DetalleActividadPage() {
             >
               {reservando
                 ? 'Procesando…'
-                : `Reservar — ${formatPrecio(precioFinal)}${!actividad.es_grupal && cantidad > 1 ? ` (×${cantidad})` : ''}`
+                : `Reservar — ${formatPrecio(precioFinal)}${!bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad})` : ''}${bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad} grupo${cantidad > 1 ? 's' : ''})` : ''}`
               }
             </button>
 
