@@ -293,7 +293,13 @@ export default function AnfitrionPage() {
                 </thead>
                 <tbody>
                   {actividades
-                    .filter(a => !filtroFecha || a.fechas?.includes(filtroFecha) || a.fecha === filtroFecha)
+                    .filter(a => {
+                      if (!filtroFecha) return true
+                      if (a.horarios && Array.isArray(a.horarios)) {
+                        return a.horarios.some((b: any) => b.fecha === filtroFecha)
+                      }
+                      return a.fechas?.includes(filtroFecha) || a.fecha === filtroFecha
+                    })
                     .map((a) => (
                     <tr key={a.id} className="border-b last:border-0 hover:bg-gray-50">
                       <td className="px-4 py-3 font-medium text-texto">
@@ -304,11 +310,31 @@ export default function AnfitrionPage() {
                       <td className="px-4 py-3 text-texto-secundario">{a.categoria}</td>
                       <td className="px-4 py-3 font-semibold text-primario">{formatPrecio(a.precio)}</td>
                       <td className="px-4 py-3 text-xs text-texto-secundario">
-                        {a.fechas && a.fechas.length > 0
-                          ? a.fechas.slice(0, 3).map((f: string) => new Date(f).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })).join(', ') + (a.fechas.length > 3 ? ` +${a.fechas.length - 3}` : '')
-                          : a.fecha
-                            ? new Date(a.fecha).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })
-                            : '—'}
+                        {(() => {
+                          const h = a.horarios
+                          if (h && Array.isArray(h) && h.length > 0) {
+                            const fechas = h.filter((b: any) => b.fecha).map((b: any) => b.fecha)
+                            const dias = h.filter((b: any) => b.dia_semana).map((b: any) => ['L','M','M','J','V','S','D'][b.dia_semana - 1])
+                            const partes: string[] = []
+                            if (fechas.length > 0) {
+                              if (fechas.length <= 3) {
+                                partes.push(fechas.map((f: string) => new Date(f).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })).join(', '))
+                              } else {
+                                partes.push(`${fechas.length} fechas`)
+                              }
+                            }
+                            if (dias.length > 0) {
+                              partes.push(dias.join(', '))
+                            }
+                            if (h[0]?.hora) partes.push(h[0].hora.slice(0, 5))
+                            return partes.join(' · ') || '—'
+                          }
+                          return a.fechas && a.fechas.length > 0
+                            ? a.fechas.slice(0, 3).map((f: string) => new Date(f).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })).join(', ') + (a.fechas.length > 3 ? ` +${a.fechas.length - 3}` : '')
+                            : a.fecha
+                              ? new Date(a.fecha).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })
+                              : '—'
+                        })()}
                       </td>
                       <td className="px-4 py-3">
                         <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
