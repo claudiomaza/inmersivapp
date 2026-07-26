@@ -22,6 +22,8 @@ export interface BloqueHorario {
   es_grupal?: boolean
   /** Precio fijo del grupo para este bloque */
   precio_grupo?: number
+  /** Cuántas personas entran en el precio grupal */
+  personas_grupo?: number
 }
 
 export interface ActividadPrecio {
@@ -117,7 +119,8 @@ export function descripcionPrecioBloque(
   const hs = duracionEnHoras(bloque)
 
   if (bloque.es_grupal) {
-    return `$${unitario.toLocaleString('es-AR')} por grupo`
+    const personas = bloque.personas_grupo ? ` (hasta ${bloque.personas_grupo} pers.)` : ''
+    return `$${unitario.toLocaleString('es-AR')} por grupo${personas}`
   }
 
   if (bloque.precio_por_hora) {
