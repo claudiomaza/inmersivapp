@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Plus, MapPin, Clock, X } from 'lucide-react'
+import { Plus, MapPin, Clock, X, Trash2 } from 'lucide-react'
 
 const CATEGORIAS = [
   'Arte', 'Tecnología', 'Deportes', 'Cocina',
@@ -13,6 +13,38 @@ const CATEGORIAS = [
 ]
 
 const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+
+type TipoBloque = 'fecha' | 'rango_fechas' | 'dia_semana' | 'rango_dias'
+
+interface BloqueForm {
+  id: string
+  tipo: TipoBloque
+  fecha?: string
+  fecha_desde?: string
+  fecha_hasta?: string
+  dia_semana?: number
+  dia_desde?: number
+  dia_hasta?: number
+  hora: string
+  hora_fin: string
+  duracion_turno: number // 0 = sin duración (bloque completo)
+}
+
+let bloqueIdCounter = 0
+
+function nuevoBloqueId() {
+  return `bloque_${++bloqueIdCounter}`
+}
+
+function crearBloque(tipo: TipoBloque): BloqueForm {
+  return {
+    id: nuevoBloqueId(),
+    tipo,
+    hora: '09:00',
+    hora_fin: '18:00',
+    duracion_turno: 0,
+  }
+}
 
 export default function NuevaActividadPage() {
   const { isSignedIn, user } = useUser()
@@ -23,254 +55,329 @@ export default function NuevaActividadPage() {
     descripcion: '',
     precio: '',
     categoria: '',
-    provincia: '',
-    departamento: '',
-    direccion: '',
+    lugar: '',
     foto: '',
-    horaInicio: '18:00',
-    horaFin: '20:00',
-    diasActivos: [] as string[],
   })
-  const [fechasList, setFechasList] = useState<string[]>([])
-  const [nuevaFecha, setNuevaFecha] = useState('')
+  const [bloques, setBloques] = useState<BloqueForm[]>([])
 
-  const toggleDia = (dia: string) =>
-    setForm((f) => ({
-      ...f,
-      diasActivos: f.diasActivos.includes(dia)
-        ? f.diasActivos.filter((d) => d !== dia)
-        : [...f.diasActivos, dia],
-    }))
+  const actualizarBloque = (id: string, cambios: Partial<BloqueForm>) =>
+    setBloques((b) => b.map((bl) => (bl.id === id ? { ...bl, ...cambios } : bl)))
 
-  const agregarFecha = () => {
-    if (!nuevaFecha) return
-    if (fechasList.includes(nuevaFecha)) {
-      toast.error('Esa fecha ya está agregada')
-      return
-    }
-    setFechasList([...fechasList, nuevaFecha])
-    setNuevaFecha('')
-  }
+  const eliminarBloque = (id: string) =>
+    setBloques((b) => b.filter((bl) => bl.id !== id))
 
-  const sacarFecha = (f: string) => setFechasList(fechasList.filter((x) => x !== f))
+  const agregarBloque = (tipo: TipoBloque) =>
+    setBloques((b) => [...b, crearBloque(tipo)])
 
-  const crearActividad = async (e: React.FormEvent) => {
+  const guardar = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!isSignedIn || !user) {
-      toast.error('Iniciá sesión para crear actividades')
+    if (!isSignedIn) {
+      toast.error('Iniciá sesión para publicar')
       return
     }
+
+    const horarios = bloques.map((b) => {
+      const base: any = { hora: b.hora, hora_fin: b.hora_fin }
+      if (b.duracion_turno > 0) base.duracion_turno = b.duracion_turno
+      if (b.tipo === 'fecha') base.fecha = b.fecha
+      else if (b.tipo === 'rango_fechas') {
+        base.fecha_desde = b.fecha_desde
+        base.fecha_hasta = b.fecha_hasta
+      } else if (b.tipo === 'dia_semana') base.dia_semana = b.dia_semana
+      else if (b.tipo === 'rango_dias') {
+        base.dia_desde = b.dia_desde
+        base.dia_hasta = b.dia_hasta
+      }
+      return base
+    })
+
+    if (horarios.length === 0) {
+      toast.error('Agregá al menos un bloque horario')
+      return
+    }
+
     setCargando(true)
-
-    if (!form.titulo || !form.precio || !form.categoria || !form.provincia) {
-      toast.error('Completá todos los campos obligatorios')
-      setCargando(false)
-      return
-    }
-
     const res = await fetch('/api/actividades', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        titulo: form.titulo,
-        descripcion: form.descripcion || 'Sin descripción',
-        categoria: form.categoria,
-        fechas: fechasList,
-        fecha: fechasList.length > 0 ? fechasList[0] : null,
-        hora: form.horaInicio || null,
-        hora_fin: form.horaFin || null,
-        lugar: [form.direccion, form.departamento, form.provincia].filter(Boolean).join(', ') || 'A confirmar',
-        precio: Number(form.precio),
-        capacidad_max: 20,
-        imagen_url: form.foto || null,
-        dias_semana: form.diasActivos.map((d) => DIAS.indexOf(d) + 1),
+        ...form,
+        horarios,
       }),
     })
-
     setCargando(false)
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}))
-      toast.error(err.error || 'Error al crear la actividad')
+      toast.error(err.error || 'Error al publicar')
       return
     }
 
-    toast.success('Actividad creada')
+    toast.success('Actividad publicada')
     router.push('/anfitrion')
   }
 
-  if (!isSignedIn) return null
-
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="mb-6">
-        <h1 className="font-titulos text-2xl font-bold text-texto">Nueva actividad</h1>
-        <p className="mt-1 text-sm text-texto-secundario">
-          Completá los datos para publicar tu experiencia
-        </p>
-      </div>
+      <h1 className="mb-8 font-titulos text-3xl font-bold text-texto">Nueva experiencia</h1>
 
-      <form onSubmit={crearActividad} className="space-y-5">
+      <form onSubmit={guardar} className="space-y-6">
         <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Título *</label>
+          <label className="mb-1 block text-sm font-medium text-texto">Título</label>
           <input
             type="text"
+            required
             value={form.titulo}
             onChange={(e) => setForm({ ...form, titulo: e.target.value })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            placeholder="Ej: Taller de cerámica artesanal"
+            placeholder="Ej: Taller de cerámica"
           />
         </div>
 
         <div>
           <label className="mb-1 block text-sm font-medium text-texto">Descripción</label>
           <textarea
+            required
+            rows={4}
             value={form.descripcion}
             onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-            rows={3}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            placeholder="Describí de qué se trata la experiencia..."
+            placeholder="Contá de qué se trata..."
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Categoría *</label>
+            <label className="mb-1 block text-sm font-medium text-texto">Categoría</label>
             <select
+              required
               value={form.categoria}
               onChange={(e) => setForm({ ...form, categoria: e.target.value })}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
             >
-              <option value="">Seleccioná...</option>
-              {CATEGORIAS.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+              <option value="">Seleccionar</option>
+              {CATEGORIAS.map((c) => (
+                <option key={c} value={c}>{c}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Precio * ($)</label>
+            <label className="mb-1 block text-sm font-medium text-texto">Precio ($)</label>
             <input
               type="number"
+              required
+              min={0}
               value={form.precio}
               onChange={(e) => setForm({ ...form, precio: e.target.value })}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              placeholder="2500"
-              min="0"
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="sm:col-span-2">
-            <label className="mb-1 block text-sm font-medium text-texto">Provincia *</label>
-            <input
-              type="text"
-              value={form.provincia}
-              onChange={(e) => setForm({ ...form, provincia: e.target.value })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              placeholder="Buenos Aires"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Departamento</label>
-            <input
-              type="text"
-              value={form.departamento}
-              onChange={(e) => setForm({ ...form, departamento: e.target.value })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              placeholder="Gral. Pueyrredón"
+              placeholder="0"
             />
           </div>
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Dirección</label>
+          <label className="mb-1 block text-sm font-medium text-texto">Lugar</label>
           <input
             type="text"
-            value={form.direccion}
-            onChange={(e) => setForm({ ...form, direccion: e.target.value })}
+            value={form.lugar}
+            onChange={(e) => setForm({ ...form, lugar: e.target.value })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            placeholder="Av. Colón 1234"
+            placeholder="Ej: Salta 123, Mendoza"
           />
         </div>
 
-        {/* Fechas múltiples */}
+        {/* Bloques horarios */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Fechas disponibles</label>
-          <div className="flex gap-2">
-            <input
-              type="date"
-              value={nuevaFecha}
-              onChange={(e) => setNuevaFecha(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-            />
-            <button
-              type="button"
-              onClick={agregarFecha}
-              disabled={!nuevaFecha}
-              className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-texto transition hover:bg-gray-200 disabled:opacity-50"
-            >
-              Agregar
-            </button>
-          </div>
-          {fechasList.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {fechasList.map((f) => (
-                <span key={f} className="inline-flex items-center gap-1 rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">
-                  {new Date(f + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
-                  <button type="button" onClick={() => sacarFecha(f)} className="ml-0.5 hover:text-red-600">
-                    <X className="h-3 w-3" />
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Horario</label>
-            <div className="flex items-center gap-2">
-              <input
-                type="time"
-                value={form.horaInicio}
-                onChange={(e) => setForm({ ...form, horaInicio: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              />
-              <span className="text-texto-secundario">a</span>
-              <input
-                type="time"
-                value={form.horaFin}
-                onChange={(e) => setForm({ ...form, horaFin: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Días de la semana */}
-        <div>
-          <label className="mb-1 block text-sm font-medium text-texto">Días de la semana (recurrencia)</label>
-          <div className="flex flex-wrap gap-2">
-            {DIAS.map((dia) => (
+          <div className="mb-3 flex items-center justify-between">
+            <label className="block text-sm font-medium text-texto">Horarios</label>
+            <div className="flex gap-1.5">
               <button
-                key={dia}
                 type="button"
-                onClick={() => toggleDia(dia)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-                  form.diasActivos.includes(dia)
-                    ? 'bg-primario text-white'
-                    : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
-                }`}
+                onClick={() => agregarBloque('fecha')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
               >
-                {dia}
+                + Fecha
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => agregarBloque('rango_fechas')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
+              >
+                + Rango fechas
+              </button>
+              <button
+                type="button"
+                onClick={() => agregarBloque('dia_semana')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
+              >
+                + Día semanal
+              </button>
+              <button
+                type="button"
+                onClick={() => agregarBloque('rango_dias')}
+                className="rounded-lg bg-primario/10 px-2.5 py-1.5 text-xs font-medium text-primario transition hover:bg-primario/20"
+              >
+                + Rango días
+              </button>
+            </div>
           </div>
-          <p className="mt-1 text-xs text-texto-secundario">
-            Opcional: elegí los días de la semana si la actividad se repite semanalmente
-          </p>
+
+          <div className="space-y-3">
+            {bloques.map((b) => (
+              <div key={b.id} className="rounded-xl border border-gray-200 bg-white p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-primario">
+                    {b.tipo === 'fecha' && 'Fecha puntual'}
+                    {b.tipo === 'rango_fechas' && 'Rango de fechas'}
+                    {b.tipo === 'dia_semana' && 'Día de la semana'}
+                    {b.tipo === 'rango_dias' && 'Rango de días'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => eliminarBloque(b.id)}
+                    className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-500"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {/* Fecha puntual */}
+                  {b.tipo === 'fecha' && (
+                    <div>
+                      <label className="mb-1 block text-xs text-texto-secundario">Fecha</label>
+                      <input
+                        type="date"
+                        value={b.fecha || ''}
+                        onChange={(e) => actualizarBloque(b.id, { fecha: e.target.value })}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                      />
+                    </div>
+                  )}
+
+                  {/* Rango de fechas */}
+                  {b.tipo === 'rango_fechas' && (
+                    <>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Desde</label>
+                        <input
+                          type="date"
+                          value={b.fecha_desde || ''}
+                          onChange={(e) => actualizarBloque(b.id, { fecha_desde: e.target.value })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Hasta</label>
+                        <input
+                          type="date"
+                          value={b.fecha_hasta || ''}
+                          onChange={(e) => actualizarBloque(b.id, { fecha_hasta: e.target.value })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {/* Día de la semana */}
+                  {b.tipo === 'dia_semana' && (
+                    <div>
+                      <label className="mb-1 block text-xs text-texto-secundario">Día</label>
+                      <select
+                        value={b.dia_semana || ''}
+                        onChange={(e) => actualizarBloque(b.id, { dia_semana: Number(e.target.value) })}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                      >
+                        <option value="">Seleccionar</option>
+                        {DIAS.map((d, i) => (
+                          <option key={i} value={i + 1}>{d}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Rango de días */}
+                  {b.tipo === 'rango_dias' && (
+                    <>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Desde</label>
+                        <select
+                          value={b.dia_desde || ''}
+                          onChange={(e) => actualizarBloque(b.id, { dia_desde: Number(e.target.value) })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        >
+                          <option value="">Seleccionar</option>
+                          {DIAS.map((d, i) => (
+                            <option key={i} value={i + 1}>{d}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs text-texto-secundario">Hasta</label>
+                        <select
+                          value={b.dia_hasta || ''}
+                          onChange={(e) => actualizarBloque(b.id, { dia_hasta: Number(e.target.value) })}
+                          className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        >
+                          <option value="">Seleccionar</option>
+                          {DIAS.map((d, i) => (
+                            <option key={i} value={i + 1}>{d}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Horas */}
+                  <div>
+                    <label className="mb-1 block text-xs text-texto-secundario">Hora inicio</label>
+                    <input
+                      type="time"
+                      value={b.hora}
+                      onChange={(e) => actualizarBloque(b.id, { hora: e.target.value })}
+                      className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-texto-secundario">Hora fin</label>
+                    <input
+                      type="time"
+                      value={b.hora_fin}
+                      onChange={(e) => actualizarBloque(b.id, { hora_fin: e.target.value })}
+                      className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                    />
+                  </div>
+                </div>
+
+                {/* Duración de turno */}
+                <div className="mt-3">
+                  <label className="mb-1 block text-xs text-texto-secundario">
+                    Duración del turno{' '}
+                    <span className="italic text-gray-400">(en minutos, 0 = bloque completo)</span>
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    step={15}
+                    value={b.duracion_turno}
+                    onChange={(e) => actualizarBloque(b.id, { duracion_turno: Number(e.target.value) })}
+                    className="w-32 rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                    placeholder="Ej: 60"
+                  />
+                  {b.duracion_turno > 0 && (
+                    <p className="mt-1 text-xs text-texto-secundario">
+                      Se generarán turnos de {b.duracion_turno} min cada uno
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+            {bloques.length === 0 && (
+              <p className="py-4 text-center text-sm text-texto-secundario">
+                Todavía no hay bloques horarios. Hacé clic en los botones de arriba para agregar.
+              </p>
+            )}
+          </div>
         </div>
 
         <div>
