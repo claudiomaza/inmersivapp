@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Plus, MapPin, Clock, X, Trash2 } from 'lucide-react'
+import { Plus, MapPin, Clock, X, Trash2, DollarSign, Users } from 'lucide-react'
 
 const CATEGORIAS = [
   'Arte', 'Tecnología', 'Deportes', 'Cocina',
@@ -27,7 +27,11 @@ interface BloqueForm {
   dia_hasta?: number
   hora: string
   hora_fin: string
-  duracion_turno: number // 0 = sin duración (bloque completo)
+  duracion_turno: number
+  // Precios por bloque
+  precio?: string        // precio especial por persona para este bloque
+  es_grupal: boolean
+  precio_grupo?: string  // precio fijo grupal
 }
 
 let bloqueIdCounter = 0
@@ -43,6 +47,7 @@ function crearBloque(tipo: TipoBloque): BloqueForm {
     hora: '09:00',
     hora_fin: '18:00',
     duracion_turno: 0,
+    es_grupal: false,
   }
 }
 
@@ -53,10 +58,7 @@ export default function NuevaActividadPage() {
   const [form, setForm] = useState({
     titulo: '',
     descripcion: '',
-    precio: '',
-    precio_por_hora: '',
-    es_grupal: false,
-    precio_grupo: '',
+    precio_por_hora: '',  // único precio base: por hora por persona
     categoria: '',
     lugar: '',
     foto: '',
@@ -80,8 +82,14 @@ export default function NuevaActividadPage() {
     }
 
     const horarios = bloques.map((b) => {
-      const base: any = { hora: b.hora, hora_fin: b.hora_fin }
+      const base: any = {
+        hora: b.hora,
+        hora_fin: b.hora_fin,
+        es_grupal: b.es_grupal || false,
+      }
       if (b.duracion_turno > 0) base.duracion_turno = b.duracion_turno
+      if (b.precio) base.precio = Number(b.precio)
+      if (b.precio_grupo) base.precio_grupo = Number(b.precio_grupo)
       if (b.tipo === 'fecha') base.fecha = b.fecha
       else if (b.tipo === 'rango_fechas') {
         base.fecha_desde = b.fecha_desde
@@ -104,11 +112,14 @@ export default function NuevaActividadPage() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        ...form,
-        horarios,
+        titulo: form.titulo,
+        descripcion: form.descripcion,
+        categoria: form.categoria,
+        lugar: form.lugar,
+        imagen_url: form.foto || null,
+        precio: 0, // legacy, se mantiene por compatibilidad
         precio_por_hora: form.precio_por_hora ? Number(form.precio_por_hora) : null,
-        es_grupal: form.es_grupal,
-        precio_grupo: form.precio_grupo ? Number(form.precio_grupo) : null,
+        horarios,
       }),
     })
     setCargando(false)
@@ -168,62 +179,21 @@ export default function NuevaActividadPage() {
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-texto">Precio ($)</label>
+            <label className="mb-1 block text-sm font-medium text-texto">
+              Precio por hora por persona ($)
+            </label>
             <input
               type="number"
               required
               min={0}
-              value={form.precio}
-              onChange={(e) => setForm({ ...form, precio: e.target.value })}
+              value={form.precio_por_hora}
+              onChange={(e) => setForm({ ...form, precio_por_hora: e.target.value })}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-              placeholder="0"
+              placeholder="Ej: 1500"
             />
-          </div>
-        </div>
-
-        {/* Configuración de precios dinámicos */}
-        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-          <h3 className="mb-3 text-sm font-semibold text-texto">Configuración de precios</h3>
-          <div className="space-y-3">
-            <div>
-              <label className="mb-1 block text-sm font-medium text-texto">Precio por hora ($)</label>
-              <input
-                type="number"
-                min={0}
-                value={form.precio_por_hora}
-                onChange={(e) => setForm({ ...form, precio_por_hora: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-                placeholder="Dejalo vacío para calcularlo automáticamente del precio base"
-              />
-              <p className="mt-1 text-xs text-texto-secundario">
-                Si lo completás, se usa este valor × duración del bloque. Si no, se calcula del precio base.
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                id="es_grupal"
-                checked={form.es_grupal}
-                onChange={(e) => setForm({ ...form, es_grupal: e.target.checked })}
-                className="h-4 w-4 rounded border-gray-300 text-primario focus:ring-primario"
-              />
-              <label htmlFor="es_grupal" className="text-sm font-medium text-texto">
-                Es grupal (precio fijo por grupo)
-              </label>
-            </div>
-            {form.es_grupal && (
-              <div>
-                <label className="mb-1 block text-sm font-medium text-texto">Precio por grupo ($)</label>
-                <input
-                  type="number"
-                  min={0}
-                  value={form.precio_grupo}
-                  onChange={(e) => setForm({ ...form, precio_grupo: e.target.value })}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primario focus:ring-2 focus:ring-primario/20"
-                  placeholder="Ej: 12000"
-                />
-              </div>
-            )}
+            <p className="mt-1 text-xs text-texto-secundario">
+              Precio base. Cada bloque puede tener su propio precio especial o ser grupal.
+            </p>
           </div>
         </div>
 
@@ -241,7 +211,7 @@ export default function NuevaActividadPage() {
         {/* Bloques horarios */}
         <div>
           <div className="mb-3 flex items-center justify-between">
-            <label className="block text-sm font-medium text-texto">Horarios</label>
+            <label className="block text-sm font-medium text-texto">Horarios y precios</label>
             <div className="flex gap-1.5">
               <button
                 type="button"
@@ -294,7 +264,6 @@ export default function NuevaActividadPage() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  {/* Fecha puntual */}
                   {b.tipo === 'fecha' && (
                     <div>
                       <label className="mb-1 block text-xs text-texto-secundario">Fecha</label>
@@ -307,7 +276,6 @@ export default function NuevaActividadPage() {
                     </div>
                   )}
 
-                  {/* Rango de fechas */}
                   {b.tipo === 'rango_fechas' && (
                     <>
                       <div>
@@ -331,7 +299,6 @@ export default function NuevaActividadPage() {
                     </>
                   )}
 
-                  {/* Día de la semana */}
                   {b.tipo === 'dia_semana' && (
                     <div>
                       <label className="mb-1 block text-xs text-texto-secundario">Día</label>
@@ -348,7 +315,6 @@ export default function NuevaActividadPage() {
                     </div>
                   )}
 
-                  {/* Rango de días */}
                   {b.tipo === 'rango_dias' && (
                     <>
                       <div>
@@ -380,7 +346,6 @@ export default function NuevaActividadPage() {
                     </>
                   )}
 
-                  {/* Horas */}
                   <div>
                     <label className="mb-1 block text-xs text-texto-secundario">Hora inicio</label>
                     <input
@@ -420,6 +385,58 @@ export default function NuevaActividadPage() {
                     <p className="mt-1 text-xs text-texto-secundario">
                       Se generarán turnos de {b.duracion_turno} min cada uno
                     </p>
+                  )}
+                </div>
+
+                {/* Precios del bloque */}
+                <div className="mt-3 rounded-lg border border-dashed border-gray-300 bg-gray-50 p-3">
+                  <h4 className="mb-2 text-xs font-semibold text-texto-secundario">
+                    <DollarSign className="mr-1 inline h-3 w-3" />
+                    Precio de este bloque
+                    <span className="ml-1 font-normal text-gray-400">(opcional — si no se completa, usa el precio base)</span>
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="mb-1 block text-xs text-texto-secundario">
+                        Precio especial por persona ($)
+                      </label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={b.precio || ''}
+                        onChange={(e) => actualizarBloque(b.id, { precio: e.target.value })}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        placeholder="Vacío = precio base"
+                      />
+                    </div>
+                    <div className="flex items-end gap-2">
+                      <input
+                        type="checkbox"
+                        id={`grupal_${b.id}`}
+                        checked={b.es_grupal}
+                        onChange={(e) => actualizarBloque(b.id, { es_grupal: e.target.checked })}
+                        className="h-4 w-4 rounded border-gray-300 text-primario focus:ring-primario"
+                      />
+                      <label htmlFor={`grupal_${b.id}`} className="text-xs font-medium text-texto">
+                        <Users className="mr-1 inline h-3 w-3" />
+                        Grupal (precio fijo)
+                      </label>
+                    </div>
+                  </div>
+                  {b.es_grupal && (
+                    <div className="mt-2">
+                      <label className="mb-1 block text-xs text-texto-secundario">
+                        Precio por grupo ($)
+                      </label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={b.precio_grupo || ''}
+                        onChange={(e) => actualizarBloque(b.id, { precio_grupo: e.target.value })}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        placeholder="Ej: 12000"
+                      />
+                    </div>
                   )}
                 </div>
               </div>
