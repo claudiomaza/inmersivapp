@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const { actividad_id, reserva_id, titulo, monto, usuario_id } = body
+    const { actividad_id, reserva_id, titulo, monto, cantidad, usuario_id } = body
 
     if (userId !== usuario_id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const pref = await crearPreferenciaPago({
       titulo,
       monto,
-      cantidad: 1,
+      cantidad: cantidad || 1,
       reservaId: reserva_id,
       usuarioEmail: perfil?.email || 'usuario@inmersivapp.app',
       usuarioNombre: perfil ? `${perfil.nombre} ${perfil.apellido}` : 'Usuario',
