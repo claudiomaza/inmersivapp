@@ -271,6 +271,7 @@ export default function DetalleActividadPage() {
                           </p>
                         )}
                       </div>
+                    </div>
                       {actividad.precio_por_hora && !h.precio && (
                         <p className="mt-1 text-xs text-texto-secundario">
                           ${actividad.precio_por_hora.toLocaleString('es-AR')}/hora
