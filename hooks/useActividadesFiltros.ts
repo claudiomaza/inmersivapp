@@ -9,6 +9,7 @@ export interface FiltrosActividades {
   lugar: string
   precioMin: string
   precioMax: string
+  fecha: string
 }
 
 export function useActividadesFiltros(actividades: Actividad[]) {
@@ -18,6 +19,7 @@ export function useActividadesFiltros(actividades: Actividad[]) {
     lugar: '',
     precioMin: '',
     precioMax: '',
+    fecha: '',
   })
 
   const actualizar = (campo: keyof FiltrosActividades, valor: any) =>
@@ -30,6 +32,7 @@ export function useActividadesFiltros(actividades: Actividad[]) {
       lugar: '',
       precioMin: '',
       precioMax: '',
+      fecha: '',
     })
 
   const activos = useMemo(() => {
@@ -75,6 +78,14 @@ export function useActividadesFiltros(actividades: Actividad[]) {
       // Precio
       if (f.precioMin && (a.precio ?? 0) < Number(f.precioMin)) return false
       if (f.precioMax && (a.precio ?? 0) > Number(f.precioMax)) return false
+
+      // Fecha
+      if (f.fecha) {
+        const fechaFilter = f.fecha
+        const fechaEnArray = a.fechas && Array.isArray(a.fechas) && a.fechas.includes(fechaFilter)
+        const fechaLegacy = a.fecha === fechaFilter
+        if (!fechaEnArray && !fechaLegacy) return false
+      }
 
       return true
     })
