@@ -148,7 +148,7 @@ export default function ParticipantePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="mb-6 font-titulos text-2xl font-bold text-texto">Mi Panel</h1>
+      <h1 className="mb-6 font-titulos text-2xl font-bold text-texto">Panel Participante</h1>
 
       {/* Tabs */}
       <div className="mb-6 flex gap-2 overflow-x-auto border-b border-gray-200 pb-2">
