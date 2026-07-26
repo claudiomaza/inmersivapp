@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
+import { useLang } from '@/lib/lang-context'
 import { formatPrecio } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Star, MessageCircle, Ticket, Users, Clock } from 'lucide-react'
@@ -32,6 +33,7 @@ export default function DetalleActividadPage() {
   const [enviandoResena, setEnviandoResena] = useState(false)
 
   // Participantes para reserva grupal
+  const { t } = useLang()
   const [participantes, setParticipantes] = useState<{ nombre: string; dni: string }[]>([])
 
   const [cuponCodigo, setCuponCodigo] = useState('')
@@ -71,19 +73,19 @@ export default function DetalleActividadPage() {
   const precioTotal = calcularPrecioTotal(actividad || {}, cantidad, bloqueSel)
   const descPrecio = descripcionPrecio(actividad || {})
 
-  // Aplicar descuento de cupón
+  // {t("cupon.aplicar")} descuento de cupón
   const descuento = cuponValido?.valido ? (cuponValido.descuento / 100) : 0
   const precioFinal = Math.round(precioTotal * (1 - descuento))
 
   const reservar = async () => {
     if (!isSignedIn) return router.push('/login')
-    if (!fechaSel) return toast.error('Seleccioná una fecha')
-    if (!actividad.es_grupal && cantidad < 1) return toast.error('Seleccioná al menos 1 persona')
+    if (!fechaSel) return toast.error('{t("actividad.seleccionar_fecha")}')
+    if (!actividad.es_grupal && cantidad < 1) return toast.error('{t("actividad.seleccionar_personas")}')
 
     // Validate participants if grupal
     if (bloqueSel?.es_grupal) {
       const incompletos = participantes.some(p => !p.nombre.trim() || !p.dni.trim())
-      if (incompletos) return toast.error('Completá nombre y DNI de todos los participantes')
+      if (incompletos) return toast.error('{t("actividad.completar_datos")}')
     }
 
     setReservando(true)
@@ -198,7 +200,7 @@ export default function DetalleActividadPage() {
   if (!actividad) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-texto-secundario">Actividad no encontrada</p>
+        <p className="text-texto-secundario">{t("actividad.no_encontrada")}</p>
       </div>
     )
   }
@@ -224,11 +226,11 @@ export default function DetalleActividadPage() {
             )}
           </div>
 
-          {/* Horarios disponibles */}
+          {/* {t("actividad.horarios_disponibles")} */}
           {horarios.length > 0 && (
             <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
               <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
-                <Clock className="h-4 w-4" /> Horarios disponibles
+                <Clock className="h-4 w-4" /> {t("actividad.horarios_disponibles")}
               </h3>
               <div className="mt-3 space-y-2">
                 {horarios.map((h, i) => {
@@ -281,10 +283,10 @@ export default function DetalleActividadPage() {
             </div>
           )}
 
-          {/* Reseñas */}
+          {/* {t("actividad.resenas")} */}
           <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
             <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
-              <MessageCircle className="h-4 w-4" /> Reseñas ({resenas.length})
+              <MessageCircle className="h-4 w-4" /> {t("actividad.resenas")} ({resenas.length})
             </h3>
 
             {resenas.length === 0 ? (
@@ -305,7 +307,7 @@ export default function DetalleActividadPage() {
 
             {isSignedIn && (
               <div className="mt-6 border-t pt-4">
-                <h3 className="font-titulos text-base font-semibold text-texto">Dejá tu reseña</h3>
+                <h3 className="font-titulos text-base font-semibold text-texto">{t("actividad.dejar_resena")}</h3>
                 <div className="mt-2 flex gap-1">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <button
@@ -329,7 +331,7 @@ export default function DetalleActividadPage() {
                   disabled={enviandoResena || puntuacion === 0}
                   className="mt-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
                 >
-                  {enviandoResena ? 'Enviando…' : 'Publicar reseña'}
+                  {enviandoResena ? '{t("actividad.enviando")}' : 'Publicar reseña'}
                 </button>
               </div>
             )}
@@ -338,14 +340,14 @@ export default function DetalleActividadPage() {
           {/* Cupón */}
           <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
             <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
-              <Ticket className="h-4 w-4" /> ¿Tenés un cupón?
+              <Ticket className="h-4 w-4" /> {t("actividad.tenes_cupon")}
             </h3>
             <div className="mt-2 flex gap-2">
               <input
                 type="text"
                 value={cuponCodigo}
                 onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
-                placeholder="Código"
+                placeholder="{t("cupon.codigo")}"
                 className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
               <button
@@ -393,7 +395,7 @@ export default function DetalleActividadPage() {
                 <Users className="mr-1 inline h-4 w-4" />
                 {bloqueSel?.es_grupal
                   ? `Hasta ${actividad.capacidad_max} grupos`
-                  : `Capacidad máxima: ${actividad.capacidad_max} personas`
+                  : `{t("actividad.capacidad_max")}: ${actividad.capacidad_max} personas`
                 }
               </p>
             )}
@@ -427,11 +429,11 @@ export default function DetalleActividadPage() {
             {/* Formulario de participantes para reserva grupal */}
             {bloqueSel?.es_grupal && cantidad > 0 && (
               <div className="mt-4 space-y-3">
-                <p className="text-sm font-medium text-texto">Datos de los participantes</p>
+                <p className="text-sm font-medium text-texto">{t("actividad.datos_participantes")}</p>
                 {participantes.map((p, i) => (
                   <div key={i} className="rounded-lg border border-gray-200 bg-gray-50 p-3">
                     <p className="mb-2 text-xs font-semibold text-texto-secundario">
-                      Persona {i + 1}
+                      {t("actividad.persona_label")} {i + 1}
                     </p>
                     <div className="grid grid-cols-2 gap-2">
                       <input
@@ -481,8 +483,8 @@ export default function DetalleActividadPage() {
               className="mt-4 w-full rounded-lg bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
             >
               {reservando
-                ? 'Procesando…'
-                : `Reservar — ${formatPrecio(precioFinal)}${!bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad})` : ''}${bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad} grupo${cantidad > 1 ? 's' : ''})` : ''}`
+                ? '{t("actividad.procesando")}'
+                : `{t("actividad.reservar")} — ${formatPrecio(precioFinal)}${!bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad})` : ''}${bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad} grupo${cantidad > 1 ? 's' : ''})` : ''}`
               }
             </button>
 
@@ -496,7 +498,7 @@ export default function DetalleActividadPage() {
 
             {isSignedIn && (
               <p className="mt-3 text-center text-xs text-texto-secundario">
-                No se te cobrará hasta confirmar la actividad
+                {t("reserva.no_cobro")}
               </p>
             )}
           </div>
