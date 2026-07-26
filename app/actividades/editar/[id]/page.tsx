@@ -28,6 +28,10 @@ interface BloqueForm {
   hora: string
   hora_fin: string
   duracion_turno: number
+  // Precios por bloque
+  precio?: number
+  es_grupal?: boolean
+  precio_grupo?: number
 }
 
 let bloqueIdCounter = 0
@@ -57,6 +61,9 @@ function bloqueDesdeAPI(b: any): BloqueForm {
     hora: b.hora?.slice(0, 5) || '09:00',
     hora_fin: b.hora_fin?.slice(0, 5) || '18:00',
     duracion_turno: b.duracion_turno || 0,
+    precio: b.precio || undefined,
+    es_grupal: b.es_grupal || false,
+    precio_grupo: b.precio_grupo || undefined,
   }
 }
 
@@ -71,8 +78,6 @@ export default function EditarActividadPage() {
     descripcion: '',
     precio: '',
     precio_por_hora: '',
-    es_grupal: false,
-    precio_grupo: '',
     categoria: '',
     lugar: '',
     foto: '',
@@ -102,8 +107,6 @@ export default function EditarActividadPage() {
         descripcion: a.descripcion || '',
         precio: a.precio?.toString() || '',
         precio_por_hora: a.precio_por_hora?.toString() || '',
-        es_grupal: a.es_grupal || false,
-        precio_grupo: a.precio_grupo?.toString() || '',
         categoria: a.categoria || '',
         lugar: a.lugar || '',
         foto: a.imagen_url || '',
@@ -187,6 +190,10 @@ export default function EditarActividadPage() {
         base.dia_desde = b.dia_desde
         base.dia_hasta = b.dia_hasta
       }
+      // Precios por bloque
+      if (b.precio) base.precio = b.precio
+      if (b.es_grupal) base.es_grupal = true
+      if (b.precio_grupo) base.precio_grupo = b.precio_grupo
       return base
     })
 
@@ -209,8 +216,6 @@ export default function EditarActividadPage() {
         precio: Number(form.precio),
         imagen_url: form.foto || null,
         precio_por_hora: form.precio_por_hora ? Number(form.precio_por_hora) : null,
-        es_grupal: form.es_grupal,
-        precio_grupo: form.precio_grupo ? Number(form.precio_grupo) : null,
       }),
     })
 
@@ -528,6 +533,52 @@ export default function EditarActividadPage() {
                     <p className="mt-1 text-xs text-texto-secundario">
                       Se generarán turnos de {b.duracion_turno} min cada uno
                     </p>
+                  )}
+                </div>
+
+                {/* Precios por bloque */}
+                <div className="mt-4 border-t border-gray-100 pt-3">
+                  <p className="mb-2 text-xs font-semibold text-primario">Precio de este bloque</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="mb-1 block text-xs text-texto-secundario">
+                        Precio especial por persona ($)
+                      </label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={b.precio || ''}
+                        onChange={(e) => actualizarBloque(b.id, { precio: e.target.value ? Number(e.target.value) : undefined })}
+                        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        placeholder="Usar precio base"
+                      />
+                    </div>
+                    <div className="flex items-end pb-2">
+                      <label className="flex items-center gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={b.es_grupal || false}
+                          onChange={(e) => actualizarBloque(b.id, { es_grupal: e.target.checked })}
+                          className="h-4 w-4 rounded border-gray-300 text-primario focus:ring-primario"
+                        />
+                        <span className="text-xs">Grupal</span>
+                      </label>
+                    </div>
+                  </div>
+                  {b.es_grupal && (
+                    <div className="mt-2">
+                      <label className="mb-1 block text-xs text-texto-secundario">
+                        Precio por grupo ($)
+                      </label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={b.precio_grupo || ''}
+                        onChange={(e) => actualizarBloque(b.id, { precio_grupo: e.target.value ? Number(e.target.value) : undefined })}
+                        className="w-40 rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                        placeholder="Ej: 12000"
+                      />
+                    </div>
                   )}
                 </div>
               </div>
