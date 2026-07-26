@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import { Toaster } from 'sonner'
 import Navbar from '@/components/Navbar'
-import { esAR } from '@/lib/clerk-localization'
+import { Providers } from './providers'
 
 export const metadata: Metadata = {
   title: 'Inmersivapp — Experiencias que transforman',
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider localization={esAR}>
+    <Providers>
       <html lang="es">
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,6 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Toaster position="top-right" richColors />
         </body>
       </html>
-    </ClerkProvider>
+    </Providers>
   )
 }
