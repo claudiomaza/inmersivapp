@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { formatPrecio } from '@/lib/utils'
 import { toast } from 'sonner'
-import { Star, MessageCircle, Ticket } from 'lucide-react'
+import { Star, MessageCircle, Ticket, Calendar, Pencil } from 'lucide-react'
 
 export default function DetalleActividadPage() {
   const { id } = useParams<{ id: string }>()
@@ -26,318 +26,340 @@ export default function DetalleActividadPage() {
   const [cuponValido, setCuponValido] = useState<{ valido: boolean; descuento: number; mensaje: string } | null>(null)
   const [verificandoCupon, setVerificandoCupon] = useState(false)
 
+  const esAnfitrion = user?.id === actividad?.anfitrion_id
+
   const cargarResenas = useCallback(async () => {
     const res = await fetch(`/api/resenas?actividad_id=${id}`)
-    if (!res.ok) return
-    const { resenas: data } = await res.json()
-    setResenas(data || [])
+    if (res.ok) {
+      const data = await res.json()
+      setResenas(data.resenas || [])
+    }
   }, [id])
 
   useEffect(() => {
-    Promise.all([
-      fetch(`/api/actividades?id=${id}`).then(r => r.json()).then(d => setActividad(d.actividad)),
-      cargarResenas(),
-    ]).finally(() => {
-      // Verificar si el usuario tiene reserva pagada para esta actividad
-      if (isSignedIn && user) {
-        fetch(`/api/reservas?actividad_id=${id}`)
-          .then(r => r.json())
-          .then(d => {
-            const reservas = d.reservas || []
-            setTieneReservaPagada(reservas.some((r: any) =>
-              ['confirmada', 'completada', 'pagada'].includes(r.estado)
-            ))
-          })
-          .catch(() => {})
+    if (!id) return
+    const cargar = async () => {
+      const [actividadRes, resenasRes] = await Promise.all([
+        fetch(`/api/actividades?id=${id}`),
+        fetch(`/api/resenas?actividad_id=${id}`),
+      ])
+      if (actividadRes.ok) {
+        const data = await actividadRes.json()
+        setActividad(data.actividad)
+        // Auto-seleccionar primera fecha disponible
+        if (data.actividad?.fechas?.length > 0) {
+          setFechaSel(data.actividad.fechas[0])
+        }
+      }
+      if (resenasRes.ok) {
+        const data = await resenasRes.json()
+        setResenas(data.resenas || [])
       }
       setCargando(false)
-    })
-  }, [id, isSignedIn, user, cargarResenas])
+    }
+    cargar()
+  }, [id])
+
+  useEffect(() => {
+    if (!isSignedIn || !user || !id) return
+    fetch(`/api/reservas?actividad_id=${id}&usuario_id=${user.id}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.reservas && data.reservas.length > 0) {
+          setTieneReservaPagada(true)
+        }
+      })
+      .catch(() => {})
+  }, [isSignedIn, user, id])
 
   const reservar = async () => {
-    if (!isSignedIn) return router.push('/login')
-    if (!fechaSel) return toast.error('Seleccioná una fecha')
+    if (!isSignedIn || !user) {
+      toast.error('Iniciá sesión para reservar')
+      return
+    }
+    if (!fechaSel) {
+      toast.error('Seleccioná una fecha')
+      return
+    }
     setReservando(true)
-
     const res = await fetch('/api/reservas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         actividad_id: id,
         fecha: fechaSel,
-        cupon_codigo: cuponValido?.valido ? cuponCodigo : undefined,
+        cupon: cuponValido?.valido ? cuponCodigo : undefined,
       }),
     })
-
-    const data = await res.json()
+    setReservando(false)
     if (!res.ok) {
-      setReservando(false)
-      toast.error('Error al crear la reserva: ' + (data.error || 'Error desconocido'))
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error || 'Error al reservar')
       return
     }
+    toast.success('Reserva confirmada')
+    router.push('/actividades')
+  }
 
-    // Crear preferencia de pago en MercadoPago y redirigir
-    const pagoRes = await fetch('/api/pagos/crear', {
+  const enviarResena = async () => {
+    if (!puntuacion) {
+      toast.error('Seleccioná una puntuación')
+      return
+    }
+    setEnviandoResena(true)
+    const res = await fetch('/api/resenas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         actividad_id: id,
-        reserva_id: data.reserva.id,
-        titulo: actividad.titulo,
-        monto: actividad.precio,
-        usuario_id: user?.id,
+        puntuacion,
+        comentario: comentario || '',
       }),
     })
-
-    if (!pagoRes.ok) {
-      // Si falla MP, cancelar la reserva y avisar
-      await fetch('/api/reservas', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reserva_id: data.reserva.id, estado: 'cancelada' }),
-      })
-      setReservando(false)
-      toast.error('Error al conectar con el medio de pago. Intentalo de nuevo.')
-      return
-    }
-
-    const { init_point } = await pagoRes.json()
-    if (!init_point) {
-      await fetch('/api/reservas', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reserva_id: data.reserva.id, estado: 'cancelada' }),
-      })
-      setReservando(false)
-      toast.error('Error al generar el pago. Intentalo de nuevo.')
-      return
-    }
-
-    // Redirigir a MercadoPago — el webhook aprueba la reserva
-    window.location.href = init_point
-  }
-
-  const verificarCupon = async () => {
-    if (!cuponCodigo.trim()) return
-    setVerificandoCupon(true)
-
-    const res = await fetch('/api/cupones/verificar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ codigo: cuponCodigo }),
-    })
-
-    const data = await res.json()
-    setVerificandoCupon(false)
-    setCuponValido(data)
-    if (!data.valido) toast.error(data.mensaje)
-    else toast.success(data.mensaje)
-  }
-
-  const enviarResena = async () => {
-    if (!user || puntuacion === 0) return
-    setEnviandoResena(true)
-
-    const res = await fetch('/api/resenas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ actividad_id: id, puntuacion, comentario }),
-    })
-
     setEnviandoResena(false)
     if (!res.ok) {
-      const { error } = await res.json()
-      toast.error('Error al enviar reseña: ' + error)
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error || 'Error al enviar reseña')
       return
     }
-    toast.success('Reseña publicada gracias!')
+    toast.success('Reseña enviada')
     setPuntuacion(0)
     setComentario('')
     cargarResenas()
   }
 
+  const verificarCupon = async () => {
+    if (!cuponCodigo.trim()) {
+      toast.error('Ingresá un código de cupón')
+      return
+    }
+    setVerificandoCupon(true)
+    const res = await fetch('/api/cupones/verificar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codigo: cuponCodigo.trim(), actividad_id: id }),
+    })
+    setVerificandoCupon(false)
+    if (!res.ok) {
+      setCuponValido(null)
+      toast.error('Cupón inválido')
+      return
+    }
+    const data = await res.json()
+    setCuponValido(data)
+  }
+
   if (cargando) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-texto-secundario">Cargando actividad...</p>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primario border-t-transparent" />
       </div>
     )
   }
 
   if (!actividad) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-texto-secundario">Actividad no encontrada</p>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
+        <p className="text-lg text-texto-secundario">Actividad no encontrada</p>
+        <button onClick={() => router.push('/actividades')} className="rounded-lg bg-primario px-6 py-2 text-white">
+          Volver
+        </button>
       </div>
     )
   }
 
+  const promedio = resenas.length > 0
+    ? (resenas.reduce((s, r) => s + r.puntuacion, 0) / resenas.length).toFixed(1)
+    : null
+
+  const fechasDisponibles = actividad.fechas?.length > 0
+    ? actividad.fechas.filter((f: string) => new Date(f + 'T23:59:59') >= new Date())
+    : (actividad.fecha ? [actividad.fecha] : [])
+
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="grid gap-8 lg:grid-cols-5">
-        {/* Columna principal */}
-        <div className="lg:col-span-3">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <span className="inline-block rounded-full bg-primario/10 px-3 py-1 text-xs font-medium text-primario">
-              {actividad.categoria}
-            </span>
-            <h1 className="mt-3 font-titulos text-3xl font-bold text-texto">{actividad.titulo}</h1>
-            <p className="mt-3 text-texto-secundario leading-relaxed">{actividad.descripcion}</p>
+      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        {actividad.imagen_url && (
+          <div className="aspect-video w-full overflow-hidden bg-gray-100">
+            <img
+              src={actividad.imagen_url}
+              alt={actividad.titulo}
+              className="h-full w-full object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+            />
+          </div>
+        )}
 
+        <div className="p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-primario/10 px-3 py-0.5 text-xs font-medium text-primario">
+                  {actividad.categoria}
+                </span>
+                {esAnfitrion && (
+                  <button
+                    onClick={() => router.push(`/actividades/${id}/editar`)}
+                    className="rounded-full bg-gray-100 p-1.5 text-gray-500 transition hover:bg-gray-200 hover:text-primario"
+                    title="Editar actividad"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+              <h1 className="mt-2 font-titulos text-2xl font-bold text-texto">{actividad.titulo}</h1>
+              {actividad.perfiles && (
+                <p className="mt-1 text-sm text-texto-secundario">
+                  Por {actividad.perfiles.nombre} {actividad.perfiles.apellido}
+                </p>
+              )}
+            </div>
+            <div className="text-right">
+              <p className="text-2xl font-bold text-primario">{formatPrecio(actividad.precio)}</p>
+              {promedio && (
+                <p className="mt-1 text-sm text-amber-500">★ {promedio} ({resenas.length})</p>
+              )}
+            </div>
+          </div>
+
+          <p className="mt-4 text-texto">{actividad.descripcion}</p>
+
+          <div className="mt-6 flex flex-wrap gap-4 text-sm text-texto-secundario">
             {actividad.lugar && (
-              <p className="mt-4 text-sm text-texto-secundario">
-                📍 {actividad.lugar}
-              </p>
+              <span className="flex items-center gap-1">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {actividad.lugar}
+              </span>
+            )}
+            {actividad.hora && (
+              <span className="flex items-center gap-1">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {actividad.hora?.slice(0, 5)}{actividad.hora_fin ? ` - ${actividad.hora_fin.slice(0, 5)}` : ''}
+              </span>
             )}
           </div>
 
-          {/* Reseñas */}
-          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
-            <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
-              <MessageCircle className="h-4 w-4" /> Reseñas ({resenas.length})
-            </h3>
-
-            {resenas.length === 0 ? (
-              <p className="mt-3 text-sm text-texto-secundario">Todavía no hay reseñas. Sé el primero en opinar.</p>
-            ) : (
-              <div className="mt-4 space-y-4">
-                {resenas.map((r) => (
-                  <div key={r.id} className="border-b border-gray-100 pb-4 last:border-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-texto">{r.perfiles?.nombre || 'Anónimo'}</p>
-                      <span className="text-yellow-500">{'★'.repeat(r.puntuacion)}</span>
-                    </div>
-                    <p className="mt-1 text-sm text-texto-secundario">{r.comentario}</p>
-                  </div>
+          {/* Fechas disponibles */}
+          {fechasDisponibles.length > 0 && (
+            <div className="mt-4">
+              <p className="mb-2 text-sm font-medium text-texto">📅 Fechas disponibles</p>
+              <div className="flex flex-wrap gap-2">
+                {fechasDisponibles.map((f: string) => (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setFechaSel(f)}
+                    className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                      fechaSel === f
+                        ? 'bg-primario text-white'
+                        : 'bg-gray-100 text-texto-secundario hover:bg-gray-200'
+                    }`}
+                  >
+                    {new Date(f + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </button>
                 ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {isSignedIn && tieneReservaPagada && (
-              <div className="mt-6 border-t pt-4">
-                <h3 className="font-titulos text-base font-semibold text-texto">Dejá tu reseña</h3>
-                <div className="mt-2 flex gap-1">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <button
-                      key={n}
-                      onClick={() => setPuntuacion(n)}
-                      className={`text-xl transition ${n <= puntuacion ? 'text-yellow-500' : 'text-gray-300'}`}
-                    >
-                      ★
-                    </button>
-                  ))}
-                </div>
-                <textarea
-                  value={comentario}
-                  onChange={(e) => setComentario(e.target.value)}
-                  placeholder="Contá tu experiencia…"
-                  rows={3}
-                  className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                />
-                <button
-                  onClick={enviarResena}
-                  disabled={enviandoResena || puntuacion === 0}
-                  className="mt-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
-                >
-                  {enviandoResena ? 'Enviando…' : 'Publicar reseña'}
-                </button>
-              </div>
-            )}
-            {isSignedIn && !tieneReservaPagada && (
-              <div className="mt-6 border-t pt-4">
-                <p className="text-sm text-texto-secundario">
-                  Para dejar una reseña necesitás haber reservado y asistido a esta actividad.
-                </p>
-              </div>
-            )}
-          </div>
-
-          </div>
-
-        {/* Sidebar — Cupón + Reserva */}
-        <div className="lg:col-span-2">
-          {/* Cupón — justo arriba del panel de reserva */}
-          <div className="rounded-xl bg-white p-6 shadow-sm">
-            <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
-              <Ticket className="h-4 w-4" /> ¿Tenés un cupón?
-            </h3>
+          {/* Cupón */}
+          <div className="mt-4 rounded-lg border border-dashed border-gray-300 p-3">
+            <div className="flex items-center gap-2">
+              <Ticket className="h-4 w-4 text-texto-secundario" />
+              <span className="text-xs font-medium text-texto-secundario">¿Tenés un cupón?</span>
+            </div>
             <div className="mt-2 flex gap-2">
               <input
                 type="text"
                 value={cuponCodigo}
-                onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
+                onChange={(e) => { setCuponCodigo(e.target.value); setCuponValido(null) }}
                 placeholder="Código"
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                className="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
               <button
                 onClick={verificarCupon}
-                disabled={verificandoCupon || !cuponCodigo.trim()}
-                className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium transition hover:bg-gray-200 disabled:opacity-50"
+                disabled={verificandoCupon}
+                className="rounded-lg bg-gray-100 px-4 py-1.5 text-sm font-medium text-texto transition hover:bg-gray-200 disabled:opacity-50"
               >
-                {verificandoCupon ? '...' : 'Verificar'}
+                {verificandoCupon ? '…' : 'Aplicar'}
               </button>
             </div>
             {cuponValido && (
-              <p className={`mt-2 text-sm ${cuponValido.valido ? 'text-green-600' : 'text-red-600'}`}>
+              <p className={`mt-1 text-xs ${cuponValido.valido ? 'text-green-600' : 'text-red-600'}`}>
                 {cuponValido.mensaje}
               </p>
             )}
           </div>
 
-          {/* Contactar anfitrión */}
-          {isSignedIn && actividad.perfiles && actividad.perfiles.id !== user?.id && (
-            <button
-              onClick={() => {
-                const anfitrionId = actividad.perfiles.id
-                router.push(`/participante?contactar=${anfitrionId}`)
-              }}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-primario/10 py-2.5 text-sm font-medium text-primario transition hover:bg-primario/20"
-            >
-              <MessageCircle className="h-4 w-4" /> Contactar al anfitrión
-            </button>
-          )}
+          {/* Botón de reserva */}
+          <button
+            onClick={reservar}
+            disabled={reservando || !fechaSel}
+            className="mt-4 w-full rounded-lg bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+          >
+            {reservando ? 'Reservando…' : 'Reservar ahora'}
+          </button>
 
-          {/* Reserva */}
-          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
-            <p className="font-titulos text-3xl font-bold text-primario">{formatPrecio(actividad.precio)}</p>
-            <p className="mt-1 text-sm text-texto-secundario">por persona</p>
-
-            {actividad.capacidad_max && (
-              <p className="mt-2 text-sm text-texto-secundario">
-                Capacidad máxima: {actividad.capacidad_max} personas
-              </p>
-            )}
-
-            {actividad.fecha && (
-              <p className="mt-2 text-sm text-texto-secundario">
-                📅 {new Date(actividad.fecha).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
-              </p>
-            )}
-
-            <div className="mt-4">
-              <label className="mb-1 block text-sm font-medium text-texto">Fecha de reserva</label>
-              <input
-                type="date"
-                value={fechaSel}
-                onChange={(e) => setFechaSel(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-              />
-            </div>
-
-            <button
-              onClick={reservar}
-              disabled={reservando || !fechaSel}
-              className="mt-4 w-full rounded-lg bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
-            >
-              {reservando ? 'Reservando…' : 'Reservar ahora'}
-            </button>
-
-            <p className="mt-3 text-center text-xs text-texto-secundario">
-              No se te cobrará hasta confirmar la actividad
-            </p>
-          </div>
+          <p className="mt-3 text-center text-xs text-texto-secundario">
+            No se te cobrará hasta confirmar la actividad
+          </p>
         </div>
+      </div>
+
+      {/* Reseñas */}
+      <div className="mt-6">
+        <h2 className="mb-4 font-titulos text-xl font-bold text-texto">Reseñas</h2>
+        {resenas.length === 0 ? (
+          <p className="text-sm text-texto-secundario">Todavía no hay reseñas. ¡Sé el primero!</p>
+        ) : (
+          <div className="space-y-3">
+            {resenas.map((r: any) => (
+              <div key={r.id} className="rounded-lg border border-gray-200 bg-white p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-texto">{r.perfiles?.nombre || 'Usuario'}</span>
+                  <span className="text-sm text-amber-500">{'★'.repeat(r.puntuacion)}{'☆'.repeat(5 - r.puntuacion)}</span>
+                </div>
+                {r.comentario && <p className="mt-1 text-sm text-texto-secundario">{r.comentario}</p>}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isSignedIn && (
+          <div className="mt-4 rounded-lg border border-gray-200 bg-white p-4">
+            <h3 className="mb-3 text-sm font-semibold text-texto">Dejá tu reseña</h3>
+            <div className="mb-3 flex gap-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setPuntuacion(n)}
+                  className={`text-xl transition ${n <= puntuacion ? 'text-amber-500' : 'text-gray-300'}`}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+            <textarea
+              value={comentario}
+              onChange={(e) => setComentario(e.target.value)}
+              rows={3}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+              placeholder="Contá tu experiencia..."
+            />
+            <button
+              onClick={enviarResena}
+              disabled={enviandoResena || !puntuacion}
+              className="mt-2 rounded-lg bg-primario px-6 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+            >
+              {enviandoResena ? 'Enviando…' : 'Enviar reseña'}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
