@@ -29,7 +29,7 @@ interface BloqueForm {
   hora_fin: string
   duracion_turno: number
   // Precios por bloque
-  precio?: number
+  precio_por_hora?: number
   es_grupal?: boolean
   precio_grupo?: number
 }
@@ -61,7 +61,7 @@ function bloqueDesdeAPI(b: any): BloqueForm {
     hora: b.hora?.slice(0, 5) || '09:00',
     hora_fin: b.hora_fin?.slice(0, 5) || '18:00',
     duracion_turno: b.duracion_turno || 0,
-    precio: b.precio || undefined,
+    precio_por_hora: b.precio_por_hora || undefined,
     es_grupal: b.es_grupal || false,
     precio_grupo: b.precio_grupo || undefined,
   }
@@ -191,7 +191,7 @@ export default function EditarActividadPage() {
         base.dia_hasta = b.dia_hasta
       }
       // Precios por bloque
-      if (b.precio) base.precio = b.precio
+      if (b.precio_por_hora) base.precio_por_hora = b.precio_por_hora
       if (b.es_grupal) base.es_grupal = true
       if (b.precio_grupo) base.precio_grupo = b.precio_grupo
       return base
@@ -542,15 +542,15 @@ export default function EditarActividadPage() {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="mb-1 block text-xs text-texto-secundario">
-                        Precio especial por persona ($)
+                        Precio por hora ($)
                       </label>
                       <input
                         type="number"
                         min={0}
-                        value={b.precio || ''}
-                        onChange={(e) => actualizarBloque(b.id, { precio: e.target.value ? Number(e.target.value) : undefined })}
+                        value={b.precio_por_hora || ''}
+                        onChange={(e) => actualizarBloque(b.id, { precio_por_hora: e.target.value ? Number(e.target.value) : undefined })}
                         className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-                        placeholder="Usar precio base"
+                        placeholder="Vacío = precio base"
                       />
                     </div>
                     <div className="flex items-end pb-2">
