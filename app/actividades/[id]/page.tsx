@@ -79,13 +79,13 @@ export default function DetalleActividadPage() {
 
   const reservar = async () => {
     if (!isSignedIn) return router.push('/login')
-    if (!fechaSel) return toast.error('{t("actividad.seleccionar_fecha")}')
-    if (!actividad.es_grupal && cantidad < 1) return toast.error('{t("actividad.seleccionar_personas")}')
+    if (!fechaSel) return toast.error(t("actividad.seleccionar_fecha"))
+    if (!actividad.es_grupal && cantidad < 1) return toast.error(t("actividad.seleccionar_personas"))
 
     // Validate participants if grupal
     if (bloqueSel?.es_grupal) {
       const incompletos = participantes.some(p => !p.nombre.trim() || !p.dni.trim())
-      if (incompletos) return toast.error('{t("actividad.completar_datos")}')
+      if (incompletos) return toast.error(t("actividad.completar_datos"))
     }
 
     setReservando(true)
@@ -331,7 +331,7 @@ export default function DetalleActividadPage() {
                   disabled={enviandoResena || puntuacion === 0}
                   className="mt-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50"
                 >
-                  {enviandoResena ? '{t("actividad.enviando")}' : 'Publicar reseña'}
+                  {enviandoResena ? t("actividad.enviando") : t("actividad.enviar_resena")}
                 </button>
               </div>
             )}
@@ -347,7 +347,7 @@ export default function DetalleActividadPage() {
                 type="text"
                 value={cuponCodigo}
                 onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
-                placeholder="{t("cupon.codigo")}"
+                placeholder={t("cupon.codigo")}
                 className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
               />
               <button
@@ -483,16 +483,16 @@ export default function DetalleActividadPage() {
               className="mt-4 w-full rounded-lg bg-primario py-3 font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
             >
               {reservando
-                ? '{t("actividad.procesando")}'
-                : `{t("actividad.reservar")} — ${formatPrecio(precioFinal)}${!bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad})` : ''}${bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad} grupo${cantidad > 1 ? 's' : ''})` : ''}`
+                ? t("actividad.procesando")
+                : `${t("actividad.reservar")} — ${formatPrecio(precioFinal)}${!bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad})` : ''}${bloqueSel?.es_grupal && cantidad > 1 ? ` (×${cantidad} grupo${cantidad > 1 ? 's' : ''})` : ''}`
               }
             </button>
 
             {!isSignedIn && (
               <p className="mt-3 text-center text-xs text-texto-secundario">
                 <button onClick={() => router.push('/login')} className="text-primario underline">
-                  Iniciá sesión
-                </button> para reservar
+                  {t("actividad.iniciar_sesion")}
+                </button>
               </p>
             )}
 
