@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 export default async function ActividadesPage() {
   const { data: actividades } = await supabaseAdmin
     .from('actividades')
-    .select('*')
+    .select('*, perfiles!anfitrion_id(nombre, apellido, id)')
     .order('created_at', { ascending: false })
 
   return <ActividadesClient actividades={actividades || []} />

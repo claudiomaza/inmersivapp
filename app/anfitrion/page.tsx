@@ -13,20 +13,29 @@ import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'ingresos' | 'resumen' | 'cupones'
 
-const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'mensajes', label: t('anfitrion.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
-  { key: 'reservas', label: t('anfitrion.reservas'), icon: <MessageSquare className="h-4 w-4" /> },
-  { key: 'resenas', label: t('anfitrion.resenas'), icon: <Star className="h-4 w-4" /> },
-  { key: 'actividades', label: t('anfitrion.mis_exp'), icon: <CalendarDays className="h-4 w-4" /> },
-  { key: 'cupones', label: 'Cupones', icon: <Tag className="h-4 w-4" /> },
-  { key: 'ingresos', label: t('anfitrion.ingresos'), icon: <DollarSign className="h-4 w-4" /> },
-  { key: 'resumen', label: t('anfitrion.resumen'), icon: <LayoutDashboard className="h-4 w-4" /> },
-]
+// const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+//   { key: 'mensajes', label: t('anfitrion.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
+//   { key: 'reservas', label: t('anfitrion.reservas'), icon: <MessageSquare className="h-4 w-4" /> },
+//   { key: 'resenas', label: t('anfitrion.resenas'), icon: <Star className="h-4 w-4" /> },
+//   { key: 'actividades', label: t('anfitrion.mis_exp'), icon: <CalendarDays className="h-4 w-4" /> },
+//   { key: 'cupones', label: 'Cupones', icon: <Tag className="h-4 w-4" /> },
+//   { key: 'ingresos', label: t('anfitrion.ingresos'), icon: <DollarSign className="h-4 w-4" /> },
+//   { key: 'resumen', label: t('anfitrion.resumen'), icon: <LayoutDashboard className="h-4 w-4" /> },
+// ]
 
 export default function AnfitrionPage() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
   const { t } = useLang()
+  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+    { key: 'mensajes', label: t('anfitrion.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
+    { key: 'reservas', label: t('anfitrion.reservas'), icon: <MessageSquare className="h-4 w-4" /> },
+    { key: 'resenas', label: t('anfitrion.resenas'), icon: <Star className="h-4 w-4" /> },
+    { key: 'actividades', label: t('anfitrion.mis_exp'), icon: <CalendarDays className="h-4 w-4" /> },
+    { key: 'cupones', label: 'Cupones', icon: <Tag className="h-4 w-4" /> },
+    { key: 'ingresos', label: t('anfitrion.ingresos'), icon: <DollarSign className="h-4 w-4" /> },
+    { key: 'resumen', label: t('anfitrion.resumen'), icon: <LayoutDashboard className="h-4 w-4" /> },
+  ]
   const [tab, setTab] = useState<Tab>('resumen')
   const [cargando, setCargando] = useState(true)
 
@@ -147,6 +156,15 @@ export default function AnfitrionPage() {
 
   const abrirChat = async (usuarioId: string) => {
     setChatAbierto(usuarioId)
+    try {
+      const res = await fetch(`/api/mensajes/conversacion/${usuarioId}`)
+      if (res.ok) {
+        const data = await res.json()
+        setChatMensajes(data.mensajes || [])
+        return
+      }
+    } catch {}
+    // Fallback: filter local messages
     setChatMensajes(mensajesConv.filter((m: any) =>
       (m.emisor_id === usuarioId && m.receptor_id === user?.id) ||
       (m.emisor_id === user?.id && m.receptor_id === usuarioId)
@@ -550,55 +568,150 @@ export default function AnfitrionPage() {
         </div>
       )}
 
-      {/* Mensajes */}
+      {/* Mensajes — estilo WhatsApp */}
       {tab === 'mensajes' && (
-        <div>
+        <div className="mx-auto max-w-2xl">
           {chatAbierto ? (
-            <div>
-              <button onClick={() => setChatAbierto(null)} className="mb-4 flex items-center gap-2 text-sm text-primario hover:underline">← Volver a conversaciones</button>
-              <div className="rounded-xl bg-superficie p-4 shadow-sm">
-                <div className="mb-4 max-h-80 space-y-3 overflow-y-auto">
-                  {chatMensajes.length === 0 ? (
-                    <p className="text-center text-sm text-texto-secundario">Sin mensajes aún</p>
-                  ) : (
-                    chatMensajes.map((m) => (
-                      <div key={m.id} className={`flex ${m.emisor_id === user?.id ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[75%] rounded-xl px-4 py-2 text-sm ${m.emisor_id === user?.id ? 'bg-primario text-white' : 'bg-gray-100 text-texto'}`}>
-                          <p>{m.contenido}</p>
-                          <p className="mt-1 text-xs opacity-70">{new Date(m.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}</p>
+            <div className="flex flex-col rounded-xl bg-white shadow-sm">
+              {/* Chat header */}
+              <div className="flex items-center gap-3 border-b px-4 py-3">
+                <button
+                  onClick={() => setChatAbierto(null)}
+                  className="flex items-center gap-1 text-sm font-medium text-primario hover:underline"
+                >
+                  ← Volver
+                </button>
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
+                  {(() => {
+                    const p = participantes.find(pp => pp.id === chatAbierto)
+                    return (p?.nombre || '?')[0].toUpperCase()
+                  })()}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-texto">
+                    {(() => {
+                      const p = participantes.find(pp => pp.id === chatAbierto)
+                      return p ? `${p.nombre} ${p.apellido}` : 'Chat'
+                    })()}
+                  </p>
+                </div>
+              </div>
+              {/* Messages */}
+              <div className="flex h-80 flex-col gap-2 overflow-y-auto px-4 py-4">
+                {chatMensajes.length === 0 ? (
+                  <div className="flex flex-1 items-center justify-center">
+                    <p className="text-center text-sm text-texto-secundario">No hay mensajes aún. Enviá el primero.</p>
+                  </div>
+                ) : (
+                  chatMensajes.map((m, i) => {
+                    const esMio = m.emisor_id === user?.id
+                    const mostrarFecha = i === 0 || new Date(m.created_at).toDateString() !== new Date(chatMensajes[i-1]?.created_at).toDateString()
+                    return (
+                      <div key={m.id || i}>
+                        {mostrarFecha && (
+                          <p className="my-2 text-center text-[10px] text-texto-secundario">
+                            {new Date(m.created_at).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                          </p>
+                        )}
+                        <div className={`flex ${esMio ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
+                            esMio
+                              ? 'bg-primario text-white rounded-br-md'
+                              : 'bg-gray-100 text-texto rounded-bl-md'
+                          }`}>
+                            <p className="whitespace-pre-wrap break-words">{m.contenido}</p>
+                            <p className={`mt-1 text-right text-[10px] ${esMio ? 'text-white/70' : 'text-texto-secundario'}`}>
+                              {new Date(m.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
+                              {esMio && ' ✓'}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    ))
-                  )}
-                </div>
-                <div className="flex gap-2 border-t pt-3">
-                  <input type="text" value={textoEnvio} onChange={(e) => setTextoEnvio(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()} placeholder="Escribí un mensaje…" className="flex-1 rounded-lg border px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20" />
-                  <button onClick={enviarMensaje} disabled={enviando || !textoEnvio.trim()} className="flex items-center gap-2 rounded-lg bg-primario px-4 py-2 text-sm font-medium text-white transition hover:bg-primario-dark disabled:opacity-50">
-                    <Send className="h-4 w-4" />
-                  </button>
-                </div>
+                    )
+                  })
+                )}
+                <div ref={el => el?.scrollIntoView({ behavior: 'smooth' })} />
+              </div>
+              {/* Input */}
+              <div className="flex items-center gap-2 border-t px-4 py-3">
+                <input
+                  type="text"
+                  value={textoEnvio}
+                  onChange={(e) => setTextoEnvio(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      enviarMensaje()
+                    }
+                  }}
+                  placeholder="Escribí un mensaje..."
+                  className="flex-1 rounded-full border border-gray-300 px-5 py-2.5 text-sm outline-none transition focus:border-primario focus:ring-2 focus:ring-primario/20"
+                />
+                <button
+                  onClick={enviarMensaje}
+                  disabled={enviando || !textoEnvio.trim()}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-primario text-white transition hover:bg-primario-dark disabled:opacity-50"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
               </div>
             </div>
           ) : (
-            <div>
-              <p className="mb-4 text-sm text-texto-secundario">{participantes.length} participante(s) de tus experiencias</p>
+            <div className="divide-y overflow-hidden rounded-xl bg-white shadow-sm">
+              <div className="px-4 py-3">
+                <p className="text-sm font-medium text-texto-secundario">
+                  {participantes.length > 0
+                    ? `${participantes.length} participante(s) de tus experiencias`
+                    : 'Participantes'}
+                </p>
+              </div>
               {participantes.length === 0 ? (
-                <p className="rounded-xl bg-superficie p-8 text-center text-sm text-texto-secundario">Cuando alguien reserve tu experiencia, podrás chatear con ellos acá.</p>
-              ) : (
-                <div className="space-y-3">
-                  {participantes.map((p) => (
-                    <button key={p.id} onClick={() => abrirChat(p.id)} className="flex w-full items-center gap-3 rounded-xl bg-superficie p-4 shadow-sm transition hover:bg-gray-100">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">{(p.nombre || 'U')[0].toUpperCase()}</div>
-                      <div className="flex-1 text-left">
-                        <p className="font-medium text-texto">{p.nombre} {p.apellido}</p>
-                        <p className="text-xs text-texto-secundario">{mensajesConv.filter((m: any) => m.emisor_id === p.id || m.receptor_id === p.id).length} mensajes</p>
-                      </div>
-                      <MessageSquare className="h-4 w-4 text-primario" />
-                    </button>
-                  ))}
+                <div className="flex flex-col items-center justify-center py-16">
+                  <MessageSquare className="mb-3 h-10 w-10 text-texto-secundario/40" />
+                  <p className="text-sm text-texto-secundario">Cuando alguien reserve tu experiencia, podrás chatear con ellos acá.</p>
                 </div>
+              ) : (
+                participantes.map((p) => {
+                  const msgs = mensajesConv.filter((m: any) => m.emisor_id === p.id || m.receptor_id === p.id)
+                  const ultimo = msgs.length > 0 ? msgs.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0] : null
+                  const noLeidos = mensajesConv.filter((m: any) => m.emisor_id === p.id && m.receptor_id === user?.id && !m.leido).length
+                  return (
+                    <button key={p.id} onClick={() => abrirChat(p.id)} className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-gray-50 active:bg-gray-100">
+                      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primario/10 text-base font-bold text-primario">
+                        {(p.nombre || 'U')[0].toUpperCase()}
+                        {noLeidos > 0 && (
+                          <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold leading-none text-white">
+                            {noLeidos}
+                          </span>
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-baseline justify-between">
+                          <p className="truncate text-sm font-medium text-texto">
+                            {p.nombre} {p.apellido}
+                          </p>
+                          {ultimo && (
+                            <p className="ml-2 shrink-0 text-[11px] text-texto-secundario">
+                              {new Date(ultimo.created_at).toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })}
+                            </p>
+                          )}
+                        </div>
+                        <p className="mt-0.5 truncate text-sm text-texto-secundario">
+                          {ultimo?.contenido || 'Sin mensajes aún'}
+                        </p>
+                      </div>
+                    </button>
+                  )
+                })
               )}
-              <button onClick={() => { fetch('/api/admin/contacto').then(r => r.json()).then(d => { if (d.adminId) { setChatAbierto(d.adminId); setChatMensajes(mensajesConv.filter((m: any) => (m.emisor_id === d.adminId && m.receptor_id === user?.id) || (m.emisor_id === user?.id && m.receptor_id === d.adminId))) } }) }} className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primario/10 p-3 text-sm font-medium text-primario transition hover:bg-primario/20">
+              <button
+                onClick={async () => {
+                  const res = await fetch('/api/admin/contacto')
+                  const d = await res.json()
+                  if (d.adminId) abrirChat(d.adminId)
+                }}
+                className="flex w-full items-center justify-center gap-2 border-t px-4 py-3 text-sm font-medium text-primario transition hover:bg-primario/5"
+              >
                 <HelpCircle className="h-4 w-4" /> Contactar al administrador
               </button>
             </div>

@@ -76,6 +76,9 @@ export default function EditarActividadPage() {
   const [cargando, setCargando] = useState(true)
   const [guardando, setGuardando] = useState(false)
   const [form, setForm] = useState({
+    es_grupal: false,
+    precio_grupo: "",
+    personas_grupo: "",
     titulo: '',
     descripcion: '',
     precio: '',
@@ -114,6 +117,9 @@ export default function EditarActividadPage() {
         lugar: a.lugar || '',
         capacidad_max: a.capacidad_max?.toString() || '',
         foto: a.imagen_url || '',
+        es_grupal: a.es_grupal || false,
+        precio_grupo: a.precio_grupo?.toString() || "",
+        personas_grupo: a.personas_grupo?.toString() || "",
       })
 
       // Convertir bloques existentes o migrar desde campos viejos

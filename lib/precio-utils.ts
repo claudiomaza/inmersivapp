@@ -105,6 +105,9 @@ export function descripcionPrecio(actividad: ActividadPrecio): string {
   if (actividad.precio_por_hora) {
     return `$${actividad.precio_por_hora.toLocaleString('es-AR')}/hora por persona`
   }
+  if (actividad.precio && actividad.precio > 0) {
+    return `$${actividad.precio.toLocaleString('es-AR')} por persona (precio fijo)`
+  }
   return 'por persona'
 }
 

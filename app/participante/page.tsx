@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { MessageSquare, Ticket, Star, Send, MessageCircle, HelpCircle } from 'lucide-react'
@@ -11,17 +11,24 @@ import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'mensajes' | 'reservas' | 'resenas'
 
-const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'mensajes', label: t('panel.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
-  { key: 'reservas', label: t('panel.reservas'), icon: <Ticket className="h-4 w-4" /> },
-  { key: 'resenas', label: t('panel.resenas'), icon: <Star className="h-4 w-4" /> },
-]
-
 export default function ParticipantePage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-[50vh] items-center justify-center"><p className="text-texto-secundario">Cargando...</p></div>}>
+      <ParticipanteContent />
+    </Suspense>
+  )
+}
+
+function ParticipanteContent() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
   const { t } = useLang()
-  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
+  const searchParams = useSearchParams()
+  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+    { key: "mensajes", label: t("panel.mensajes"), icon: <MessageSquare className="h-4 w-4" /> },
+    { key: "reservas", label: t("panel.reservas"), icon: <Ticket className="h-4 w-4" /> },
+    { key: "resenas", label: t("panel.resenas"), icon: <Star className="h-4 w-4" /> },
+  ]
   const [tab, setTab] = useState<Tab>('mensajes')
   const [cargando, setCargando] = useState(true)
   const [adminId, setAdminId] = useState<string | null>(null)
@@ -51,16 +58,17 @@ export default function ParticipantePage() {
     })
 
     // Si viene de contactar anfitrión, abrir ese chat
-    if (searchParams?.get('contactar')) {
-      const contactoId = searchParams.get('contactar')!
+    const contactoId = searchParams?.get('contactar')
+    if (contactoId) {
       setChatAbierto(contactoId)
-      fetch(`/api/mensajes/conversaciones/${contactoId}`).then(r => r.json()).then(d => {
+      setTab('mensajes')
+      fetch(`/api/mensajes/conversacion/${contactoId}`).then(r => r.json()).then(d => {
         setChatMensajes(d.mensajes || [])
       })
     }
 
     setCargando(false)
-  }, [isSignedIn, user])
+  }, [isSignedIn, user, searchParams])
 
   // ─── Mensajes ───
 
@@ -73,7 +81,7 @@ export default function ParticipantePage() {
 
   const abrirChat = async (usuarioId: string) => {
     setChatAbierto(usuarioId)
-    const res = await fetch(`/api/mensajes/conversaciones/${usuarioId}`)
+    const res = await fetch(`/api/mensajes/conversacion/${usuarioId}`)
     if (!res.ok) return
     const data = await res.json()
     setChatMensajes(data.mensajes || [])
@@ -90,8 +98,9 @@ export default function ParticipantePage() {
     if (res.ok) {
       setChatMensajes(prev => [...prev, { contenido: textoEnvio, emisor_id: user?.id, created_at: new Date().toISOString() }])
       setTextoEnvio('')
+      cargarConversaciones()
     } else {
-      toast.error('{t("panel.error_enviar")}')
+      toast.error(t("panel.error_enviar"))
     }
     setEnviando(false)
   }
@@ -112,10 +121,10 @@ export default function ParticipantePage() {
       body: JSON.stringify({ reserva_id: id, estado: 'cancelada' }),
     })
     if (res.ok) {
-      toast.success('{t("panel.reserva_cancelada")}')
+      toast.success(t("panel.reserva_cancelada"))
       cargarReservas()
     } else {
-      toast.error('{t("panel.error_cancelar")}')
+      toast.error(t("panel.error_cancelar"))
     }
   }
 
@@ -170,93 +179,138 @@ export default function ParticipantePage() {
         ))}
       </div>
 
-      {/* ─── Mensajes ─── */}
+      {/* ─── Mensajes — estilo WhatsApp ─── */}
       {tab === 'mensajes' && (
-        <div>
+        <div className="mx-auto max-w-2xl">
           {chatAbierto ? (
-            <div>
-              <button
-                onClick={() => setChatAbierto(null)}
-                className="mb-4 text-sm text-primario hover:underline"
-              >
-                ← {t("panel.volver_conv")}
-              </button>
-              <div className="max-h-96 space-y-3 overflow-y-auto rounded-xl bg-white p-4 shadow-sm">
-                {chatMensajes.map((m, i) => (
-                  <div
-                    key={i}
-                    className={`flex ${m.emisor_id === user?.id ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div
-                      className={`max-w-[70%] rounded-xl px-4 py-2 text-sm ${
-                        m.emisor_id === user?.id
-                          ? 'bg-primario text-white'
-                          : 'bg-gray-100 text-texto'
-                      }`}
-                    >
-                      <p>{m.contenido}</p>
-                      <p className="mt-1 text-[10px] opacity-70">
-                        {new Date(m.created_at).toLocaleString('es-AR')}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+            <div className="flex flex-col rounded-xl bg-white shadow-sm">
+              {/* Chat header */}
+              <div className="flex items-center gap-3 border-b px-4 py-3">
+                <button
+                  onClick={() => setChatAbierto(null)}
+                  className="flex items-center gap-1 text-sm font-medium text-primario hover:underline"
+                >
+                  ← Volver
+                </button>
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
+                  {(() => {
+                    const conv = conversaciones.find(c => c.otroUsuarioId === chatAbierto)
+                    return (conv?.otroNombre || '?')[0].toUpperCase()
+                  })()}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-texto">
+                    {(() => {
+                      const conv = conversaciones.find(c => c.otroUsuarioId === chatAbierto)
+                      return conv ? `${conv.otroNombre} ${conv.otroApellido}` : 'Chat'
+                    })()}
+                  </p>
+                </div>
               </div>
-              <div className="mt-4 flex gap-2">
+              {/* Messages */}
+              <div className="flex h-80 flex-col gap-2 overflow-y-auto px-4 py-4">
+                {chatMensajes.length === 0 ? (
+                  <div className="flex flex-1 items-center justify-center">
+                    <p className="text-center text-sm text-texto-secundario">No hay mensajes aún. Enviá el primero.</p>
+                  </div>
+                ) : (
+                  chatMensajes.map((m, i) => {
+                    const esMio = m.emisor_id === user?.id
+                    const mostrarFecha = i === 0 || new Date(m.created_at).toDateString() !== new Date(chatMensajes[i-1]?.created_at).toDateString()
+                    return (
+                      <div key={m.id || i}>
+                        {mostrarFecha && (
+                          <p className="my-2 text-center text-[10px] text-texto-secundario">
+                            {new Date(m.created_at).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                          </p>
+                        )}
+                        <div className={`flex ${esMio ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
+                            esMio
+                              ? 'bg-primario text-white rounded-br-md'
+                              : 'bg-gray-100 text-texto rounded-bl-md'
+                          }`}>
+                            <p className="whitespace-pre-wrap break-words">{m.contenido}</p>
+                            <p className={`mt-1 text-right text-[10px] ${esMio ? 'text-white/70' : 'text-texto-secundario'}`}>
+                              {new Date(m.created_at).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
+                              {esMio && ' ✓'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
+                <div ref={el => el?.scrollIntoView({ behavior: 'smooth' })} />
+              </div>
+              {/* Input */}
+              <div className="flex items-center gap-2 border-t px-4 py-3">
                 <input
                   type="text"
                   value={textoEnvio}
                   onChange={(e) => setTextoEnvio(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()}
-                  placeholder={t("panel.escribir_mensaje")}
-                  className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      enviarMensaje()
+                    }
+                  }}
+                  placeholder="Escribí un mensaje..."
+                  className="flex-1 rounded-full border border-gray-300 px-5 py-2.5 text-sm outline-none transition focus:border-primario focus:ring-2 focus:ring-primario/20"
                 />
                 <button
                   onClick={enviarMensaje}
                   disabled={enviando || !textoEnvio.trim()}
-                  className="rounded-lg bg-primario px-4 py-2 text-white transition hover:bg-primario-dark disabled:opacity-50"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-primario text-white transition hover:bg-primario-dark disabled:opacity-50"
                 >
                   <Send className="h-4 w-4" />
                 </button>
               </div>
             </div>
           ) : (
-            <div>
-              <div className="space-y-3">
-                {conversaciones.length === 0 ? (
-                  <p className="text-center text-texto-secundario">{t("panel.no_mensajes")}</p>
-                ) : (
-                  conversaciones.map((conv) => (
-                    <button
-                      key={conv.otroUsuarioId}
-                      onClick={() => abrirChat(conv.otroUsuarioId)}
-                      className="flex w-full items-center gap-3 rounded-xl bg-white p-4 text-left shadow-sm transition hover:bg-primario/5"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primario/10 text-sm font-bold text-primario">
-                        {conv.otroNombre?.charAt(0)?.toUpperCase() || '?'}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="truncate font-medium text-texto">
+            <div className="divide-y overflow-hidden rounded-xl bg-white shadow-sm">
+              {conversaciones.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16">
+                  <MessageSquare className="mb-3 h-10 w-10 text-texto-secundario/40" />
+                  <p className="text-sm text-texto-secundario">{t("panel.no_mensajes")}</p>
+                </div>
+              ) : (
+                conversaciones.map((conv) => (
+                  <button
+                    key={conv.otroUsuarioId}
+                    onClick={() => abrirChat(conv.otroUsuarioId)}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-gray-50 active:bg-gray-100"
+                  >
+                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primario/10 text-base font-bold text-primario">
+                      {conv.otroNombre?.charAt(0)?.toUpperCase() || '?'}
+                      {conv.noLeidos > 0 && (
+                        <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold leading-none text-white">
+                          {conv.noLeidos}
+                        </span>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline justify-between">
+                        <p className="truncate text-sm font-medium text-texto">
                           {conv.otroNombre} {conv.otroApellido}
-                          {conv.noLeidos > 0 && (
-                            <span className="ml-2 rounded-full bg-error px-2 py-0.5 text-[10px] font-bold text-white">
-                              {conv.noLeidos}
-                            </span>
-                          )}
                         </p>
-                        <p className="mt-0.5 truncate text-sm text-texto-secundario">{conv.ultimoMensaje}</p>
+                        <p className="ml-2 shrink-0 text-[11px] text-texto-secundario">
+                          {new Date(conv.ultimaFecha).toLocaleDateString('es-AR', {
+                            day: 'numeric', month: 'short'
+                          })}
+                        </p>
                       </div>
-                      <p className="shrink-0 text-xs text-texto-secundario">
-                        {new Date(conv.ultimaFecha).toLocaleDateString('es-AR')}
+                      <p className="mt-0.5 truncate text-sm text-texto-secundario">
+                        {conv.ultimoMensaje || 'Sin mensajes'}
                       </p>
-                    </button>
-                  ))
-                )}
-              </div>
+                    </div>
+                  </button>
+                ))
+              )}
               {adminId && adminId !== user?.id && (
                 <button
                   onClick={() => abrirChat(adminId)}
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primario/10 p-3 text-sm font-medium text-primario transition hover:bg-primario/20"
+                  className="flex w-full items-center justify-center gap-2 border-t px-4 py-3 text-sm font-medium text-primario transition hover:bg-primario/5"
                 >
                   <HelpCircle className="h-4 w-4" /> {t("panel.contactar_admin")}
                 </button>

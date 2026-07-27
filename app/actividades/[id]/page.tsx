@@ -6,7 +6,7 @@ import { useUser } from '@clerk/nextjs'
 import { useLang } from '@/lib/lang-context'
 import { formatPrecio } from '@/lib/utils'
 import { toast } from 'sonner'
-import { Star, MessageCircle, Ticket, Users, Clock } from 'lucide-react'
+import { Star, MessageCircle, Ticket, Users, Clock, MessageSquare } from 'lucide-react'
 import {
   calcularPrecioUnitario,
   calcularPrecioTotal,
@@ -189,6 +189,37 @@ export default function DetalleActividadPage() {
     cargarResenas()
   }
 
+
+  const [modalContacto, setModalContacto] = useState(false)
+  const [mensajeContacto, setMensajeContacto] = useState('')
+  const [enviandoContacto, setEnviandoContacto] = useState(false)
+
+  const contactarAnfitrion = async () => {
+    if (!actividad.anfitrion_id || !mensajeContacto.trim()) return
+    setEnviandoContacto(true)
+    try {
+      const res = await fetch('/api/mensajes/enviar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          receptor_id: actividad.anfitrion_id,
+          contenido: mensajeContacto.trim(),
+        }),
+      })
+      if (res.ok) {
+        toast.success('Mensaje enviado al anfitrión')
+        setModalContacto(false)
+        setMensajeContacto('')
+        router.push('/participante?contactar=' + actividad.anfitrion_id)
+      } else {
+        toast.error('Error al enviar el mensaje')
+      }
+    } catch {
+      toast.error('Error al contactar al anfitrión')
+    }
+    setEnviandoContacto(false)
+  }
+
   if (cargando) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
@@ -222,6 +253,11 @@ export default function DetalleActividadPage() {
             {actividad.lugar && (
               <p className="mt-4 text-sm text-texto-secundario">
                 📍 {actividad.lugar}
+              </p>
+            )}
+            {actividad.perfiles && (
+              <p className="mt-1 text-sm text-texto-secundario">
+                👤 Anfitrión: {actividad.perfiles.nombre} {actividad.perfiles.apellido}
               </p>
             )}
           </div>
@@ -338,33 +374,7 @@ export default function DetalleActividadPage() {
             )}
           </div>
 
-          {/* Cupón */}
-          <div className="mt-4 rounded-xl bg-white p-6 shadow-sm">
-            <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
-              <Ticket className="h-4 w-4" /> {t("actividad.tenes_cupon")}
-            </h3>
-            <div className="mt-2 flex gap-2">
-              <input
-                type="text"
-                value={cuponCodigo}
-                onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
-                placeholder={t("cupon.codigo")}
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
-              />
-              <button
-                onClick={verificarCupon}
-                disabled={verificandoCupon || !cuponCodigo.trim()}
-                className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium transition hover:bg-gray-200 disabled:opacity-50"
-              >
-                {verificandoCupon ? '...' : 'Verificar'}
-              </button>
-            </div>
-            {cuponValido && (
-              <p className={`mt-2 text-sm ${cuponValido.valido ? 'text-green-600' : 'text-red-600'}`}>
-                {cuponValido.mensaje}
-              </p>
-            )}
-          </div>
+
         </div>
 
         {/* Sidebar — Reserva */}
@@ -396,7 +406,7 @@ export default function DetalleActividadPage() {
                 <Users className="mr-1 inline h-4 w-4" />
                 {bloqueSel?.es_grupal
                   ? `Hasta ${actividad.capacidad_max} grupos`
-                  : `{t("actividad.capacidad_max")}: ${actividad.capacidad_max} personas`
+                  : `${t("actividad.capacidad_max")}: ${actividad.capacidad_max} personas`
                 }
               </p>
             )}
@@ -502,6 +512,90 @@ export default function DetalleActividadPage() {
                 {t("reserva.no_cobro")}
               </p>
             )}
+
+            {/* Cupón */}
+            <div className="mt-6 rounded-xl border border-gray-100 bg-gray-50 p-4">
+              <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
+                <Ticket className="h-4 w-4" /> {t("actividad.tenes_cupon")}
+              </h3>
+              <div className="mt-2 flex gap-2">
+                <input
+                  type="text"
+                  value={cuponCodigo}
+                  onChange={(e) => setCuponCodigo(e.target.value.toUpperCase())}
+                  placeholder={t("cupon.codigo")}
+                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                />
+                <button
+                  onClick={verificarCupon}
+                  disabled={verificandoCupon || !cuponCodigo.trim()}
+                  className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium transition hover:bg-gray-200 disabled:opacity-50"
+                >
+                  {verificandoCupon ? '...' : 'Verificar'}
+                </button>
+              </div>
+              {cuponValido && (
+                <p className={`mt-2 text-sm ${cuponValido.valido ? 'text-green-600' : 'text-red-600'}`}>
+                  {cuponValido.mensaje}
+                </p>
+              )}
+            </div>
+
+            {/* Contactar al anfitrión */}
+            {isSignedIn && actividad.anfitrion_id && (
+              <div className="mt-6 rounded-xl border border-gray-100 bg-gray-50 p-4">
+                <h3 className="flex items-center gap-2 font-titulos font-semibold text-texto">
+                  <MessageSquare className="h-4 w-4" /> ¿Tenés dudas?
+                </h3>
+                <p className="mt-1 text-sm text-texto-secundario">
+                  Contactá directamente al anfitrión para consultar disponibilidad, requisitos o lo que necesites.
+                </p>
+                <button
+                  onClick={() => setModalContacto(true)}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-primario/10 px-4 py-2 text-sm font-semibold text-primario transition hover:bg-primario/20"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  Contactar al anfitrión
+                </button>
+              </div>
+            )}
+
+            {/* Modal contacto anfitrión */}
+            {modalContacto && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+                  <h3 className="font-titulos text-lg font-bold text-texto">
+                    Contactar a {actividad.perfiles?.nombre || 'anfitrión'}
+                  </h3>
+                  <p className="mt-1 text-sm text-texto-secundario">
+                    Sobre: {actividad.titulo}
+                  </p>
+                  <textarea
+                    value={mensajeContacto}
+                    onChange={(e) => setMensajeContacto(e.target.value)}
+                    placeholder="Escribí tu consulta acá..."
+                    rows={4}
+                    className="mt-4 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primario focus:ring-2 focus:ring-primario/20"
+                  />
+                  <div className="mt-4 flex gap-3">
+                    <button
+                      onClick={() => { setModalContacto(false); setMensajeContacto('') }}
+                      className="flex-1 rounded-lg border border-gray-300 py-2 text-sm font-medium text-texto transition hover:bg-gray-50"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={contactarAnfitrion}
+                      disabled={enviandoContacto || !mensajeContacto.trim()}
+                      className="flex-1 rounded-lg bg-primario py-2 text-sm font-semibold text-white transition hover:bg-primario-dark disabled:opacity-50"
+                    >
+                      {enviandoContacto ? 'Enviando...' : 'Enviar mensaje'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          
           </div>
         </div>
       </div>

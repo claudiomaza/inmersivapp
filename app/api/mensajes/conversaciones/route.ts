@@ -9,17 +9,22 @@ export async function GET() {
   }
 
   // Mensajes donde el usuario es emisor o receptor
-  const { data: emitidos } = await supabaseAdmin
+  // Usamos alias explícitos para los perfiles para evitar ambigüedad
+  const { data: emitidos, error: err1 } = await supabaseAdmin
     .from('mensajes')
-    .select('*, perfiles!emisor_id(nombre, apellido), perfiles!receptor_id(nombre, apellido)')
+    .select('*, emisor:perfiles!emisor_id(nombre, apellido), receptor:perfiles!receptor_id(nombre, apellido)')
     .eq('emisor_id', userId)
     .order('created_at', { ascending: false })
 
-  const { data: recibidos } = await supabaseAdmin
+  const { data: recibidos, error: err2 } = await supabaseAdmin
     .from('mensajes')
-    .select('*, perfiles!emisor_id(nombre, apellido), perfiles!receptor_id(nombre, apellido)')
+    .select('*, emisor:perfiles!emisor_id(nombre, apellido), receptor:perfiles!receptor_id(nombre, apellido)')
     .eq('receptor_id', userId)
     .order('created_at', { ascending: false })
+
+  if (err1 || err2) {
+    console.error('Error fetching messages:', err1 || err2)
+  }
 
   const todos = [...(emitidos || []), ...(recibidos || [])]
 
@@ -32,32 +37,33 @@ export async function GET() {
     }
   }
 
-  // No leídos por conversación
+  // No leídos por conversación (mensajes recibidos por mi que no están leídos)
   const noLeidosMap: Record<string, number> = {}
-  for (const msg of (recibidos || [])) {
-    if (!msg.leido) {
-      noLeidosMap[msg.emisor_id] = (noLeidosMap[msg.emisor_id] || 0) + 1
+  if (recibidos) {
+    for (const msg of recibidos) {
+      if (!msg.leido) {
+        noLeidosMap[msg.emisor_id] = (noLeidosMap[msg.emisor_id] || 0) + 1
+      }
     }
   }
 
-  const conversaciones = await Promise.all(
-    Object.entries(grupos).map(async ([otroId, msg]) => {
-      const otroPerfil = msg.emisor_id === userId
-        ? msg.perfiles_receptor_id
-        : msg.perfiles_emisor_id
-      return {
-        otroUsuarioId: otroId,
-        otroNombre: otroPerfil?.nombre || 'Usuario',
-        otroApellido: otroPerfil?.apellido || '',
-        ultimoMensaje: msg.contenido,
-        ultimaFecha: msg.created_at,
-        noLeidos: noLeidosMap[otroId] || 0,
-      }
-    })
-  )
+  const conversaciones = Object.entries(grupos).map(([otroId, msg]) => {
+    // Si yo soy el emisor, el otro es el receptor
+    const otroPerfil = msg.emisor_id === userId ? msg.receptor : msg.emisor
+    
+    return {
+      otroUsuarioId: otroId,
+      otroNombre: otroPerfil?.nombre || 'Usuario',
+      otroApellido: otroPerfil?.apellido || '',
+      ultimoMensaje: msg.contenido,
+      ultimaFecha: msg.created_at,
+      noLeidos: noLeidosMap[otroId] || 0,
+    }
+  })
 
   // Ordenar por más reciente
   conversaciones.sort((a, b) => new Date(b.ultimaFecha).getTime() - new Date(a.ultimaFecha).getTime())
 
   return NextResponse.json({ conversaciones })
 }
+

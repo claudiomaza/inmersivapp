@@ -38,6 +38,16 @@ function precioDesde(actividad: any): string | null {
     return `$${actividad.precio_por_hora.toLocaleString('es-AR')}/h`
   }
 
+  // Fallback a precio_grupo directo de actividad
+  if (actividad.precio_grupo) {
+    return `Desde $${actividad.precio_grupo.toLocaleString('es-AR')} (grupo)`
+  }
+
+  // Fallback a precio legacy
+  if (actividad.precio && actividad.precio > 0) {
+    return `Desde $${actividad.precio.toLocaleString('es-AR')}`
+  }
+
   return null
 }
 
@@ -91,6 +101,11 @@ export default function CardActividad({ actividad }: { actividad: any }) {
           <span className="text-xs text-texto-secundario/70">
             {actividad.lugar?.split(',')[0] || ''}
           </span>
+          {actividad.perfiles && (
+            <span className="ml-2 text-xs text-primario/70">
+              {actividad.perfiles.nombre}
+            </span>
+          )}
         </div>
       </div>
     </Link>

@@ -10,20 +10,29 @@ import { formatPrecio } from '@/lib/utils'
 
 type Tab = 'mensajes' | 'reservas' | 'resenas' | 'actividades' | 'usuarios' | 'liquidaciones' | 'resumen'
 
-const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'mensajes', label: t('admin.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
-  { key: 'reservas', label: t('admin.reservas'), icon: <Ticket className="h-4 w-4" /> },
-  { key: 'resenas', label: t('admin.resenas'), icon: <Star className="h-4 w-4" /> },
-  { key: 'actividades', label: t('admin.actividades'), icon: <CalendarDays className="h-4 w-4" /> },
-  { key: 'usuarios', label: t('admin.usuarios'), icon: <Users className="h-4 w-4" /> },
-  { key: 'liquidaciones', label: t('admin.liquidaciones'), icon: <DollarSign className="h-4 w-4" /> },
-  { key: 'resumen', label: t('admin.resumen'), icon: <LayoutDashboard className="h-4 w-4" /> },
-]
+// const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+//   { key: 'mensajes', label: t('admin.mensajes'), icon: <MessageSquare className="h-4 w-4" /> },
+//   { key: 'reservas', label: t('admin.reservas'), icon: <Ticket className="h-4 w-4" /> },
+//   { key: 'resenas', label: t('admin.resenas'), icon: <Star className="h-4 w-4" /> },
+//   { key: 'actividades', label: t('admin.actividades'), icon: <CalendarDays className="h-4 w-4" /> },
+//   { key: 'usuarios', label: t('admin.usuarios'), icon: <Users className="h-4 w-4" /> },
+//   { key: 'liquidaciones', label: t('admin.liquidaciones'), icon: <DollarSign className="h-4 w-4" /> },
+//   { key: 'resumen', label: t('admin.resumen'), icon: <LayoutDashboard className="h-4 w-4" /> },
+// ]
 
 export default function AdminPage() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
   const { t } = useLang()
+  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+    { key: "mensajes", label: t("admin.mensajes"), icon: <MessageSquare className="h-4 w-4" /> },
+    { key: "reservas", label: t("admin.reservas"), icon: <Ticket className="h-4 w-4" /> },
+    { key: "resenas", label: t("admin.resenas"), icon: <Star className="h-4 w-4" /> },
+    { key: "actividades", label: t("admin.actividades"), icon: <CalendarDays className="h-4 w-4" /> },
+    { key: "usuarios", label: t("admin.usuarios"), icon: <Users className="h-4 w-4" /> },
+    { key: "liquidaciones", label: t("admin.liquidaciones"), icon: <DollarSign className="h-4 w-4" /> },
+    { key: "resumen", label: t("admin.resumen"), icon: <LayoutDashboard className="h-4 w-4" /> },
+  ]
   const [tab, setTab] = useState<Tab>('resumen')
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')

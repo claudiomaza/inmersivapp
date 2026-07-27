@@ -162,7 +162,7 @@ export async function GET(req: NextRequest) {
 
     const { data: mensajes } = await supabaseAdmin
       .from('mensajes')
-      .select('*, perfiles!emisor_id(nombre, apellido), perfiles!receptor_id(nombre, apellido)')
+      .select('*, emisor:perfiles!emisor_id(nombre, apellido), receptor:perfiles!receptor_id(nombre, apellido)')
       .or(`and(emisor_id.eq.${userId},receptor_id.in.(${participantesIds.join(',')})),and(emisor_id.in.(${participantesIds.join(',')}),receptor_id.eq.${userId})`)
       .order('created_at', { ascending: false })
 

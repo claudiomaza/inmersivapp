@@ -105,6 +105,8 @@ const es: Record<string, string> = {
   'general.cargando': 'Cargando…',
   'general.error': 'Error',
   'general.exito': 'Éxito',
+  'actividad.cantidad_grupos': 'Cantidad de grupos',
+  'actividad.cantidad_personas': 'Cantidad de personas',
 }
 
 // Traducciones - en-US
@@ -206,6 +208,8 @@ const en: Record<string, string> = {
   'general.cargando': 'Loading…',
   'general.error': 'Error',
   'general.exito': 'Success',
+  'actividad.cantidad_grupos': 'Number of groups',
+  'actividad.cantidad_personas': 'Number of people',
 }
 
 export type LocaleDict = typeof es

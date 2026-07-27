@@ -4,8 +4,7 @@ import Link from 'next/link'
 import { useUser, useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
-import { Bell, Menu, X, UserCircle, Sun, Moon, MessageSquare, Languages } from 'lucide-react'
+import { Bell, Menu, X, UserCircle, Sun, Moon, MessageSquare, Languages, LogOut } from 'lucide-react'
 import { useLang } from '@/lib/lang-context'
 
 export default function Navbar() {
@@ -20,7 +19,6 @@ export default function Navbar() {
   const { locale, setLocale, t } = useLang()
 
   useEffect(() => {
-    // Inicializar desde localStorage
     const guardado = localStorage.getItem('tema')
     const prefiereOscuro = guardado === 'oscuro' || (!guardado && window.matchMedia('(prefers-color-scheme: dark)').matches)
     setOscuro(prefiereOscuro)
@@ -42,28 +40,26 @@ export default function Navbar() {
       return
     }
 
-    supabase
-      .from('perfiles')
-      .select('roles')
-      .eq('id', user.id)
-      .single()
-      .then(({ data }) => {
-        setEsAdmin(data?.roles?.includes('admin') ?? false)
-        setEsAnfitrion(data?.roles?.includes('anfitrion') ?? false)
+    fetch('/api/roles')
+      .then(r => r.json())
+      .then(({ roles }) => {
+        setEsAdmin(roles?.includes('admin') ?? false)
+        setEsAnfitrion(roles?.includes('anfitrion') ?? false)
+      })
+      .catch(() => {
+        setEsAdmin(false)
+        setEsAnfitrion(false)
       })
 
-    supabase
-      .from('notificaciones')
-      .select('id', { count: 'exact', head: true })
-      .eq('usuario_id', user.id)
-      .eq('leido', false)
+    fetch('/api/notificaciones/no-leidas')
+      .then(r => r.json())
       .then(({ count }) => setNoLeidos(count ?? 0))
+      .catch(() => setNoLeidos(0))
   }, [isSignedIn, user])
 
   const cerrarSesion = async () => {
     await signOut()
     router.push('/')
-    router.refresh()
   }
 
   return (
@@ -92,16 +88,14 @@ export default function Navbar() {
             {t('nav.primeros_pasos')}
           </Link>
 
-          {/* Language toggle */}
           <button
             onClick={() => setLocale(locale === 'es-AR' ? 'en-US' : 'es-AR')}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-texto-secundario transition hover:bg-gray-100"
             aria-label={t('nav.cambiar_idioma')}
           >
-            <span className="text-xs font-bold">{locale === 'es-AR' ? 'EN' : 'ES'}</span>
+            <span className="text-xs font-bold">{locale === 'es-AR' ? 'ES' : 'EN'}</span>
           </button>
 
-          {/* Theme toggle */}
           <button
             onClick={toggleTema}
             className="flex h-10 w-10 items-center justify-center rounded-xl text-texto-secundario transition hover:bg-gray-100"
@@ -148,32 +142,27 @@ export default function Navbar() {
               )}
 
               <Link
-                href="/reservas"
-                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
-              >
-                {t('nav.mis_reservas')}
-              </Link>
-              <Link
-                href="/mensajes"
-                className="px-3 py-2 text-sm font-medium text-texto-secundario transition hover:text-texto"
-              >
-                {t('nav.mensajes')}
-              </Link>
-
-              <Link
                 href="/perfil"
                 className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
               >
                 <UserCircle className="h-5 w-5" />
                 {user?.fullName || user?.emailAddresses?.[0]?.emailAddress || 'Perfil'}
               </Link>
+
+              <button
+                onClick={cerrarSesion}
+                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-error transition hover:bg-error/10"
+                title={t('nav.cerrar_sesion')}
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
             </>
           ) : (
             <Link
               href="/login"
               className="rounded-lg bg-primario px-5 py-2 text-sm font-semibold text-white transition hover:bg-primario-dark"
             >
-              Ingresar
+              {t('nav.ingresar')}
             </Link>
           )}
         </div>
@@ -207,16 +196,14 @@ export default function Navbar() {
               {t('nav.primeros_pasos')}
             </Link>
 
-            {/* Language toggle mobile */}
             <button
               onClick={() => { setLocale(locale === 'es-AR' ? 'en-US' : 'es-AR'); setMenuOpen(false) }}
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
             >
               <Languages className="h-5 w-5" />
-              {locale === 'es-AR' ? 'English' : 'Español'}
+              {locale === 'es-AR' ? 'Español' : 'English'}
             </button>
 
-            {/* Theme toggle mobile */}
             <button
               onClick={() => { toggleTema(); setMenuOpen(false) }}
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
@@ -249,21 +236,6 @@ export default function Navbar() {
                   {user?.fullName || t('nav.perfil')}
                 </Link>
                 <Link
-                  href="/reservas"
-                  className="block rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {t('nav.mis_reservas')}
-                </Link>
-                <Link
-                  href="/mensajes"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-texto-secundario transition hover:bg-gray-100"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <MessageSquare className="h-5 w-5" />
-                  {t('nav.mensajes')}
-                </Link>
-                <Link
                   href="/participante"
                   className="block rounded-lg px-3 py-2 text-sm font-semibold text-primario transition hover:bg-primario/10"
                   onClick={() => setMenuOpen(false)}
@@ -293,8 +265,9 @@ export default function Navbar() {
                     setMenuOpen(false)
                     cerrarSesion()
                   }}
-                  className="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error/10"
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error/10"
                 >
+                  <LogOut className="h-4 w-4" />
                   {t('nav.cerrar_sesion')}
                 </button>
               </>
